@@ -1,0 +1,54 @@
+{
+	"rubros": [{
+			"id":1,
+			"nombre": "Verduras",
+			"estado": true
+		},
+		{
+			"id":2,
+			"nombre": "Frutas",
+			"estado": false
+		},
+		{
+			"id":3,
+			"nombre": "Carnes",
+			"estado": true
+		},
+		{
+			"id":4,
+			"nombre": "Pescados y mariscos",
+			"estado": true
+		},
+		{
+			"id":5,
+			"nombre": "Lácteos",
+			"estado": false
+		},
+		{
+			"id":6,
+			"nombre": "Huevos y ovoproductos",
+			"estado": true
+		},
+		{
+			"id":7,
+			"nombre": "Cereales y harinas",
+			"estado": false
+		},
+		{
+			"id":8,
+			"nombre": "Legumbres",
+			"estado": true
+		},
+		{
+			"id":9,
+			"nombre": "Frutos secos y semillas",
+			"estado": false
+		},{
+			"id":10,
+			"nombre": "Especias y condimentos",
+			"estado": false
+		}
+	
+
+	]
+}

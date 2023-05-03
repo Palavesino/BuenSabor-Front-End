@@ -51,8 +51,8 @@ const NavBar = () => {
                 <CiDiscount1 />
               </span>
             </Link>
-            <Link to="/formulario" className="item">
-              Formulario
+            <Link to="/rubro" className="item">
+              Rubro
             </Link>
 
             <Row>
