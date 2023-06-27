@@ -1,0 +1,8 @@
+.card-generic {
+  display: flex;
+  margin-top: 1.5rem;
+  left: 50%;
+  border-radius: 1.5rem;
+  align-items: center;
+  justify-content: center;
+}

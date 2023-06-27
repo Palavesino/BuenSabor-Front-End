@@ -1,0 +1,15 @@
+.login-button {
+  position: absolute;
+  right: 7rem;
+  top: 1.46rem;
+  background-color: transparent;
+  border: none;
+  color: white;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.login-button:hover {
+  color: red;
+  transition: 0.3s;
+}

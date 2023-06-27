@@ -1,0 +1,77 @@
+footer {
+  flex-shrink: 0;
+}
+
+.container-footer {
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
+    linear-gradient(to right, #f6bd5a 0%, #000 75%);
+    
+  position: sticky;
+  width: 100%;
+  height: auto;
+}
+
+.social-icons-col {
+  display: flex;
+  margin-left: 5rem;
+  margin-right: 4rem;
+}
+
+.circle-icon-container {
+  width: 1.8rem;
+  height: 1.8rem;
+  margin-top: 1.5rem;
+  margin-right: .5rem;
+  border-radius: 50%;
+  background-color: black;
+}
+
+.icon-footer-fb, 
+.icon-footer-tw,
+.icon-footer-ig {
+  font-size: 1.2rem;
+  top: 0px;
+  margin-left: .34rem;
+  color: white;
+}
+
+.logo-footer {
+  margin-top: 1rem;
+  width: 7.5rem;
+  height: 5rem;
+  background: url("/src/assets/logos/logo.png");
+  background-position: center center;
+  background-size: cover;
+}
+
+.logo-col {
+  margin-left: 15%;
+}
+
+.info-col {
+  padding: 1.5rem;
+  margin-right: 6rem;
+  display: flex;
+  justify-content: right;
+}
+
+.info-col a {
+  color: #f6bd5a;
+  margin-left: 2.5rem;
+}
+
+.second-row {
+  margin-top: .8rem;
+  align-items: center;
+  text-align: center;
+}
+
+.copy-col {
+  color: black;
+  font-size: .75rem;
+}
+
+.developer-col {
+  color: #f6bd5a;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+}

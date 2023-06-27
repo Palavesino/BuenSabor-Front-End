@@ -1,0 +1,45 @@
+.iconCircleAlta {
+  color: green;
+}
+.iconCircleBaja {
+  color: red;
+}
+.iconEdit {
+  font-size: 20px;
+  padding: 0;
+}
+.iconEdit:hover {
+  color: blue;
+  transition: 0.3s;
+}
+.iconBaja {
+  font-size: 20px;
+  padding: 0;
+}
+.iconBaja:hover {
+  color: red;
+  transition: 0.3s;
+}
+.iconAlta {
+  font-size: 20px;
+  padding: 0;
+}
+.iconAlta:hover {
+  color: green;
+  transition: 0.3s;
+}
+
+.accion {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  justify-content: center;
+}
+.buttonNew {
+  margin-right: 85%;
+}
+.searchButton {
+  margin-top: 10px;
+  width: 50%;
+  margin-left: 50%;
+}
