@@ -1,66 +1,100 @@
+// Importaciones de componentes, funciones y modelos
 import GenericTable from "../../Generic/GenericTable";
 import { useEffect, useState } from "react";
-import { ModalType, Rubro } from "../../../Models/Interfaces";
+import { Category } from "../../../Models/Category";
 import { BsCircleFill } from "react-icons/bs";
-import { CategoryModal } from "./FormularioRubro";
+import CategoryModal from "./CategoryForm";
 import { useGenericGet } from "../../../Services/useGenericGet";
+import { ModalType } from "../../Enum/ModalType";
 
-const TablaRubros = () => {
+/*
+el componente TablaCategorys se encarga de mostrar una tabla de categorías, 
+permitiendo editar, cambiar el estado y agregar nuevas categorías. También utiliza un modal 
+para mostrar los detalles de una categoría y realizar acciones relacionadas.
+*/
+
+const TablaCategorys = () => {
+  // Estado del modal
   const [showModal, setShowModal] = useState(false);
+  // Estado para manejar lógica interna del componente
   const [state, setState] = useState(false);
+  // Estado para el tipo de modal
   const [modalType, setModalType] = useState<ModalType>(ModalType.None);
+  // Estado para indicar si es necesario refrescar los datos
   const [refetch, setRefetch] = useState(false);
-  const [rubros, setRubros] = useState<Rubro[]>([]);
-  const [rubro, setRubro] = useState<Rubro>({
+  // Estado para almacenar las categorías
+  const [categorys, setCategorys] = useState<Category[]>([]);
+  // Estado para almacenar la categoría seleccionada
+  const [category, setCategory] = useState<Category>({
     id: 0,
     denomination: "",
     availability: false,
     type: false,
     categoryFatherDenomination: "",
   });
+  // Estado para almacenar el título del modal
   const [title, setTitle] = useState("");
-  const data = useGenericGet<Rubro>(
+
+  // Obtener datos de las categorías utilizando el hook useGenericGet
+  const data = useGenericGet<Category>(
     "/api/categories/all",
     "Categorías",
     refetch
   );
+
   useEffect(() => {
-    setRubros(data);
+    // Actualizar las categorías cuando se obtiene nueva data
+    setCategorys(data);
     setRefetch(false);
   }, [data]);
-  const handleClick = (rubro: Rubro, newTitle: string, modal: ModalType) => {
-    console.log(JSON.stringify(rubro));
+
+  // Manejar el clic en un elemento de la tabla
+  const handleClick = (
+    category: Category,
+    newTitle: string,
+    modal: ModalType
+  ) => {
+    console.log(JSON.stringify(category));
     setTitle(newTitle);
-    setRubro(rubro);
+    setCategory(category);
     setModalType(modal);
     setShowModal(true);
   };
-  const handleEdit = (r: Rubro) => {
+
+  // Manejar la edición de una categoría
+  const handleEdit = (r: Category) => {
     handleClick(r, "Editar Categoria", ModalType.Edit);
   };
-  const handleLow = (r: Rubro) => {
+
+  // Manejar la baja de una categoría
+  const handleLow = (r: Category) => {
     setState(true);
     handleClick(r, "Baja", ModalType.ChangeStatus);
   };
-  const handleHigh = (r: Rubro) => {
+
+  // Manejar la alta de una categoría
+  const handleHigh = (r: Category) => {
     setState(false);
     handleClick(r, "Alta", ModalType.ChangeStatus);
   };
+
+  // Manejar la creación de una nueva categoría
   const handleAdd = () => {
-    const newRubro: Rubro = {
+    const newCategory: Category = {
       id: 0,
       denomination: "",
       availability: false,
       type: false,
       categoryFatherDenomination: "",
     };
-    handleClick(newRubro, "Nueva Categoria", ModalType.Create);
+    handleClick(newCategory, "Nueva Categoria", ModalType.Create);
   };
-
+  // Renderizado del componente
   return (
     <>
+      {/* Componente de tabla genérica */}
       <GenericTable
-        data={rubros}
+        data={categorys}
         columns={[
           // Definir las columnas de la tabla
           { field: "id", title: "Id", width: 1 },
@@ -69,10 +103,10 @@ const TablaRubros = () => {
             field: "availability",
             title: "State",
             width: 1,
-            render: (row: Rubro) => (
+            render: (row: Category) => (
               <BsCircleFill
                 className={
-                  row.availability ? "iconCircleBaja" : "iconCircleAlta"
+                  row.availability ? "icon-CircleLow" : "icon-CircleHigh"
                 }
               />
             ),
@@ -81,7 +115,7 @@ const TablaRubros = () => {
             field: "type",
             title: "Type",
             width: 1,
-            render: (row: Rubro) => (
+            render: (row: Category) => (
               <div>{row.type ? "Producto" : "Ingrediente"}</div>
             ),
           },
@@ -100,9 +134,10 @@ const TablaRubros = () => {
         onhighLogic={handleHigh}
       />
 
+      {/* Modal de categoría */}
       {showModal && (
         <CategoryModal
-          cat={rubro}
+          cat={category}
           title={title}
           show={showModal}
           onHide={() => setShowModal(false)}
@@ -115,4 +150,4 @@ const TablaRubros = () => {
   );
 };
 
-export default TablaRubros;
+export default TablaCategorys;

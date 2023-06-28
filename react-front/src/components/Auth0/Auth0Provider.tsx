@@ -7,11 +7,7 @@ interface Props {
     idToken: string;
   };
 }
-
-export function AuthProvider({
-  children,
-  initialAuthState,
-}: Props): JSX.Element {
+function AuthProvider({ children, initialAuthState }: Props): JSX.Element {
   const { isAuthenticated, getIdTokenClaims } = useAuth0();
   useEffect(() => {
     const storeAuthState = async () => {
@@ -45,3 +41,5 @@ export function AuthProvider({
     </Auth0Provider>
   );
 }
+
+export default AuthProvider;

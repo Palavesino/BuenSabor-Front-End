@@ -6,7 +6,7 @@ import Footer from "./components/Common/Footer/Footer";
 import Home from "./components/Pages/Home/Home";
 import NavBar from "./components/Common/NavBar/NavBar";
 import Products from "./components/Pages/Products/Products";
-import ListarRubros from "./components/Common/CategoriesComponents/TablaRubros";
+import ListarCategorys from "./components/Admin/CategoriesComponents/CategoryTable";
 
 // Importaciones de Assets
 import products from "./components/Pages/Products/JSON/products.json";
@@ -25,11 +25,17 @@ function App() {
       <div className="main-container">
         <Routes>
           <Route path="/" element={<Home />}></Route>
-          <Route path="/productos" element={<Products products={products} categories={categories}/>}></Route>
+          <Route
+            path="/productos"
+            element={<Products products={products} categories={categories} />}
+          ></Route>
           <Route path="/promociones" element={<h1>Promociones</h1>}></Route>
-          <Route path="/categoria" element={<ListarRubros />}></Route>
+          <Route path="/categoria" element={<ListarCategorys />}></Route>
           <Route path="/carrito" element={<h1>Carrito</h1>}></Route>
-          <Route path="/productos/:productId" element={<ProductDetails products={products} />} />
+          <Route
+            path="/productos/:productId"
+            element={<ProductDetails products={products} />}
+          />
         </Routes>
       </div>
 

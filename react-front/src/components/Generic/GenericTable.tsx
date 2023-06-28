@@ -90,7 +90,7 @@ function GenericTable<T>({
       <Row className="align-items-center">
         <Col sm={6}>
           {actions.create && (
-            <Button variant="success" onClick={onAdd} className="buttonNew">
+            <Button variant="success" onClick={onAdd} className="button-New">
               Nuevo
             </Button>
           )}{" "}
@@ -98,7 +98,7 @@ function GenericTable<T>({
         </Col>
         <Col sm={6}>
           <form onSubmit={handleSearchSubmit}>
-            <InputGroup className="mb-3 searchButton">
+            <InputGroup className="mb-3 button-Search">
               <FormControl
                 placeholder="Search"
                 aria-label="Search"
@@ -156,19 +156,19 @@ function GenericTable<T>({
                     : String(item[column.field])}
                 </td>
               ))}
-              <td className="accion">
+              <td className="td-Accion">
                 {actions.highLogic && (
-                  <div className="iconAlta">
+                  <div className="icon-High">
                     <FaArrowAltCircleUp onClick={() => onhighLogic!(item)} />
                   </div>
                 )}{" "}
                 {actions.lowLogic && (
-                  <div className="iconBaja">
+                  <div className="icon-Low">
                     <FaArrowAltCircleDown onClick={() => onlowLogic!(item)} />
                   </div>
                 )}{" "}
                 {actions.update && (
-                  <div className="iconEdit">
+                  <div className="icon-Edit">
                     <GiFeather onClick={() => onUpdate!(item)} />
                   </div>
                 )}{" "}

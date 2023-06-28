@@ -1,24 +1,32 @@
+// Importaciones de componentes, funciones y modelos
 import { Button, Col, Form, Row, Modal } from "react-bootstrap";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import "./Formulario.css";
-import { ModalType, Rubro } from "../../../Models/Interfaces";
+import "./CategoryForm.css";
+import { Category } from "../../../Models/Category";
 import { useEffect, useState } from "react";
 import { useGenericPost } from "../../../Services/useGenericPost";
 import { useGenericPut } from "../../../Services/useGenericPut";
 import { useGenericGet } from "../../../Services/useGenericGet";
 import { useGenericChangeStatus } from "../../../Services/useGenericChangeStatus";
+import { ModalType } from "../../Enum/ModalType";
 
-interface Props {
-  show: boolean;
-  onHide: () => void;
-  title: string;
-  cat: Rubro;
-  setRefetch: React.Dispatch<React.SetStateAction<boolean>>;
-  modalType: ModalType;
-  state: boolean;
+interface CategoryModalProps {
+  show: boolean; // Indica si el modal debe mostrarse o no
+  onHide: () => void; // Función que se ejecuta cuando el modal se cierra
+  title: string; // Título del modal
+  cat: Category; // Categoría actual que se está editando
+  setRefetch: React.Dispatch<React.SetStateAction<boolean>>; // Función para actualizar el estado y volver a obtener los datos después de realizar una acción en el modal
+  modalType: ModalType; // Tipo de modal, indica si es para editar, crear o cambiar el estado de una categoría
+  state: boolean; // Estado actual de la categoría
 }
-export const CategoryModal = ({
+
+/*
+El componente CategoryModal proporciona la funcionalidad necesaria 
+para editar, crear y cambiar el estado de una categoría, interactuando con 
+la API y utilizando validación de formularios.
+*/
+const CategoryModal: React.FC<CategoryModalProps> = ({
   show,
   onHide,
   title,
@@ -26,21 +34,22 @@ export const CategoryModal = ({
   setRefetch,
   modalType,
   state,
-}: Props) => {
-  const [categories, setCategories] = useState<Rubro[]>([]);
-  const [select, setSelect] = useState(false);
-  const genericPost = useGenericPost();
-  const genericPut = useGenericPut();
-  const updateCategoryStatus = useGenericChangeStatus();
-  const data = useGenericGet<Rubro>(
+}) => {
+  const [categories, setCategories] = useState<Category[]>([]); // Almacena las categorías obtenidas de la API
+  const [select, setSelect] = useState(false); // Indica si se seleccionó la opción de categoría de producto o de ingrediente en el formulario
+  const genericPost = useGenericPost(); // Hook personalizado para realizar una petición POST genérica a la API
+  const genericPut = useGenericPut(); // Hook personalizado para realizar una petición PUT genérica a la API
+  const updateCategoryStatus = useGenericChangeStatus(); // Hook personalizado para actualizar el estado de una categoría
+  const data = useGenericGet<Category>(
     "/api/categories/filter/all-product",
-    "Rubro"
-  );
-  const data2 = useGenericGet<Rubro>(
+    "Category"
+  ); // Obtiene las categorías de producto desde la API
+  const data2 = useGenericGet<Category>(
     "/api/categories/filter/ingredient",
-    "Rubro"
-  );
+    "Category"
+  ); // Obtiene las categorías de ingrediente desde la API
 
+  // Actualiza las categorías según la selección (producto o ingrediente)
   const fetchData = () => {
     if (select) {
       setCategories(data);
@@ -57,18 +66,29 @@ export const CategoryModal = ({
     fetchData();
   }, [select]);
 
-  const handleSaveUpdate = async (rubro: Rubro) => {
-    const isNew = rubro.id === 0;
-    console.log(JSON.stringify(rubro, null, 2));
+  // Maneja la lógica de guardar o actualizar una categoría
+  const handleSaveUpdate = async (category: Category) => {
+    const isNew = category.id === 0;
+    console.log(JSON.stringify(category, null, 2));
     if (!isNew) {
-      await genericPut<Rubro>("/api/categories", rubro.id, rubro, "Categorías");
+      await genericPut<Category>(
+        "/api/categories",
+        category.id,
+        category,
+        "Categorías"
+      );
     } else {
-      await genericPost<Rubro>("/api/categories/save", "Categorías", rubro);
+      await genericPost<Category>(
+        "/api/categories/save",
+        "Categorías",
+        category
+      );
     }
     setRefetch(true);
     onHide();
   };
 
+  // Maneja el cambio de estado de una categoría
   const handleStateCategory = async () => {
     const id = cat.id;
     await updateCategoryStatus(id, state, "/api/categories/block", "Categoría");
@@ -76,50 +96,54 @@ export const CategoryModal = ({
     onHide();
   };
 
+  // Define el esquema de validación del formulario
   const validationSchema = () => {
     return Yup.object().shape({
       id: Yup.number().integer().min(0),
-      denomination: Yup.string().required("La denominacion es requerida"),
+      denomination: Yup.string().required("La denominación es requerida"),
       type: Yup.boolean(),
       categoryFatherId: Yup.number().integer().min(0).nullable(),
       categoryFatherDenomination: Yup.string().nullable(),
     });
   };
 
+  // Maneja el cambio de la categoría padre en el formulario
   const handleCategoryFatherChange = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
-    const selectedCategory = parseInt(event.target.value, 10);
+    const selectedCategoryId = parseInt(event.target.value, 10);
     formik.setFieldValue(
       "categoryFatherId",
-      isNaN(selectedCategory) ? null : selectedCategory
+      isNaN(selectedCategoryId) ? null : selectedCategoryId
     );
-    const selectedRubro = categories.find(
-      (rubro) => rubro.id === selectedCategory
+    const selectedCategory = categories.find(
+      (category) => category.id === selectedCategoryId
     );
-    console.log(selectedRubro?.denomination);
+    console.log(selectedCategory?.denomination);
 
-    if (selectedRubro) {
+    if (selectedCategory) {
       formik.setFieldValue(
         "categoryFatherDenomination",
-        selectedRubro.denomination
+        selectedCategory.denomination
       );
     } else {
       formik.setFieldValue("categoryFatherDenomination", "");
     }
   };
 
+  // Configuración y gestión del formulario con Formik
   const formik = useFormik({
     initialValues: cat,
     validationSchema: validationSchema(),
     validateOnChange: true,
     validateOnBlur: true,
-    onSubmit: (obj: Rubro) => handleSaveUpdate(obj),
+    onSubmit: (obj: Category) => handleSaveUpdate(obj),
   });
+
   useEffect(() => {
     setSelect(formik.values.type);
   }, [formik.values.type]);
-
+  // Renderizado del componente
   return (
     <>
       {modalType === ModalType.ChangeStatus && state !== cat.availability && (
@@ -241,3 +265,5 @@ export const CategoryModal = ({
     </>
   );
 };
+
+export default CategoryModal;

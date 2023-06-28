@@ -1,44 +1,44 @@
-.iconCircleAlta {
+.icon-CircleHigh {
   color: green;
 }
-.iconCircleBaja {
+.icon-CircleLow {
   color: red;
 }
-.iconEdit {
+.icon-Edit {
   font-size: 20px;
   padding: 0;
 }
-.iconEdit:hover {
+.icon-Edit:hover {
   color: blue;
   transition: 0.3s;
 }
-.iconBaja {
+.icon-Low {
   font-size: 20px;
   padding: 0;
 }
-.iconBaja:hover {
+.icon-Low:hover {
   color: red;
   transition: 0.3s;
 }
-.iconAlta {
+.icon-High {
   font-size: 20px;
   padding: 0;
 }
-.iconAlta:hover {
+.icon-High:hover {
   color: green;
   transition: 0.3s;
 }
 
-.accion {
+.td-Accion {
   display: flex;
   align-items: center;
   gap: 15px;
   justify-content: center;
 }
-.buttonNew {
+.button-New {
   margin-right: 85%;
 }
-.searchButton {
+.button-Search {
   margin-top: 10px;
   width: 50%;
   margin-left: 50%;

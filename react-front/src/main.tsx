@@ -7,7 +7,7 @@ import App from "./App.tsx";
 
 // Importaciones de estilos
 import "./index.css";
-import { AuthProvider } from "./components/Auth0/Auth0Provider.tsx";
+import AuthProvider from "./components/Auth0/Auth0Provider.tsx";
 
 const storedAuthState = JSON.parse(localStorage.getItem("authState") || "{}");
 const initialAuthState = {
