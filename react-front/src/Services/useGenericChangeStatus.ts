@@ -4,41 +4,24 @@ import { toast } from "react-toastify";
 export const useGenericChangeStatus = () => {
   const { getAccessTokenSilently } = useAuth0();
 
-  const updateEntityStatus = async (
-    id: number,
-    blocked: boolean,
-    endpoint: string,
-    entidadMsj: string
-  ) => {
+  const updateEntityStatus = async (id: number, endpoint: string) => {
     try {
       const token = await getAccessTokenSilently();
-
-      /* 
-      await fetch(`${endpoint}/${id}?blocked=${blocked}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      */
-
-      await fetch(`${endpoint}/${id}?blocked=${blocked}`, {
+      let response = await fetch(`${endpoint}/${id}`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-
-      toast.success(`Estado del ${entidadMsj} Actualizado`, {
+      if (response.ok) {
+        toast.success(`😎 Estado Actualizado Exitosamente!`, {
+          position: "top-center",
+        });
+      }
+    } catch (error) {
+      toast.error(`Ah ocurrido un error` + error, {
         position: "top-center",
       });
-    } catch (error) {
-      toast.error(
-        `Ah ocurrido un error al tratar de cambiar el estado de ${entidadMsj}`,
-        {
-          position: "top-center",
-        }
-      );
     }
   };
   return updateEntityStatus;

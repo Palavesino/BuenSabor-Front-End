@@ -17,13 +17,6 @@ export const useGenericGet = <T>(
   const fetchData = async () => {
     try {
       const token = await getAccessTokenSilently();
-      /* const response = await fetch(`${endpoint}`, {
-        method: "GET",
-        headers: {
-          "Content-type": "application/json",
-        },
-      });*/
-
       const response = await fetch(`${endpoint}`, {
         method: "GET",
         headers: {

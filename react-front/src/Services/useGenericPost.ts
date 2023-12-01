@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 export const useGenericPost = () => {
   const { getAccessTokenSilently } = useAuth0();
 
-  const genericPost = async <T>(endpoint: string, msj: string, obj?: T) => {
+  const genericPost = async <T>(endpoint: string, obj?: T) => {
     try {
       const token = await getAccessTokenSilently();
 
@@ -18,7 +18,7 @@ export const useGenericPost = () => {
       });
 
       if (response.ok) {
-        toast.success(`${msj}`, {
+        toast.success(`😎 Insertado Exitosamente!`, {
           position: "top-center",
         });
       }

@@ -1,105 +1,97 @@
 // Importaciones de componentes, funciones y modelos
 import GenericTable from "../../Generic/GenericTable";
 import { useEffect, useState } from "react";
-import { Category } from "../../../Models/Category";
 import { BsCircleFill } from "react-icons/bs";
-import CategoryModal from "./CategoryForm";
 import { useGenericGet } from "../../../Services/useGenericGet";
 import { ModalType } from "../../Enum/ModalType";
 import Menu from "../Menu";
 import { Row, Col } from "react-bootstrap";
+import { Ingredient } from "../../../Models/Ingredient";
+import IngredientForm from "./IngredientForm";
 
 /*
-el componente TablaCategorys se encarga de mostrar una tabla de categorías, 
-permitiendo editar, cambiar el estado y agregar nuevas categorías. También utiliza un modal 
-para mostrar los detalles de una categoría y realizar acciones relacionadas.
+el componente IngredientTable se encarga de mostrar una tabla de ingredientes, 
+permitiendo editar, cambiar el estado y agregar nuevos ingredientes. También utiliza un modal 
+para mostrar los detalles de un ingrediente y realizar acciones relacionadas.
 */
 
-const TablaCategorys = () => {
+const IngredientTable = () => {
   // Estado del modal
   const [showModal, setShowModal] = useState(false);
-  // Estado para manejar lógica interna del componente
+  // Estado para manejar lógica estado del componente
   const [state, setState] = useState(false);
   // Estado para el tipo de modal
   const [modalType, setModalType] = useState<ModalType>(ModalType.None);
   // Estado para indicar si es necesario refrescar los datos
   const [refetch, setRefetch] = useState(false);
-  // Estado para almacenar las categorías
-  const [categorys, setCategorys] = useState<Category[]>([]);
-  // Estado para almacenar la categoría seleccionada
-  const [category, setCategory] = useState<Category>({
+  // Estado para almacenar los ingredientes
+  const [ingredients, setIngredients] = useState<Ingredient[]>([]);
+  // Estado para almacenar el ingrediente seleccionado
+  const [ingredient, setIngredient] = useState<Ingredient>({
     id: 0,
     denomination: "",
+    unit: "",
     availability: true,
-    type: "",
-    categoryFatherDenomination: "",
+    minStock: 0,
+    actualStock: 0,
+    ingredientCategoryID: 0,
   });
   // Estado para almacenar el título del modal
   const [title, setTitle] = useState("");
 
-  // Obtener datos de las categorías utilizando el hook useGenericGet
-  const data = useGenericGet<Category>(
-    "/api/categories/all",
-    "Categorías",
+  // Obtener datos de los ingredientes, utilizando el hook useGenericGet
+  const data = useGenericGet<Ingredient>(
+    "/api/ingredients/all",
+    "Ingredients",
     refetch
   );
 
   useEffect(() => {
-    // Actualizar las categorías cuando se obtiene nueva data
-    setCategorys(data);
+    // Actualizar los ingredientes cuando se obtiene nueva data
+    setIngredients(data);
     setRefetch(false);
   }, [data]);
 
   // Manejar el clic en un elemento de la tabla
   const handleClick = (
-    category: Category,
+    ingredient: Ingredient,
     newTitle: string,
     modal: ModalType
   ) => {
     setTitle(newTitle);
-    setCategory(category);
+    setIngredient(ingredient);
     setModalType(modal);
     setShowModal(true);
   };
 
-  // Manejar la edición de una categoría
-  const handleEdit = (r: Category) => {
-    handleClick(r, "Editar Categoria", ModalType.Edit);
+  // Manejar la edición de una ingredient
+  const handleEdit = (r: Ingredient) => {
+    handleClick(r, "Editar Ingredient", ModalType.Edit);
   };
-  const typeTitle = (t: string) => {
-    if (t === "P") {
-      return "Producto";
-    } else if (t === "I") {
-      return "Ingrediente";
-    } else if (t === "M") {
-      return "P.Manufacturado";
-    } else {
-      return "General";
-    }
-  };
-
-  // Manejar la baja de una categoría
-  const handleLow = (r: Category) => {
+  // Manejar la baja de un ingredient
+  const handleLow = (r: Ingredient) => {
     setState(false);
     handleClick(r, "Baja", ModalType.ChangeStatus);
   };
 
-  // Manejar la alta de una categoría
-  const handleHigh = (r: Category) => {
+  // Manejar la alta de un ingredient
+  const handleHigh = (r: Ingredient) => {
     setState(true);
     handleClick(r, "Alta", ModalType.ChangeStatus);
   };
 
-  // Manejar la creación de una nueva categoría
+  // Manejar la creación de un nuevo ingredient
   const handleAdd = () => {
-    const newCategory: Category = {
+    const newIngredient: Ingredient = {
       id: 0,
       denomination: "",
+      unit: "",
       availability: true,
-      type: "",
-      categoryFatherDenomination: "",
+      minStock: 0,
+      actualStock: 0,
+      ingredientCategoryID: 0,
     };
-    handleClick(newCategory, "Nueva Categoria", ModalType.Create);
+    handleClick(newIngredient, "Nuevo Ingredient", ModalType.Create);
   };
   // Renderizado del componente
   return (
@@ -110,16 +102,17 @@ const TablaCategorys = () => {
         </Col>
         <Col sm={10}>
           <GenericTable
-            data={categorys}
+            data={ingredients}
             columns={[
               // Definir las columnas de la tabla
               { field: "id", title: "Id", width: 1 },
               { field: "denomination", title: "Denomination", width: 2 },
+              { field: "unit", title: "Unit", width: 1 },
               {
                 field: "availability",
                 title: "State",
                 width: 1,
-                render: (row: Category) => (
+                render: (row: Ingredient) => (
                   <BsCircleFill
                     className={
                       row.availability ? "icon-CircleHigh" : "icon-CircleLow"
@@ -127,16 +120,12 @@ const TablaCategorys = () => {
                   />
                 ),
               },
+              { field: "minStock", title: "MinStock", width: 1 },
+              { field: "actualStock", title: "Stock", width: 1 },
               {
-                field: "type",
-                title: "Type",
+                field: "ingredientCategoryID",
+                title: "CategoryID",
                 width: 1,
-                render: (row: Category) => <div>{typeTitle(row.type)}</div>,
-              },
-              {
-                field: "categoryFatherDenomination",
-                title: "Father",
-                width: 2,
               },
             ]}
             actions={{
@@ -153,8 +142,8 @@ const TablaCategorys = () => {
           />
         </Col>
         {showModal && (
-          <CategoryModal
-            category={category}
+          <IngredientForm
+            ingredient={ingredient}
             title={title}
             show={showModal}
             onHide={() => setShowModal(false)}
@@ -167,5 +156,4 @@ const TablaCategorys = () => {
     </>
   );
 };
-
-export default TablaCategorys;
+export default IngredientTable;

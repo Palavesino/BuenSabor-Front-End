@@ -4,7 +4,6 @@ import { useAuth0 } from "@auth0/auth0-react";
 export const useGenericGetXID = <T>(
   endpoint: string,
   id: number,
-  entidadMsj: string,
   refetch?: boolean
 ) => {
   const { getAccessTokenSilently } = useAuth0();
@@ -18,14 +17,6 @@ export const useGenericGetXID = <T>(
   const fetchData = async () => {
     try {
       const token = await getAccessTokenSilently();
-      /*
-      const response = await fetch(`${endpoint}/${id}`, {
-        method: "GET",
-        headers: {
-          "Content-type": "application/json",
-        },
-      });      
-      */
 
       const response = await fetch(`${endpoint}/${id}`, {
         method: "GET",
@@ -35,13 +26,12 @@ export const useGenericGetXID = <T>(
       });
       if (response.ok) {
         const data = await response.json();
-        //console.log(data);
         setData(data);
       } else {
-        console.error(`Error fetching ${entidadMsj} data:`, response.status);
+        console.error(`Error fetching  data:`, response.status);
       }
     } catch (e) {
-      console.error(`Error fetching ${entidadMsj} data:`, e);
+      console.error(`Error fetching data:`, e);
     }
   };
   return data;

@@ -90,7 +90,7 @@ function GenericTable<T>({
       <Row className="align-items-center">
         <Col sm={6}>
           {actions.create && (
-            <Button variant="success" onClick={onAdd} className="button-New">
+            <Button onClick={onAdd} className="button-New">
               Nuevo
             </Button>
           )}{" "}
@@ -150,7 +150,7 @@ function GenericTable<T>({
           {filteredData.map((item, index) => (
             <tr key={index}>
               {columns.map((column, key) => (
-                <td key={key}>
+                <td key={key} className={column.styleClass}>
                   {column.render
                     ? column.render(item)
                     : String(item[column.field])}
@@ -158,33 +158,27 @@ function GenericTable<T>({
               ))}
               <td className="td-Accion">
                 {actions.highLogic && (
-                  <div className="icon-High">
-                    <FaArrowAltCircleUp onClick={() => onhighLogic!(item)} />
-                  </div>
-                )}{" "}
-                {actions.lowLogic && (
-                  <div className="icon-Low">
-                    <FaArrowAltCircleDown onClick={() => onlowLogic!(item)} />
-                  </div>
-                )}{" "}
-                {actions.update && (
-                  <div className="icon-Edit">
-                    <GiFeather onClick={() => onUpdate!(item)} />
-                  </div>
-                )}{" "}
-                {/* Botón de actualización */}
-                {actions.delete && (
-                  <div className="">
-                    <FaTrashAlt onClick={() => onDelete!(item)} />
-                  </div>
+                  <FaArrowAltCircleUp
+                    className="icon-High"
+                    onClick={() => onhighLogic!(item)}
+                  />
                 )}
-                {/* Botón de eliminación */}
-                {actions.view && (
-                  <div className="">
-                    <IoIosEye onClick={() => onView!(item)} />
-                  </div>
-                )}{" "}
-                {/* Botón de visualización */}
+                {actions.lowLogic && (
+                  <FaArrowAltCircleDown
+                    className="icon-Low"
+                    onClick={() => onlowLogic!(item)}
+                  />
+                )}
+                {actions.update && (
+                  <GiFeather
+                    className="icon-Edit"
+                    onClick={() => onUpdate!(item)}
+                  />
+                )}
+                {actions.delete && (
+                  <FaTrashAlt onClick={() => onDelete!(item)} />
+                )}
+                {actions.view && <IoIosEye onClick={() => onView!(item)} />}
               </td>
             </tr>
           ))}

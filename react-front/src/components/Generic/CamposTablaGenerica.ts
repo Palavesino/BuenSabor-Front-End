@@ -1,5 +1,6 @@
 export interface Column<T> {
   title: string; // Título de la columna
+  styleClass?: string; // nombre de estilo donde tendrias className?
   field: keyof T; // Campo correspondiente en los datos
   width?: number; // Ancho de la columna (opcional)
   render?: (row: T) => JSX.Element | null; // Función de renderizado personalizado para la celda (opcional)

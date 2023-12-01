@@ -4,16 +4,11 @@ import { toast } from "react-toastify";
 export const useGenericPut = () => {
   const { getAccessTokenSilently } = useAuth0();
 
-  const genericPut = async <T>(
-    endpoint: string,
-    id: number,
-    obj: T,
-    msj: string
-  ) => {
+  const genericPut = async <T>(endpoint: string, id: number, obj: T) => {
     try {
       const token = await getAccessTokenSilently();
 
-      const response = await fetch(`${endpoint}/${id}/update`, {
+      const response = await fetch(`${endpoint}/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -22,9 +17,8 @@ export const useGenericPut = () => {
         body: JSON.stringify(obj),
       });
 
-      console.log(response);
       if (response.ok) {
-        toast.success(`${msj}`, {
+        toast.success(`😎 Editado Exitosamente!`, {
           position: "top-center",
         });
       }
@@ -32,6 +26,7 @@ export const useGenericPut = () => {
       toast.error(`Ah ocurrido un error` + error, {
         position: "top-center",
       });
+      return null;
     }
   };
   return genericPut;
