@@ -7,12 +7,12 @@ import { ModalType } from "../../Enum/ModalType";
 import Menu from "../Menu";
 import { Row, Col } from "react-bootstrap";
 import { ManufacturedProduct } from "../../../Models/ManufacturedProduct";
-import M_ProductForm from "./M_ProductForm";
+import MP_Form from "./MP_Form";
 
 /*
-el componente TablaCategorys se encarga de mostrar una tabla de categorías, 
-permitiendo editar, cambiar el estado y agregar nuevas categorías. También utiliza un modal 
-para mostrar los detalles de una categoría y realizar acciones relacionadas.
+El componente M_ProductTable se encarga de mostrar una tabla de productos manufacturados,
+permitiendo editar, cambiar el estado y agregar nuevos productos. También utiliza un modal
+para mostrar los detalles de un producto y realizar acciones relacionadas.
 */
 
 const M_ProductTable = () => {
@@ -24,22 +24,22 @@ const M_ProductTable = () => {
   const [modalType, setModalType] = useState<ModalType>(ModalType.None);
   // Estado para indicar si es necesario refrescar los datos
   const [refetch, setRefetch] = useState(false);
-  // Estado para almacenar las categorías
+  // Estado para almacenar los productos manufacturados
   const [Mproducts, setMproducts] = useState<ManufacturedProduct[]>([]);
-  // Estado para almacenar la categoría seleccionada
+  // Estado para almacenar el producto manufacturado seleccionado
   const [Mproduct, setMproduct] = useState<ManufacturedProduct>({
     id: 0,
     denomination: "",
     description: "",
     availability: true,
     urlImage: "",
-    productCategoryID: 0,
+    manufacturedProductCategoryID: 0,
     cookingTime: "",
   });
   // Estado para almacenar el título del modal
   const [title, setTitle] = useState("");
 
-  // Obtener datos de las ManufacturedProduct utilizando el hook useGenericGet
+  // Obtener datos de los productos manufacturados utilizando el hook useGenericGet
   const data = useGenericGet<ManufacturedProduct>(
     "/api/manufactured-products/all",
     "Manufactured Product",
@@ -47,7 +47,7 @@ const M_ProductTable = () => {
   );
 
   useEffect(() => {
-    // Actualizar las categorías cuando se obtiene nueva data
+    // Actualizar los productos manufacturados cuando se obtiene nueva data
     setMproducts(data);
     setRefetch(false);
   }, [data]);
@@ -89,7 +89,7 @@ const M_ProductTable = () => {
       description: "",
       availability: true,
       urlImage: "",
-      productCategoryID: 0,
+      manufacturedProductCategoryID: 0,
       cookingTime: "",
     };
     handleClick(newMproduct, "Nuevo Producto Manufacturado", ModalType.Create);
@@ -127,7 +127,7 @@ const M_ProductTable = () => {
                 ),
               },
               {
-                field: "productCategoryID",
+                field: "manufacturedProductCategoryID",
                 title: "CategoryID",
                 width: 1,
               },
@@ -152,7 +152,7 @@ const M_ProductTable = () => {
           />
         </Col>
         {showModal && (
-          <M_ProductForm
+          <MP_Form
             Mproduct={Mproduct}
             title={title}
             show={showModal}

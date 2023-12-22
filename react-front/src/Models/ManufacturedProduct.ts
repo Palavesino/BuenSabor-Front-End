@@ -6,14 +6,18 @@ export interface ManufacturedProduct {
   description: string;
   availability: boolean;
   urlImage: string;
-  productCategoryID: number;
+  manufacturedProductCategoryID: number;
   cookingTime: string;
 }
 export interface Recipe {
   id: number;
   denomination: string;
   description: string;
-  step: string[];
+  manufacturedProductId: number;
+  steps: recipeSteps[];
+}
+export interface recipeSteps {
+  description: string;
 }
 
 export interface MproductXRecipe {
