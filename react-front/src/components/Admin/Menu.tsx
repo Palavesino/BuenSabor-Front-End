@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import { Row, Col, ListGroup } from "react-bootstrap";
+import  { useState } from "react";
+import {  ListGroup } from "react-bootstrap";
 import { Link, useLocation } from "react-router-dom";
 import "./Menu.css";
 
 function Menu() {
-  const location = useLocation();
+ // const location = useLocation();
   const [selectedItem, setSelectedItem] = useState("");
 
   const handleItemClick = (item: string) => {
@@ -56,6 +56,15 @@ function Menu() {
           onClick={() => handleItemClick("ManufacturedProduct")}
         >
           Manufactured Product
+        </ListGroup.Item>
+      </Link>
+      <Link to="/recipe">
+        <ListGroup.Item
+          action
+          active={selectedItem === "Recipe"}
+          onClick={() => handleItemClick("Recipe")}
+        >
+          Recipe
         </ListGroup.Item>
       </Link>
     </ListGroup>

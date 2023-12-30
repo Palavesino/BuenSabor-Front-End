@@ -8,7 +8,7 @@ export const useGenericGetXID = <T>(
 ) => {
   const { getAccessTokenSilently } = useAuth0();
 
-  const [data, setData] = useState<T[]>([]);
+  const [data, setData] = useState<T>({} as T);
 
   useEffect(() => {
     fetchData();

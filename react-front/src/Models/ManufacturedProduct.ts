@@ -1,5 +1,3 @@
-import { Ingredient } from "./Ingredient";
-
 export interface ManufacturedProduct {
   id: number;
   denomination: string;
