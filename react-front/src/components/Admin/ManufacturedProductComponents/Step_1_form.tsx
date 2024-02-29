@@ -1,10 +1,10 @@
 // Importaciones de componentes, funciones y modelos
 import React from "react";
-import { MproductXRecipe } from "../../../Models/ManufacturedProduct";
+import { MproductXRecipe } from "../../../Interfaces/ManufacturedProduct";
 import { FormikProps } from "formik";
 import { Button, Col, Form, Row, Modal } from "react-bootstrap";
 import { useState, useEffect } from "react";
-import { Category } from "../../../Models/Category";
+import { Category } from "../../../Interfaces/Category";
 import { useGenericGet } from "../../../Services/useGenericGet";
 
 interface Step1Props {

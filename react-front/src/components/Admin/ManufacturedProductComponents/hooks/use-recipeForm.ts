@@ -1,6 +1,6 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { toast } from "react-toastify";
-import { MproductXRecipe } from "../../../../Models/ManufacturedProduct";
+import { MproductXRecipe } from "../../../../Interfaces/ManufacturedProduct";
 
 // Función GetRecipeForm
 const GetRecipeForm = () => {

@@ -1,4 +1,4 @@
-import { Recipe } from "../../../Models/ManufacturedProduct";
+import { Recipe } from "../../../Interfaces/ManufacturedProduct";
 import { FormikProps } from "formik";
 import { Button, Col, Form, Row, Modal } from "react-bootstrap";
 interface Step_1_recipeFormProps {

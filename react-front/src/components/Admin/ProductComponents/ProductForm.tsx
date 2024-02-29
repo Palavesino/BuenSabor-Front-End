@@ -7,8 +7,8 @@ import { useGenericPost } from "../../../Services/useGenericPost";
 import { useGenericPut } from "../../../Services/useGenericPut";
 import { useGenericChangeStatus } from "../../../Services/useGenericChangeStatus";
 import { ModalType } from "../../Enum/ModalType";
-import { Product } from "../../../Models/Product";
-import { Category } from "../../../Models/Category";
+import { Product } from "../../../Interfaces/Product";
+import { Category } from "../../../Interfaces/Category";
 import { useGenericGet } from "../../../Services/useGenericGet";
 interface ProductModalProps {
   show: boolean; // Indica si el modal debe mostrarse o no

@@ -6,7 +6,7 @@ import { useGenericGet } from "../../../Services/useGenericGet";
 import { ModalType } from "../../Enum/ModalType";
 import Menu from "../Menu";
 import { Row, Col } from "react-bootstrap";
-import { Recipe } from "../../../Models/ManufacturedProduct";
+import { Recipe } from "../../../Interfaces/ManufacturedProduct";
 
 /*
   El componente RecipesTable se encarga de mostrar una tabla de recetas y

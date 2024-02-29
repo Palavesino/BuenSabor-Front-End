@@ -2,9 +2,9 @@
 import { Button, Col, Form, Row, Modal } from "react-bootstrap";
 import { FormikProps } from "formik";
 import { useEffect, useState } from "react";
-import { Category } from "../../../Models/Category";
+import { Category } from "../../../Interfaces/Category";
 import { useGenericGet } from "../../../Services/useGenericGet";
-import { MproductXRecipe } from "../../../Models/ManufacturedProduct";
+import { MproductXRecipe } from "../../../Interfaces/ManufacturedProduct";
 interface M_ProductEditProps {
   onHide: () => void; // Función que se ejecuta cuando el modal se cierra
   formik: FormikProps<MproductXRecipe>;// Proporciona acceso a las funciones y estados de Formik para manejar el estado del formulario.

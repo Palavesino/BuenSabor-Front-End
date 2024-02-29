@@ -1,7 +1,7 @@
 // Importaciones de componentes, funciones y modelos
 import GenericTable from "../../Generic/GenericTable";
 import { useEffect, useState } from "react";
-import { Category } from "../../../Models/Category";
+import { Category } from "../../../Interfaces/Category";
 import { BsCircleFill } from "react-icons/bs";
 import CategoryModal from "./CategoryForm";
 import { useGenericGet } from "../../../Services/useGenericGet";

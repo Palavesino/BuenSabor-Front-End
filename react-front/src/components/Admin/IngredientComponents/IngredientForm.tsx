@@ -7,9 +7,9 @@ import { useGenericPost } from "../../../Services/useGenericPost";
 import { useGenericPut } from "../../../Services/useGenericPut";
 import { useGenericChangeStatus } from "../../../Services/useGenericChangeStatus";
 import { ModalType } from "../../Enum/ModalType";
-import { Category } from "../../../Models/Category";
+import { Category } from "../../../Interfaces/Category";
 import { useGenericGet } from "../../../Services/useGenericGet";
-import { Ingredient } from "../../../Models/Ingredient";
+import { Ingredient } from "../../../Interfaces/Ingredient";
 
 // Interfaz que define las propiedades esperadas por el componente IngredientForm
 interface IngredientModalProps {

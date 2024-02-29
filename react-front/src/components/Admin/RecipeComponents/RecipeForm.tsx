@@ -5,7 +5,7 @@ import * as Yup from "yup";
 import { useEffect, useState } from "react";
 import { useGenericPut } from "../../../Services/useGenericPut";
 import { ModalType } from "../../Enum/ModalType";
-import { Recipe } from "../../../Models/ManufacturedProduct";
+import { Recipe } from "../../../Interfaces/ManufacturedProduct";
 import Step_2_recipeForm from "./Step_2_recipeForm";
 import Step_1_recipeForm from "./Step_1_recipeForm";
 import { useGenericGetXID } from "../../../Services/useGenericGetXID";

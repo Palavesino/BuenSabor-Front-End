@@ -3,7 +3,7 @@ import { Button, Col, Form, Row, Modal } from "react-bootstrap";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import "./CategoryForm.css";
-import { Category } from "../../../Models/Category";
+import { Category } from "../../../Interfaces/Category";
 import { useEffect, useState } from "react";
 import { useGenericPost } from "../../../Services/useGenericPost";
 import { useGenericPut } from "../../../Services/useGenericPut";

@@ -6,7 +6,7 @@ import { useGenericGet } from "../../../Services/useGenericGet";
 import { ModalType } from "../../Enum/ModalType";
 import Menu from "../Menu";
 import { Row, Col } from "react-bootstrap";
-import { Product } from "../../../Models/Product";
+import { Product } from "../../../Interfaces/Product";
 import ProductForm from "./ProductForm";
 
 /*

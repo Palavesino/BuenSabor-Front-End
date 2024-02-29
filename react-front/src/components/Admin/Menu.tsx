@@ -1,10 +1,9 @@
-import  { useState } from "react";
-import {  ListGroup } from "react-bootstrap";
-import { Link, useLocation } from "react-router-dom";
+import { useState } from "react";
+import { ListGroup } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import "./Menu.css";
 
 function Menu() {
- // const location = useLocation();
   const [selectedItem, setSelectedItem] = useState("");
 
   const handleItemClick = (item: string) => {
@@ -22,7 +21,7 @@ function Menu() {
           Category
         </ListGroup.Item>
       </Link>
-      <Link to="#link2">
+      <Link to="/user">
         <ListGroup.Item
           action
           active={selectedItem === "user"}

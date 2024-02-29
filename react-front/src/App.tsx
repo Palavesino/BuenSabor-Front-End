@@ -13,6 +13,7 @@ import M_ProductTable from "./components/Admin/ManufacturedProductComponents/M_P
 import RecipesTable from "./components/Admin/RecipeComponents/RecipeTable";
 import ProductDetails from "./components/Pages/ProductDetails/ProductDetails";
 import Menu from "./components/Admin/Menu";
+import UserTable from "./components/Admin/UserComponents/UserTable";
 
 // Importaciones de Assets
 import products from "./components/Pages/Products/JSON/products.json";
@@ -21,6 +22,7 @@ import categories from "./components/Pages/Products/JSON/categories.json";
 // Importaciones de estilos
 import "./App.css";
 import "react-toastify/dist/ReactToastify.css";
+
 
 function App() {
   // Renderizado del componente
@@ -34,6 +36,7 @@ function App() {
           <Route path="/ingredients" element={<IngredientTable />}></Route>
           <Route path="/Mproducts" element={<M_ProductTable />}></Route>
           <Route path="/recipe" element={<RecipesTable />}></Route>
+          <Route path="/user" element={<UserTable />}></Route>
           <Route
             path="/productos"
             element={<Products products={products} categories={categories} />}

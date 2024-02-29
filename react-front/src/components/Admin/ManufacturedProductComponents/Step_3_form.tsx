@@ -2,7 +2,7 @@
 import { FormikProps } from "formik";
 import { Button, Col, Form, Row, Modal } from "react-bootstrap";
 import { useState } from "react";
-import { MproductXRecipe } from "../../../Models/ManufacturedProduct";
+import { MproductXRecipe } from "../../../Interfaces/ManufacturedProduct";
 import { TiDelete } from "react-icons/ti";
 import "./Step_3_form.css";
 interface Step3Props {

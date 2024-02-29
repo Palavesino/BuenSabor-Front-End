@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { ManufacturedProduct, MproductXRecipe } from "../../../Models/ManufacturedProduct";
+import { ManufacturedProduct, MproductXRecipe } from "../../../Interfaces/ManufacturedProduct";
 import Step_1_form from "./Step_1_form";
 import Step_2_form from "./Step_2_form";
 import { Button, Form, Modal } from "react-bootstrap";

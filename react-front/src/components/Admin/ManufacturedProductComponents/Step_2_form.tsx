@@ -1,5 +1,5 @@
 // Importaciones de componentes, funciones y modelos
-import { MproductXRecipe } from "../../../Models/ManufacturedProduct";
+import { MproductXRecipe } from "../../../Interfaces/ManufacturedProduct";
 import { FormikProps } from "formik";
 import { Button, Col, Form, Row, Modal } from "react-bootstrap";
 interface Step2Props {
