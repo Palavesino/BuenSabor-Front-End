@@ -1,0 +1,267 @@
+/*Color del navbar*/
+.nav {
+  background: linear-gradient(to right, #000 50%, #16171e 100%);
+  height: 6rem;
+}
+
+/*logo del proyecto*/
+.logo {
+  align-items: center;
+  margin-left: 5rem;
+  width: 4.5rem;
+  height: 4rem;
+  background-image: url("/src/assets/logos/logo.png");
+  background-position: center center;
+  background-size: cover;
+}
+
+/*estilo de los items*/
+.item {
+  position: relative;
+  display: flex;
+  color: white;
+  
+  margin-block-end: 0rem;
+  margin-block-start: 0rem;
+}
+
+.item:hover {
+  color: #f6bd5a;
+  margin: 0rem;
+  margin-top: 0.5rem;
+  transform: scale(1.3);
+  transition: 0.3s;
+}
+
+.size-item{
+  margin: 0.7rem;
+  margin-left: 1rem;
+  margin-top: 1rem;
+  font-size: 30px;
+  
+}
+
+.carrito {
+  position: relative;
+  display: flex;
+  color: white;
+  
+  margin-block-end: 0rem;
+  margin-block-start: 0rem;
+}
+
+.carrito:hover {
+  color: #f6bd5a;
+  transform: scale(1.3);
+  
+  transition: 0.3s;
+}
+
+.carrito-item{
+  margin: 0.7rem;
+  margin-right: 2rem;
+  margin-top: 1rem;
+  font-size: 30px;
+  
+}
+
+
+
+/*
+CCS que no se usa 
+
+
+.product-promotion-icon {
+  margin-left: .1rem;
+  font-size: 1rem;
+}
+
+
+#navbarScrollingDropdown:hover {
+  color: red;
+  transition: 0.3s;
+}
+
+
+.profile {
+  padding-top: 1.5rem;
+  text-align: center;
+}
+
+*/
+
+/*Estilo del  login/user*/
+/*posicion del icono del usuario mas su color*/
+.user-icon {
+  position: absolute;
+  top: 0;
+  right: 7rem;
+  top: 1rem;
+  font-size: 2rem;
+  background-color: transparent;
+  color: white;
+
+}
+
+.color-icon{
+  color: white;
+}
+
+.color-icon:hover{
+  color: #f6bd5a;
+}
+
+.dropdown-toggle::after {
+  display: none; /* Oculta el triángulo o flecha */
+}
+
+
+/*configuracion del menu despegable del usuario*/
+.dropdown-menu {
+  margin-left: -4rem;
+  background-color: black;
+  font-size: 1rem;
+  width: 12rem; /* Ajusta el ancho del menú desplegable */
+  height: 13rem;
+}
+
+.dropdown-menu-item{
+  color: white;
+}
+
+.show {
+  right: 7rem;
+  top: 1rem;
+}
+
+.text-truncate {
+  color: white;
+  margin-left: 0rem;
+  font-size: 1rem;
+}
+
+.text-truncate:hover{
+  background-color: #2f3248; /* Cambia el color de fondo cuando se está presionando */
+  color: white;
+}
+
+.text-truncate:active {
+  background-color: #16171e; /* Cambia el color de fondo cuando se está presionando */
+  color: white; /* Cambia el color del texto cuando se está presionando */
+}
+
+.button-logout:hover{
+  background-color: #2f3248;
+}
+
+.button-logout:active{
+  background-color: #16171e;
+}
+
+/*Estilo para el buscador*/
+
+.barra-busqueda{
+  height: 3rem; 
+  
+  position: relative;
+  display: flex;
+  top: 0.5rem;
+  left: 15rem;
+  
+}
+
+@media (max-width: 1300px) {
+  .barra-busqueda {
+    left: 5rem; /* Ajusta el margen izquierdo en pantallas más pequeñas */
+  }
+}
+
+
+.imput{
+  border: 0.2rem solid #f6bd5a ;
+  background-color: rgb(220, 220, 220);
+  width: 30rem;
+
+}
+
+@media (max-width: 1300px) {
+  .imput{
+    width: 20rem;
+  }  
+}
+
+.boton-busqueda{
+  border: 0.2rem solid #f6bd5a;
+  color: white;
+  background-color: #16171e;
+  
+}
+
+.boton-busqueda:hover{
+  border: 0.2rem solid #ffffff;
+  color: black;
+  background-color: #c79a4d;
+  transition: 0.3s;
+}
+
+/*
+.search-container {
+  position: relative;
+  display: flex;
+  margin-left: 20rem;
+
+  overflow: visible;
+  width: 15rem;
+  height: 2rem;
+  white-space: nowrap;
+}
+
+.search-container input#search {
+  display: flex;
+  width: 13rem;
+  height: 1.8rem;
+  font-size: 10pt;
+  float: left;
+  padding-left: 1rem;
+  border-radius: 1.5rem;
+  -webkit-border-radius: 1.5rem;
+  -moz-border-radius: 1.5rem;
+}
+
+.search-container button.icon {
+  height: 2rem;
+  width: 3rem;
+  color: #4f5b66;
+  background: #232833;
+  opacity: 0;
+  border: none;
+  border-radius: 2000rem;
+
+  -webkit-transition: all 0.55s ease;
+
+  -moz-transition: all 0.55s ease;
+
+  -ms-transition: all 0.55s ease;
+
+  -o-transition: all 0.55s ease;
+
+  transition: all 0.55s ease;
+}
+
+.search-container button i {
+  font-size: 20pt;
+  position: relative;
+  top: -0.5rem;
+}
+
+.search-container:hover button.icon,
+.search-container:active button.icon,
+.search-container:focus button.icon {
+  outline: none;
+  opacity: 1;
+}
+
+.search-container:hover button.icon:hover {
+  background: #f6bd5a;
+}
+*/

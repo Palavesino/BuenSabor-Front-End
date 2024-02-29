@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "image": "ruta-de-la-imagen-1",
+    "title": "Hamburguesas"
+  },
+  {
+    "id": 2,
+    "image": "ruta-de-la-imagen-2",
+    "title": "Pizzas"
+  },
+  {
+    "id": 3,
+    "image": "ruta-de-la-imagen-3",
+    "title": "Lomos"
+  },
+  {
+    "id": 4,
+    "image": "ruta-de-la-imagen-4",
+    "title": "Gaseosas"
+  }
+]

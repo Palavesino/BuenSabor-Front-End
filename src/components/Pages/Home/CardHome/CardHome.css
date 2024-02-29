@@ -1,0 +1,30 @@
+.home-card {
+  margin-left: 5%;
+  max-width: 95%;
+  text-align: center;
+  padding: 1rem;
+}
+
+
+@media (max-width: 770px) {
+  .home-card{
+    margin-left: 10%;
+  }  
+}
+
+
+.title-card {
+
+  padding: auto;
+  margin-top: 5%;
+  font-size: 20rem;
+}
+
+.description-card {
+  margin-top: 10%;
+  font-size: 1.7rem;
+  white-space: normal;
+
+}
+
+

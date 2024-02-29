@@ -1,0 +1,36 @@
+.card-product-details {
+    margin-left: 7.1rem;
+    width: calc(100% - 14.5rem);
+    text-align: left;
+    box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.5);
+  }
+  
+  .card-title {
+    font-size: 2rem;
+    margin-top: -0.1rem;
+    margin-left: 3rem;
+  }
+  
+  .card-description {
+    margin-top: 1rem;
+    margin-left: 3rem;
+    margin-right: 3rem;
+    font-size: 1rem;
+    text-align: left;
+  }
+  
+  .card-button {
+    margin-top: 9rem;
+    margin-left: 3rem;
+    width: 10rem;
+    font-size: 0.7rem;
+  }
+  
+  .card-price {
+    margin-top: -2.1rem;
+    margin-left: calc(100% - 7.2rem);
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+
+  

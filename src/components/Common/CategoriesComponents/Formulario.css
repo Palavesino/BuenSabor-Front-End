@@ -1,0 +1,16 @@
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.cardRubro {
+  width: 50%;
+  max-width: 500px; /* Puedes ajustar el ancho máximo según tus necesidades */
+  margin: 10px auto; /* Centrar vertical y horizontalmente */
+  border-radius: 20px;
+  background-color: #fff;
+  overflow: hidden; /* Oculta el contenido que excede el tamaño del contenedor */
+  left: 350px;
+}

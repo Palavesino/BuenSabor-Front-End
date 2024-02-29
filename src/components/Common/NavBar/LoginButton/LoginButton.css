@@ -1,0 +1,16 @@
+.login-button {
+  display: flex;
+  position: absolute;
+  right: 7rem;
+  top: 2rem;
+  background-color: transparent;
+  border: none;
+  color: white;
+  font-weight: bold;
+  font-size: 1.3rem;
+}
+
+.login-button:hover {
+  color: #f6bd5a ;
+  transition: 0.5s;
+}

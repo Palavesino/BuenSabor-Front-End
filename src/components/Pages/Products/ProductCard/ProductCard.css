@@ -1,0 +1,32 @@
+.cui-product-card {
+  max-width: 16rem;
+  height: 20rem;
+  margin: 0.5rem;
+  background-color: transparent;
+  border-radius: 1rem;
+  box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.5);
+  text-align: center;
+}
+
+.cui-product-card img {
+  width: 100%;
+  height: auto;
+  border-radius: 1rem;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.cui-product-card-body-tittle {
+  margin-top: 0.5rem;
+}
+
+.cui-product-card-body-button {
+  margin-top: 1rem;
+  box-shadow: rgba(255, 201, 0, 0.4) 11px 20px 9px -20px inset;
+  border-radius: 2rem;
+}
+
+.cui-product-card-body-button-text {
+  text-decoration: none;
+  color: rgb(246, 189, 90);
+}

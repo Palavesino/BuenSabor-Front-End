@@ -1,0 +1,31 @@
+.logout-button {
+    background-color: transparent;
+    margin-left: -1rem;
+    height: auto;
+    width: 11.5rem;
+    text-align: start;
+    color: white;
+    border: none;
+  }
+  .logout-button:hover{
+    background-color: #2f3248; /* Cambia el color de fondo cuando se está presionando */
+    color: white;
+  }
+
+  .text-logout-button{
+    margin-left:0.55rem;
+  }
+
+
+  .logout-button:active {
+    background-color: #16171e; /* Cambia el color de fondo cuando se está presionando */
+    color: white; /* Cambia el color del texto cuando se está presionando */
+  }
+  
+  /*
+  .logout-button:hover{
+    background-color: white;
+    color: black;
+    border: none;
+  }
+  */

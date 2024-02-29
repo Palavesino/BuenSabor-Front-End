@@ -1,0 +1,49 @@
+.carousel {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+  }
+  
+  .carousel__container {
+    display: flex;
+    overflow: hidden;
+    width: 69.4rem;
+    margin-left: 7.1rem;
+  }
+  
+  .carousel__track {
+    display: flex;
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .carousel__item {
+    flex: 0 0 calc(100% / var(--items-per-slide));
+    margin-right: 1.5rem;
+  }
+
+  .carousel-image {
+    width: 12rem;
+    height: 15rem;
+  }
+  
+  .carousel__prev,
+  .carousel__next {
+    position: absolute;
+    top: 18rem;
+    transform: translateY(-50%);
+    padding: 1rem;
+    width: 5rem;
+    background-color: #f2f2f2;
+    border: none;
+    color: #333;
+    font-size: 1rem;
+  }
+  
+  .carousel__prev {
+    left: 7rem;
+  }
+  
+  .carousel__next {
+    left: 71.5rem;
+  }
+  
