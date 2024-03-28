@@ -1,3 +1,4 @@
+
 export interface ManufacturedProduct {
   id: number;
   denomination: string;

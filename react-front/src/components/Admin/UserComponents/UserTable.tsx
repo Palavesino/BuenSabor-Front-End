@@ -33,14 +33,17 @@ const UserTable = () => {
         id: 0,
         auth0UserId: "",
         email: "",
+        name: "",
+        lastName: "",
         blocked: false,
         logged: false,
         role: {
-            id: "",
+            id: 0,
             denomination: "",
             idAuth0Role: ""
         },
-        password: "",
+        phones: [],
+        addresses: []
     });
     // Estado para almacenar el título del modal
     const [title, setTitle] = useState("");
@@ -96,16 +99,19 @@ const UserTable = () => {
             id: 0,
             auth0UserId: "",
             email: "",
+            name: "",
+            lastName: "",
             blocked: false,
             logged: false,
             role: {
-                id: "",
+                id: 0,
                 denomination: "",
                 idAuth0Role: ""
             },
-            password: "",
+            phones: [],
+            addresses: []
         };
-        
+
         handleClick(newUser, "Nuevo Usuario", ModalType.Create);
     };
     // Renderizado del componente

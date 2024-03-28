@@ -1,6 +1,8 @@
 // Importaciones de dependencias
 import { Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
+import { useState } from "react";
+import { UserSingUp } from "./components/Auth0/SignUp/UserSignUp";
 // Importaciones de componentes, funciones y modelos
 import Footer from "./components/Common/Footer/Footer";
 import Home from "./components/Pages/Home/Home";
@@ -24,10 +26,19 @@ import "./App.css";
 import "react-toastify/dist/ReactToastify.css";
 
 
+
+
 function App() {
+  //Inicializar una variable con un valor obtenido del almacenamiento local, o true si no hay ningún valor almacenado.
+  const [firstLogIn, setFirstLogIn] = useState(() => {
+    const persistedFirstLogIn = localStorage.getItem('firstLogIn');
+    return persistedFirstLogIn !== null ? JSON.parse(persistedFirstLogIn) : true;
+
+  });
   // Renderizado del componente
   return (
     <div className="root">
+      {firstLogIn ? <UserSingUp firstLogIn={firstLogIn} setFirstLogIn={setFirstLogIn} /> : null}
       <NavBar />
       <div className="main-container">
         <Routes>

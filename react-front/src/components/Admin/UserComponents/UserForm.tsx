@@ -8,6 +8,7 @@ import { useUserPost } from "./hooks/use-UserPost";
 import { useRolPost } from "./hooks/use-RolePost";
 import { useStatusPut } from "./hooks/use-StatusUpdate";
 import { useRolesDelete } from "./hooks/use-RolesDelete";
+import { useEmailExists } from "./hooks/use-EmailExists";
 
 // Interfaz que define las propiedades esperadas por el componente UserForm
 interface UserModalProps {
@@ -41,6 +42,8 @@ const UserForm: React.FC<UserModalProps> = ({
     const rolePost = useRolPost(); // Hook personalizado para realizar una petición POST genérica a la API
     const updateUserStatus = useStatusPut(); // Hook personalizado para actualizar el estado de un usuario
     const deleteRolesFromUser = useRolesDelete(); // Hook personalizado para Eliminar roles de  un usuario
+    const checkEmailExists = useEmailExists(); // Hook personalizado para verificar si email del usuario ya existe en la BD
+
     // Maneja la lógica de guardar o actualizar un Usuario
     const handleSaveUpdate = async (u: typeof requestBody) => {
         const isNew = modalType === ModalType.Create;
@@ -50,9 +53,9 @@ const UserForm: React.FC<UserModalProps> = ({
             //Si se selecciona otro rol distinto al existente llamo a la API de Auth0
             if (!user?.role || u.role !== user?.role) {
                 //Si existe alguno se procede a eliminarlo
-                 if (user?.role) {
+                if (user?.role) {
                     await deleteRolesFromUser(user.auth0UserId, [user.role.idAuth0Role]);
-                 }
+                }
                 //Asigno el nuevo rol al usuario
                 await rolePost(user.auth0UserId, u.role,);
             }
@@ -82,7 +85,18 @@ const UserForm: React.FC<UserModalProps> = ({
             default:
                 return Yup.object().shape({
                     auth0User: Yup.object().shape({
-                        email: Yup.string().email('Ingrese un email válido').required('Ingrese el email'),
+                        email: Yup.string().email('Ingrese un email válido').required('Ingrese el email')
+                            .test('checkEmail', 'El correo electrónico ya existe',
+                                value => {
+                                    return new Promise((resolve) => {
+                                        setTimeout(() => {
+                                            checkEmailExists(value)
+                                                .then(exists => resolve(!exists))
+                                                .catch(() => resolve(false));
+                                        }, 500);
+                                    });
+                                }
+                            ),
                         password: Yup
                             .string()
                             .required('Ingrese password')

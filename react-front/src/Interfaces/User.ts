@@ -2,14 +2,17 @@ export interface User {
   id: number;
   auth0UserId: string;
   email: string;
+  name: string;
+  lastName: string;
   blocked: boolean;
   logged: boolean;
   role: Role;
-  password: string;
+  phones: Phone[];
+  addresses: Address[];
 }
 
 export interface Role {
-  id: string;
+  id: number;
   denomination: string;
   idAuth0Role: string;
 }
@@ -22,4 +25,12 @@ export interface Auth0Role {
   id: string;
   name: string;
   description: string
+}
+export interface Phone {
+  id: number;
+  phone: number;
+}export interface Address {
+  id: number;
+  address: string;
+  departament: string;
 }
