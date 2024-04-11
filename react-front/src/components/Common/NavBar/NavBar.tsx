@@ -5,6 +5,7 @@ import { Navbar, Container, Nav, NavDropdown, Col, Row } from "react-bootstrap";
 import { BsCart3, BsPersonCircle } from "react-icons/bs";
 import { CiDiscount1 } from "react-icons/ci";
 import { IoFastFoodOutline, IoSearch } from "react-icons/io5";
+import { usePermission } from "../../../context/PermissionContext";
 //import { MdOutlineNoFood } from "react-icons/md";
 
 // Importaciones de componentes, funciones y modelos
@@ -23,7 +24,8 @@ import "./NavBar.css";
  */
 const NavBar = () => {
   const { user, isAuthenticated, isLoading } = useAuth0(); // Se obtiene la información del usuario, su estado de autenticación y el estado de carga
-  if (isLoading) return <h1>Loading...</h1>; // Si isLoading es true, significa que la información del usuario aún se está cargando (se mostrara un mensaje de loading...)
+  const { permission } = usePermission();
+  if (isLoading) return null; // Si isLoading es true, significa que la información del usuario aún se está cargando (se mostrara un mensaje de loading...)
 
   // Renderizado del componente
   return (
@@ -83,8 +85,8 @@ const NavBar = () => {
                     <p>{user?.email}</p>
                   </NavDropdown.Item>
 
-                  <NavDropdown.Item href="/categoria" className="text-truncate">
-                    <p>admin</p>
+                  <NavDropdown.Item href="/private/categoria" className="text-truncate">
+                    <p>{permission}</p>
                   </NavDropdown.Item>
                   {/* <NavDropdown.Divider /> */}
                   <NavDropdown.Item href="#action5">

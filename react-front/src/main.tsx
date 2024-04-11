@@ -17,10 +17,8 @@ const initialAuthState = {
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <BrowserRouter basename="/">
-      <AuthProvider initialAuthState={initialAuthState}>
+    <AuthProvider initialAuthState={initialAuthState}>
         <App />
-      </AuthProvider>
-    </BrowserRouter>
+    </AuthProvider>
   </React.StrictMode>
 );

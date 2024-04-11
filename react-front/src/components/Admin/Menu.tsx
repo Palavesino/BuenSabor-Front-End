@@ -12,7 +12,7 @@ function Menu() {
 
   return (
     <ListGroup className="row-menu">
-      <Link to="/categoria">
+      <Link to="/private/categoria">
         <ListGroup.Item
           action
           active={selectedItem === "category"}
@@ -21,7 +21,7 @@ function Menu() {
           Category
         </ListGroup.Item>
       </Link>
-      <Link to="/user">
+      <Link to="/private/user">
         <ListGroup.Item
           action
           active={selectedItem === "user"}
@@ -30,7 +30,7 @@ function Menu() {
           User
         </ListGroup.Item>
       </Link>
-      <Link to="/products">
+      <Link to="/private/products">
         <ListGroup.Item
           action
           active={selectedItem === "products"}
@@ -39,7 +39,7 @@ function Menu() {
           Products
         </ListGroup.Item>
       </Link>
-      <Link to="/ingredients">
+      <Link to="/private/ingredients">
         <ListGroup.Item
           action
           active={selectedItem === "ingredient"}
@@ -48,7 +48,7 @@ function Menu() {
           Ingredient
         </ListGroup.Item>
       </Link>
-      <Link to="/Mproducts">
+      <Link to="/private/Mproducts">
         <ListGroup.Item
           action
           active={selectedItem === "ManufacturedProduct"}
@@ -57,7 +57,7 @@ function Menu() {
           Manufactured Product
         </ListGroup.Item>
       </Link>
-      <Link to="/recipe">
+      <Link to="/private/recipe">
         <ListGroup.Item
           action
           active={selectedItem === "Recipe"}
