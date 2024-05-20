@@ -56,6 +56,18 @@ const MP_Form: React.FC<MproductModalProps> = ({
             description: "",
             steps: [],
         },
+        image: {
+            id: 0,
+            name: "",
+            route: "",
+            type: "",
+            size: 0,
+            productId: null,
+            userId: null,
+            manufacturedProductId: Mproduct.id,
+            base64: "",
+        },
+        file: null,
     };
 
     // Maneja la lógica de guardar o actualizar un Producto Manufacturado
@@ -87,7 +99,6 @@ const MP_Form: React.FC<MproductModalProps> = ({
                     .integer()
                     .moreThan(0, "Selecciona una categoría")
                     .required("La categoría es requerida"),
-                urlImage: Yup.string().required("La URL de la Imagen es requerida"),
                 description: Yup.string().required("La Descripción es requerida"),
                 cookingTime: Yup.string().required("El tiempo de preparado es requerido"),
             }),
@@ -110,7 +121,29 @@ const MP_Form: React.FC<MproductModalProps> = ({
                                 .min(3, 'Debe haber al menos 3 pasos en la receta'),
                         }),
                 }),
-            otherwise: Yup.object(),
+            file: Yup.mixed().when("manufacturedProduct.id", (id: unknown, schema) => {
+                if (Number(id) === 0) {
+                    return schema.required("La Imagen es requerida").test(
+                        "FILE_SIZE",
+                        "El archivo subido es demasiado grande.",
+                        (value) => !value || (value && (value as File).size <= 1024 * 1024 * 10) 
+                    ).test(
+                        "FILE_FORMAT",
+                        "El archivo subido tiene un formato no compatible.",
+                        (value) => !value || (value && ["image/jpg", "image/jpeg", "image/png"].includes((value as File).type))
+                    );
+                } else {
+                    return schema.nullable().notRequired().test(
+                        "FILE_SIZE",
+                        "El archivo subido es demasiado grande.",
+                        (value) => !value || (value && (value as File).size <= 1024 * 1024 * 10)
+                    ).test(
+                        "FILE_FORMAT",
+                        "El archivo subido tiene un formato no compatible.",
+                        (value) => !value || (value && ["image/jpg", "image/jpeg", "image/png"].includes((value as File).type))
+                    );
+                }
+            })
         })
     };
 
@@ -145,7 +178,7 @@ const MP_Form: React.FC<MproductModalProps> = ({
         default:
             componentToRender = <div>Error</div>;
     }
- // Renderizado del componente
+    // Renderizado del componente
     return (
         <>
             {modalType === ModalType.ChangeStatus &&

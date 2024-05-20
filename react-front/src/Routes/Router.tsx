@@ -15,7 +15,7 @@ import { UserSingUp } from "../components/Auth0/SignUp/UserSignUp.tsx";
 
 const Home = lazy(() => import('../components/Pages/Home/Home'));
 const Private = lazy(() => import('./Private.tsx'));
-const Page401 = lazy(() => import('../Pages/401/Page401.tsx'));
+const Page401 = lazy(() => import('../components/Pages/401/Page401.tsx'));
 
 
 

@@ -14,6 +14,7 @@ export interface Action {
   lowLogic?: boolean; // Permitir la acción de baja (opcional)
   highLogic?: boolean; // Permitir la acción de alta (opcional)
   view?: boolean; // Permitir la acción de visualización (opcional)
+  offSearch?: boolean; // Bloquear la a visualización del search (opcional
 }
 
 export interface TableProps<T> {

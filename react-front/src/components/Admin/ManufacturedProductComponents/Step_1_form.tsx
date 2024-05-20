@@ -98,19 +98,23 @@ const Step_1_form: React.FC<Step1Props> = ({ nextStep, formik }) => {
       <Row>
         <Col>
           <Form.Group>
-            <Form.Label>URL de la Imagen</Form.Label>
+            <Form.Label>Imagen</Form.Label>
             <Form.Control
-              name="manufacturedProduct.urlImage"
-              type="text"
-              value={formik.values.manufacturedProduct.urlImage || ""}
-              onChange={formik.handleChange}
+              name="file"
+              type="file"
+              onChange={
+                (event) => {
+                  const input = event.target as HTMLInputElement;
+                  const file = input.files?.[0];
+                  formik.setFieldValue("file", file);
+                }
+              }
               isInvalid={Boolean(
-                formik.errors.manufacturedProduct?.urlImage &&
-                formik.touched.manufacturedProduct?.urlImage
+                formik.errors.file && formik.touched.file
               )}
             />
             <Form.Control.Feedback type="invalid">
-              {formik.errors.manufacturedProduct?.urlImage}
+              {formik.errors.file}
             </Form.Control.Feedback>
           </Form.Group>
         </Col>

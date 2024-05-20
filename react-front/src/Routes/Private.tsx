@@ -11,22 +11,24 @@ const RecipesTable = lazy(() => import('../components/Admin/RecipeComponents/Rec
 const ListarCategorys = lazy(() => import('../components/Admin/CategoriesComponents/CategoryTable.tsx'));
 const Menu = lazy(() => import('../components/Admin/Menu'));
 const ProductTable = lazy(() => import('../components/Admin/ProductComponents/ProductTable'));
+const UserProfile = lazy(() => import('../components/Profile/UserProfile.tsx'));
 
 interface Props {
     permission: UserRole;
 }
 export const Private = ({ permission }: Props) => {
-   // console.log(permission);
+    // console.log(permission);
     return (
         <RoutesWithNotFound>
-            <Route path="/user" element={<RouteAccessRole isRolPermited={permission === UserRole.admin} path="/"> <UserTable /> </RouteAccessRole>}></Route>
-            <Route path="/ingredients" element={<RouteAccessRole isRolPermited={permission === UserRole.cocinero || permission === UserRole.admin} path="/"> <IngredientTable /> </RouteAccessRole>}></Route>
-            <Route path="/Mproducts" element={<RouteAccessRole isRolPermited={permission === UserRole.admin} path="/"> <M_ProductTable /> </RouteAccessRole>}></Route>
-            <Route path="/recipe" element={<RouteAccessRole isRolPermited={permission === UserRole.admin} path="/"> <RecipesTable /> </RouteAccessRole>}></Route>
-            <Route path="/categoria" element={<RouteAccessRole isRolPermited={permission === UserRole.admin} path="/"> <ListarCategorys /> </RouteAccessRole>}></Route>
-            <Route path="/admin" element={<RouteAccessRole isRolPermited={permission === UserRole.admin} path="/"> <Menu /> </RouteAccessRole>}></Route>
+            <Route path="/user" element={<RouteAccessRole isRolPermited={permission === UserRole.admin} > <UserTable /> </RouteAccessRole>}></Route>
+            <Route path="/ingredients" element={<RouteAccessRole isRolPermited={permission === UserRole.cocinero || permission === UserRole.admin} > <IngredientTable /> </RouteAccessRole>}></Route>
+            <Route path="/Mproducts" element={<RouteAccessRole isRolPermited={permission === UserRole.admin} > <M_ProductTable /> </RouteAccessRole>}></Route>
+            <Route path="/recipe" element={<RouteAccessRole isRolPermited={permission === UserRole.admin} > <RecipesTable /> </RouteAccessRole>}></Route>
+            <Route path="/categoria" element={<RouteAccessRole isRolPermited={permission === UserRole.admin} > <ListarCategorys /> </RouteAccessRole>}></Route>
+            <Route path="/admin" element={<RouteAccessRole isRolPermited={permission === UserRole.admin} > <Menu /> </RouteAccessRole>}></Route>
             <Route path="/carrito" element={<h1>Carrito</h1>}></Route>
-            <Route path="/products" element={<RouteAccessRole isRolPermited={permission === UserRole.admin} path="/"> <ProductTable /> </RouteAccessRole>}></Route>
+            <Route path="/products" element={<RouteAccessRole isRolPermited={permission === UserRole.admin} > <ProductTable /> </RouteAccessRole>}></Route>
+            <Route path="/profile" element={<RouteAccessRole isRolPermited={permission !== UserRole.espectador} > <UserProfile /> </RouteAccessRole>}></Route>
         </RoutesWithNotFound>
     )
 }

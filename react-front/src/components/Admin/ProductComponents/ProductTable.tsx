@@ -34,7 +34,6 @@ const ProductTable = () => {
     availability: true,
     minStock: 0,
     actualStock: 0,
-    urlImage: "",
     productCategoryID: 0,
   });
   // Estado para almacenar el título del modal
@@ -87,7 +86,6 @@ const ProductTable = () => {
       availability: true,
       minStock: 0,
       actualStock: 0,
-      urlImage: "",
       productCategoryID: 0,
     };
     handleClick(newProduct, "Nuevo Producto", ModalType.Create);
@@ -130,12 +128,6 @@ const ProductTable = () => {
                 field: "productCategoryID",
                 title: "CategoryID",
                 width: 1,
-              },
-              {
-                field: "urlImage",
-                title: "UrlImage",
-                width: 1,
-                styleClass: "td-hidden",
               },
             ]}
             actions={{

@@ -96,17 +96,19 @@ function GenericTable<T>({
           )}{" "}
           {/* Botón para agregar un nuevo elemento */}
         </Col>
-        <Col sm={6}>
-          <form onSubmit={handleSearchSubmit}>
-            <InputGroup className="mb-3 button-Search">
-              <FormControl
-                placeholder="Search"
-                aria-label="Search"
-                aria-describedby="basic-addon2"
-                onChange={handleSearchChange}
-                value={searchText}
-              />
-              {/* <Button
+
+        {!actions.offSearch && (
+          <Col sm={6}>
+            <form onSubmit={handleSearchSubmit}>
+              <InputGroup className="mb-3 button-Search">
+                <FormControl
+                  placeholder="Search"
+                  aria-label="Search"
+                  aria-describedby="basic-addon2"
+                  onChange={handleSearchChange}
+                  value={searchText}
+                />
+                {/* <Button
                 variant="primary"
                 id="button-addon2"
                 type="submit"
@@ -114,9 +116,9 @@ function GenericTable<T>({
               >
                 Button
               </Button> */}
-            </InputGroup>
-          </form>
-        </Col>
+              </InputGroup>
+            </form>
+          </Col>)}
       </Row>
       <Table bordered responsive>
         <thead>
@@ -136,14 +138,14 @@ function GenericTable<T>({
               actions.view ||
               actions.highLogic ||
               actions.lowLogic) && (
-              <th
-                style={{
-                  width: `${actions.width ? (actions.width * 100) / 12 : ""}%`,
-                }}
-              >
-                Actions
-              </th>
-            )}
+                <th
+                  style={{
+                    width: `${actions.width ? (actions.width * 100) / 12 : ""}%`,
+                  }}
+                >
+                  Actions
+                </th>
+              )}
           </tr>
         </thead>
         <tbody>

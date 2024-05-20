@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import { Page404 } from "../Pages/404/Page404";
+import { Page404 } from "../components/Pages/404/Page404";
 
 interface Props {
   children: React.ReactNode;

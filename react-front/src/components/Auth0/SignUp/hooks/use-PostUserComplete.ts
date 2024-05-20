@@ -10,12 +10,12 @@ export const usePostUserComplete = () => {
     // Obtiene las funciones necesarias de Auth0 React SDK
     const { getAccessTokenSilently } = useAuth0();
     // Función que realiza una petición POST para crear un nuevo usuario
-    const postUserComplete = async (obj: User) => {
+    const postUserComplete = async (obj: User, title?: string) => {
         try {
             // Obtiene el token de acceso de forma silenciosa utilizando Auth0
             const token = await getAccessTokenSilently();
             // Realiza la petición POST a la API para crear un nuevo usuario
-            const response = await fetch(`/api/users/saveUserComplete`, {
+            const response = await fetch(`/api/users/save`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -30,7 +30,8 @@ export const usePostUserComplete = () => {
                 // Extrae el ID del nuevo usuario creado
                 const userId = responseBody.user_id;
                 // Muestra un mensaje de éxito si la respuesta es exitosa
-                toast.success(`😎 Usuario Registradro Exitosamente!`, {
+
+                toast.success(title ? title : `😎 Usuario Registradro Exitosamente!`, {
                     position: "top-center",
                 });
                 // Retorna el ID del nuevo usuario

@@ -42,8 +42,9 @@ const UserTable = () => {
             denomination: "",
             idAuth0Role: ""
         },
-        phones: [],
-        addresses: []
+        phone: "",
+        address: "",
+        apartment: "",
     });
     // Estado para almacenar el título del modal
     const [title, setTitle] = useState("");
@@ -108,8 +109,9 @@ const UserTable = () => {
                 denomination: "",
                 idAuth0Role: ""
             },
-            phones: [],
-            addresses: []
+            phone: "",
+            address: "",
+            apartment: "",
         };
 
         handleClick(newUser, "Nuevo Usuario", ModalType.Create);

@@ -1,12 +1,16 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { toast } from "react-toastify";
 import { MproductXRecipe } from "../../../../Interfaces/ManufacturedProduct";
+import { usePostImage } from "../../../../Util/PostImage";
+import { useGetImageId } from "../../../../Util/useGetImageId";
+import { Image } from "../../../../Interfaces/Image";
 
 // Función GetRecipeForm
 const GetRecipeForm = () => {
   // Obtiene la función getAccessTokenSilently del hook useAuth0
   const { getAccessTokenSilently } = useAuth0();
-
+  const changeImage = usePostImage();
+  const getImage = useGetImageId();
   // Función postXPut: Realiza una solicitud POST o PUT según el ID del objeto ManufacturedProduct
   const postXPut = async (endpointPost: string, endpointPut: string, obj: MproductXRecipe) => {
     try {
@@ -14,7 +18,6 @@ const GetRecipeForm = () => {
       const token = await getAccessTokenSilently();
       let response;
       let edit = false;
-
       // Verifica si el objeto tiene un ID igual a 0 para determinar si es una solicitud POST o PUT
       if (obj.manufacturedProduct.id === 0) {
         // Realiza la solicitud POST
@@ -38,65 +41,66 @@ const GetRecipeForm = () => {
           body: JSON.stringify(obj.manufacturedProduct),
         });
       }
-
       // Verifica si la respuesta es exitosa
-      if (response.ok && !edit) {
-        try {
-          // Realiza una solicitud para obtener el último ID insertado
-          let response2 = await fetch("/api/manufactured-products/lastID", {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-
-          // Obtiene el ID del producto manufacturado recién insertado
-          const id = await response2.json();
-          obj.recipe.manufacturedProductId = Number(id); // Convertir el ID analizado a un número
-
-          // Realiza una solicitud POST para insertar la receta asociada al producto manufacturado
-          response2 = await fetch('/api/recipes/save', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify(obj.recipe),
-          });
-
-          // Verifica si la respuesta de la inserción de la receta es exitosa
-          if (response2.ok) {
-            toast.success(`😎 Insertado Exitosamente!`, {
-              position: "top-center",
-            });
+      if (response.ok) {
+        if (edit) {
+          const image: Image = await getImage(obj.manufacturedProduct.id, "mp");
+          // Realiza una solicitud POST para insertar la imagen
+          if (obj.file) {
+            await changeImage(image, obj.file, true);
           }
-        } catch (error) {
-          console.error("Error al Insertar Recipe", error);
+        } else {
+          //Llama al metodo insertAssociatedData para insertar la image y la receta Asociada el Producto Manufacturado
+          await insertAssociatedData(obj, token);
         }
-      } else if (response.ok) {
-        // Muestra un mensaje de éxito si la respuesta es exitosa y no es una edición
-        toast.success(`😎 Insertado Exitosamente!`, {
-          position: "top-center",
-        });
+        toast.success(`😎 Insertado Exitosamente!`, { position: "top-center" });
       } else {
-        // Muestra un mensaje de error si la respuesta no es exitosa
-        toast.error('La petición no fue exitosa', {
-          position: 'top-center',
-        });
+        handleError(response);
       }
     } catch (error) {
-      // Muestra un mensaje de error en caso de una excepción
-      toast.error('Ha ocurrido un error: ' + error, {
-        position: 'top-center',
-      });
+      handleError(error);
     }
   };
 
-  // Devuelve la función postXPut para que pueda ser utilizada más adelante
+  // Función insertAssociatedData: Realiza una solicitud POST de Image y Receta con el ID asociado al Producto Manufacturado
+  const insertAssociatedData = async (obj: MproductXRecipe, token: string) => {
+    try {
+      // Realiza la solicitud Get para traer el ultimo id de Producto Manufacturado Insertado.
+      const response1 = await fetch("/api/manufactured-products/lastID", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const id = await response1.json();
+      const manufacturedProductId = Number(id);// Convertir el ID analizado a un número
+      // Realiza la solicitud POST de receta asosciada a el producto Manufacturado
+      const response2 = await fetch('/api/recipes/save', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ ...obj.recipe, manufacturedProductId }),
+      });
+
+      if (response2.ok) {
+        await changeImage({ ...obj.image, manufacturedProductId }, obj.file ? obj.file : undefined);
+      } else {
+        console.error("Error al Insertar Recipe");
+      }
+    } catch (error) {
+      console.error("Error al Insertar Associated Data", error);
+    }
+  };
+
+  const handleError = (error: any) => {
+    console.error("Ha ocurrido un error: ", error);
+    toast.error('Ha ocurrido un error', { position: 'top-center' });
+  };
+
   return postXPut;
 };
 
-// Exporta la función GetRecipeForm como el componente principal de este módulo
 export default GetRecipeForm;
-
 

@@ -71,20 +71,15 @@ const NavBar = () => {
                 </div>
               </Col>
             </Row>
-
             {isAuthenticated ? (
               <>
                 <NavDropdown
                   title={<BsPersonCircle />}
                   className="user-icon dropdown-menu-right"
                 >
-                  <NavDropdown.Item href="#action3" className="text-truncate">
+                  <NavDropdown.Item href="/private/profile" className="text-truncate">
                     <p>{user?.name}</p>
                   </NavDropdown.Item>
-                  <NavDropdown.Item href="#action4" className="text-truncate">
-                    <p>{user?.email}</p>
-                  </NavDropdown.Item>
-
                   <NavDropdown.Item href="/private/categoria" className="text-truncate">
                     <p>{permission}</p>
                   </NavDropdown.Item>
@@ -98,7 +93,7 @@ const NavBar = () => {
               <LoginButton />
             )}
 
-            <Link to="/carrito" className="shopping-cart-icon item">
+            <Link to="/private/carrito" className="shopping-cart-icon item">
               <BsCart3 />
             </Link>
           </Nav>

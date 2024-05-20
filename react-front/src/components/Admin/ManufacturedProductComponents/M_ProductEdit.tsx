@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import { Category } from "../../../Interfaces/Category";
 import { useGenericGet } from "../../../Services/useGenericGet";
 import { MproductXRecipe } from "../../../Interfaces/ManufacturedProduct";
+import { useGetImageId } from "../../../Util/useGetImageId";
+import { Image } from "../../../Interfaces/Image";
 interface M_ProductEditProps {
   onHide: () => void; // Función que se ejecuta cuando el modal se cierra
   formik: FormikProps<MproductXRecipe>;// Proporciona acceso a las funciones y estados de Formik para manejar el estado del formulario.
@@ -18,16 +20,27 @@ const M_ProductEdit: React.FC<M_ProductEditProps> = ({
   onHide, formik
 }) => {
   const [categories, setCategories] = useState<Category[]>([]);// Almacena las categorías obtenidas de la API
+  const [image, setImage] = useState<Image>(); // Almacena la imagen obtenida de la API
+  const getImage = useGetImageId();
   // Hook personalizado para realizar una petición GET genérica a la API
   const data = useGenericGet<Category>(
     "/api/categories/filter/unlocked/type/M",
     "Product Categories"
   );
-
   // Obtiene las categorías desde la API cuando renderice la pág
   useEffect(() => {
-    setCategories(data);
+    if (data) {
+      setCategories(data);
+      // Obtener la imagen cuando se obtengan las categorías
+      const fetchImage = async () => {
+        const imageData = await getImage(formik.values.manufacturedProduct.id, "mp");
+        setImage(imageData);
+      };
+      fetchImage();
+    }
   }, [data]);
+
+
   return (
     <>
       <Row>
@@ -100,21 +113,25 @@ const M_ProductEdit: React.FC<M_ProductEditProps> = ({
       <Row>
         <Col>
           <Form.Group>
-            <Form.Label>URL de la Imagen</Form.Label>
+            <Form.Label>Imagen {!formik.values.file && image?.name && (` (${image?.name})`)}</Form.Label>
             <Form.Control
-              name="manufacturedProduct.urlImage"
-              type="text"
-              value={formik.values.manufacturedProduct.urlImage || ""}
-              onChange={formik.handleChange}
-              isInvalid={Boolean(
-                formik.errors.manufacturedProduct?.urlImage &&
-                formik.touched.manufacturedProduct?.urlImage
-              )}
+              style={
+                !formik.values.file ? { width: '10rem', height: '2rem' } : undefined
+              }
+              name="file"
+              type="file"
+              onChange={(event) => {
+                const input = event.target as HTMLInputElement;
+                const file = input.files?.[0];
+                formik.setFieldValue("file", file);
+              }}
+              isInvalid={Boolean(formik.errors.file && formik.touched.file)}
             />
             <Form.Control.Feedback type="invalid">
-              {formik.errors.manufacturedProduct?.urlImage}
+              {formik.errors.file}
             </Form.Control.Feedback>
           </Form.Group>
+
         </Col>
       </Row>
       <Row>
@@ -130,7 +147,7 @@ const M_ProductEdit: React.FC<M_ProductEditProps> = ({
                 formik.errors.manufacturedProduct?.description &&
                 formik.touched.manufacturedProduct?.description
               )}
-              rows={4} // You can adjust the number of visible rows as needed
+              rows={4}
             />
             <Form.Control.Feedback type="invalid">
               {formik.errors.manufacturedProduct?.description}
@@ -157,3 +174,4 @@ const M_ProductEdit: React.FC<M_ProductEditProps> = ({
 };
 
 export default M_ProductEdit;
+

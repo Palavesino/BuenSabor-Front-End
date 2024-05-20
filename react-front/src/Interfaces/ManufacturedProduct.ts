@@ -1,10 +1,10 @@
+import { Image } from "./Image";
 
 export interface ManufacturedProduct {
   id: number;
   denomination: string;
   description: string;
   availability: boolean;
-  urlImage: string;
   manufacturedProductCategoryID: number;
   cookingTime: string;
 }
@@ -22,4 +22,6 @@ export interface recipeSteps {
 export interface MproductXRecipe {
   manufacturedProduct: ManufacturedProduct;
   recipe: Recipe;
+  image: Image;
+  file: File | null;
 }

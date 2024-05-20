@@ -7,8 +7,9 @@ export interface User {
   blocked: boolean;
   logged: boolean;
   role: Role;
-  phones: Phone[];
-  addresses: Address[];
+  phone: string;
+  address: string;
+  apartment: string;
 }
 
 export interface Role {
@@ -25,12 +26,4 @@ export interface Auth0Role {
   id: string;
   name: string;
   description: string
-}
-export interface Phone {
-  id: number;
-  phone: number;
-}export interface Address {
-  id: number;
-  address: string;
-  departament: string;
 }

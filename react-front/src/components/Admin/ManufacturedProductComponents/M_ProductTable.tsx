@@ -32,7 +32,6 @@ const M_ProductTable = () => {
     denomination: "",
     description: "",
     availability: true,
-    urlImage: "",
     manufacturedProductCategoryID: 0,
     cookingTime: "",
   });
@@ -88,7 +87,6 @@ const M_ProductTable = () => {
       denomination: "",
       description: "",
       availability: true,
-      urlImage: "",
       manufacturedProductCategoryID: 0,
       cookingTime: "",
     };
@@ -130,12 +128,6 @@ const M_ProductTable = () => {
                 field: "manufacturedProductCategoryID",
                 title: "CategoryID",
                 width: 1,
-              },
-              {
-                field: "urlImage",
-                title: "UrlImage",
-                width: 1,
-                styleClass: "td-hidden",
               },
             ]}
             actions={{

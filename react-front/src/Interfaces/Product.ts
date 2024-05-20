@@ -5,6 +5,5 @@ export interface Product {
   availability: boolean;
   minStock: number;
   actualStock: number;
-  urlImage: string;
   productCategoryID: number;
 }
