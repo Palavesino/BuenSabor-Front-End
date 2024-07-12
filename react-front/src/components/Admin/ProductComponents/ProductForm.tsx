@@ -1,7 +1,6 @@
 // Importaciones de componentes, funciones y modelos
 import { Button, Col, Form, Row, Modal } from "react-bootstrap";
 import { useFormik } from "formik";
-import * as Yup from "yup";
 import { useEffect, useState } from "react";
 import { useGenericPost } from "../../../Services/useGenericPost";
 import { useGenericPut } from "../../../Services/useGenericPut";
@@ -14,6 +13,9 @@ import { usePostImage } from "../../../Util/PostImage";
 import { useGetImageId } from "../../../Util/useGetImageId";
 import { UseGetProductLastId } from "./hook/use-GetProductLastId";
 import { Image } from "../../../Interfaces/Image";
+import { Price } from "../../../Interfaces/Price";
+import { useGenericGetXID } from "../../../Services/useGenericGetXID";
+import { validationSchemaProduct } from "../../../Util/YupValidation";
 interface ProductModalProps {
   show: boolean; // Indica si el modal debe mostrarse o no
   onHide: () => void; // Función que se ejecuta cuando el modal se cierra
@@ -46,46 +48,43 @@ const ProductForm: React.FC<ProductModalProps> = ({
   const getImage = useGetImageId();// Hook personalizado para realizar una petición GET  a la API
   const getLastId = UseGetProductLastId();
   const updateProductStatus = useGenericChangeStatus(); // Hook personalizado para actualizar el estado de un Producto
-  const data = useGenericGet<Category>(
+  const data = modalType !== ModalType.ChangeStatus ? useGenericGet<Category>(
     "/api/categories/filter/unlocked/type/P",
     "Product Categories"
-  );
+  ) : null;
+  const data2 = modalType === ModalType.Edit ? useGenericGetXID<Price>(
+    `/api/price/1`, product.id
+  ) : null;
 
   // Obtiene las categorías desde la API cuando renderice la pág
   useEffect(() => {
-    setCategories(data);
-    const fetchImage = async () => {
-      if (modalType === ModalType.Edit) {
-        const requestBody: Image = await getImage(formik.values.product.id, "p");
-        setOldImage(requestBody)
+
+    if (data && data.length > 0) {
+      setCategories(data);
+      if (data2 && Object.keys(data2).length > 0) {
+        formik.setFieldValue("product.price", data2);
+        const fetchImage = async () => {
+          const requestBody: Image = await getImage(formik.values.product.id, "p");
+          setOldImage(requestBody)
+        };
+        fetchImage();
       }
-    };
-    fetchImage();
-  }, [data]);
+
+    }
+  }, [data, data2]);
 
   // Maneja la lógica de guardar o actualizar  un producto
   const handleSaveUpdate = async (p: typeof requestBody) => {
     const isNew = p.product.id === 0;
-    let image = {
-      id: 0,
-      name: "",
-      route: "",
-      type: "",
-      size: 0,
-      productId: p.product.id,
-      userId: null,
-      manufacturedProductId: null,
-      base64: "",
-    };
     if (!isNew) {
       await genericPut<Product>("/api/products/update", p.product.id, p.product);
       if (oldImage && p.file) {
-        await changeImage(oldImage, p.file, true);
+        await changeImage(2, p.product.id, p.file, true, false, oldImage.id);
       }
     } else {
       await genericPost<Product>("/api/products/save", p.product);
       const productId = await getLastId();
-      await changeImage({ ...image, productId }, p.file ? p.file : undefined);
+      await changeImage(2, productId, p.file ? p.file : undefined);
     }
     setRefetch(true);
     onHide();
@@ -102,67 +101,20 @@ const ProductForm: React.FC<ProductModalProps> = ({
     setRefetch(true);
     onHide();
   };
-  // Define el esquema de validación del formulario
-  const validationSchema = () => {
-    return Yup.object().shape({
-      product: Yup.object().shape({
-        denomination: Yup.string().required("La denominación es requerida"),
-        productCategoryID: Yup.number()
-          .integer()
-          .moreThan(0, "Selecciona una categoría")
-          .required("La categoría es requerido"),
-        minStock: Yup.number().required("El Stock Mínimo es requerido")
-          .integer()
-          .min(3)
-        ,
-        actualStock: Yup.number().required("El Stock Mínimo es requerido")
-          .integer()
-          .min(
-            Yup.ref("minStock"),
-            "El Stock Actual no puede ser menor al Stock Mínimo"
-          )
-        ,
-        description: Yup.string().required("La Descripción es requerida"),
-      }),
-
-      file: Yup.mixed().when("product.id", (id: unknown, schema) => {
-        if (Number(id) === 0) {
-          return schema.required("La Imagen es requerida").test(
-            "FILE_SIZE",
-            "El archivo subido es demasiado grande.",
-            (value) => !value || (value && (value as File).size <= 1024 * 1024 * 10)
-          ).test(
-            "FILE_FORMAT",
-            "El archivo subido tiene un formato no compatible.",
-            (value) => !value || (value && ["image/jpg", "image/jpeg", "image/png"].includes((value as File).type))
-          );
-        } else {
-          return schema.nullable().notRequired().test(
-            "FILE_SIZE",
-            "El archivo subido es demasiado grande.",
-            (value) => !value || (value && (value as File).size <= 1024 * 1024 * 10)
-          ).test(
-            "FILE_FORMAT",
-            "El archivo subido tiene un formato no compatible.",
-            (value) => !value || (value && ["image/jpg", "image/jpeg", "image/png"].includes((value as File).type))
-          );
-        }
-      }),
-    });
-  };
+  
   const requestBody = {
     product,
     file: null
   };
-
   // Configuración y gestión del formulario con Formik
   const formik = useFormik({
     initialValues: requestBody,
-    validationSchema: validationSchema(),
+    validationSchema: validationSchemaProduct(),
     validateOnChange: true,
     validateOnBlur: true,
     onSubmit: (obj: typeof requestBody) => handleSaveUpdate(obj),
   })
+
 
   // Renderizado del componente
   return (
@@ -225,7 +177,44 @@ const ProductForm: React.FC<ProductModalProps> = ({
                   </Form.Group>
                 </Col>
               </Row>
-
+              <Row>
+                <Col>
+                  <Form.Group>
+                    <Form.Label>Precio de Costo</Form.Label>
+                    <Form.Control
+                      name="product.price.costPrice"
+                      type="number"
+                      value={formik.values.product.price?.costPrice || ""}
+                      onChange={formik.handleChange}
+                      isInvalid={Boolean(
+                        formik.errors.product?.price?.costPrice &&
+                        formik.touched.product?.price?.costPrice
+                      )}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {formik.errors.product?.price?.costPrice}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </Col>
+                <Col>
+                  <Form.Group>
+                    <Form.Label>Precio de Venta</Form.Label>
+                    <Form.Control
+                      name="product.price.sellPrice"
+                      type="number"
+                      value={formik.values.product.price?.sellPrice || ""}
+                      onChange={formik.handleChange}
+                      isInvalid={Boolean(
+                        formik.errors.product?.price?.sellPrice &&
+                        formik.touched.product?.price?.sellPrice
+                      )}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {formik.errors.product?.price?.sellPrice}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </Col>
+              </Row>
               <Row>
                 <Col>
                   <Form.Group>

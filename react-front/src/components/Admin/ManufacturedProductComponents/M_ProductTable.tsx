@@ -1,13 +1,13 @@
 // Importaciones de componentes, funciones y modelos
 import GenericTable from "../../Generic/GenericTable";
+import Menu from "../Menu";
+import MP_Form from "./MP_Form";
 import { useEffect, useState } from "react";
 import { BsCircleFill } from "react-icons/bs";
 import { useGenericGet } from "../../../Services/useGenericGet";
 import { ModalType } from "../../Enum/ModalType";
-import Menu from "../Menu";
 import { Row, Col } from "react-bootstrap";
 import { ManufacturedProduct } from "../../../Interfaces/ManufacturedProduct";
-import MP_Form from "./MP_Form";
 
 /*
 El componente M_ProductTable se encarga de mostrar una tabla de productos manufacturados,
@@ -34,7 +34,13 @@ const M_ProductTable = () => {
     availability: true,
     manufacturedProductCategoryID: 0,
     cookingTime: "",
+    price: {
+      id: 0,
+      costPrice: 0,
+      sellPrice: 0,
+    },
   });
+
   // Estado para almacenar el título del modal
   const [title, setTitle] = useState("");
 
@@ -89,6 +95,11 @@ const M_ProductTable = () => {
       availability: true,
       manufacturedProductCategoryID: 0,
       cookingTime: "",
+      price: {
+        id: 0,
+        costPrice: 0,
+        sellPrice: 0,
+      },
     };
     handleClick(newMproduct, "Nuevo Producto Manufacturado", ModalType.Create);
   };

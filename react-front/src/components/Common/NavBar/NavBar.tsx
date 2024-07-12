@@ -83,6 +83,9 @@ const NavBar = () => {
                   <NavDropdown.Item href="/private/categoria" className="text-truncate">
                     <p>{permission}</p>
                   </NavDropdown.Item>
+                  <NavDropdown.Item href="/private/user/orders" className="text-truncate">
+                    <p>Historial</p>
+                  </NavDropdown.Item>
                   {/* <NavDropdown.Divider /> */}
                   <NavDropdown.Item href="#action5">
                     <LogoutButton />

@@ -47,7 +47,7 @@ const GetRecipeForm = () => {
           const image: Image = await getImage(obj.manufacturedProduct.id, "mp");
           // Realiza una solicitud POST para insertar la imagen
           if (obj.file) {
-            await changeImage(image, obj.file, true);
+            await changeImage(3, obj.manufacturedProduct.id, obj.file, true, false, image.id);
           }
         } else {
           //Llama al metodo insertAssociatedData para insertar la image y la receta Asociada el Producto Manufacturado
@@ -85,7 +85,7 @@ const GetRecipeForm = () => {
       });
 
       if (response2.ok) {
-        await changeImage({ ...obj.image, manufacturedProductId }, obj.file ? obj.file : undefined);
+        await changeImage(3, manufacturedProductId, obj.file ? obj.file : undefined);
       } else {
         console.error("Error al Insertar Recipe");
       }

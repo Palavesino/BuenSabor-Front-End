@@ -1,7 +1,6 @@
 // Importaciones de componentes, funciones y modelos
 import { Button, Col, Form, Row, Modal } from "react-bootstrap";
 import { useFormik } from "formik";
-import * as Yup from "yup";
 import { useEffect, useState } from "react";
 import { useGenericPost } from "../../../Services/useGenericPost";
 import { useGenericPut } from "../../../Services/useGenericPut";
@@ -10,6 +9,7 @@ import { ModalType } from "../../Enum/ModalType";
 import { Category } from "../../../Interfaces/Category";
 import { useGenericGet } from "../../../Services/useGenericGet";
 import { Ingredient } from "../../../Interfaces/Ingredient";
+import { validationSchemaIngredient } from "../../../Util/YupValidation";
 
 // Interfaz que define las propiedades esperadas por el componente IngredientForm
 interface IngredientModalProps {
@@ -40,14 +40,16 @@ const IngredientForm: React.FC<IngredientModalProps> = ({
   const genericPost = useGenericPost(); // Hook personalizado para realizar una petición POST genérica a la API
   const genericPut = useGenericPut(); // Hook personalizado para realizar una petición PUT genérica a la API
   const updateIngredientStatus = useGenericChangeStatus(); // Hook personalizado para actualizar el estado de un ingrediente
-  const data = useGenericGet<Category>(
+  const data = modalType !== ModalType.ChangeStatus ? useGenericGet<Category>(
     "/api/categories/filter/unlocked/type/I",
     "ingredient Categories"
-  );
+  ) : null;
 
   // Obtiene las categorías desde la API cuando se renderiza la página
   useEffect(() => {
-    setCategories(data);
+    if (data && data.length > 0) {
+      setCategories(data);
+    }
   }, [data]);
 
   // Maneja la lógica de guardar o actualizar un ingrediente
@@ -78,34 +80,11 @@ const IngredientForm: React.FC<IngredientModalProps> = ({
     onHide();
   };
 
-  // Define el esquema de validación del formulario
-  const validationSchema = () => {
-    return Yup.object().shape({
-      id: Yup.number().integer().min(0),
-      denomination: Yup.string().required("La denominación es requerida"),
-      unit: Yup.string().required("La unidad es requerida"),
-      ingredientCategoryID: Yup.number()
-        .integer()
-        .moreThan(0, "Selecciona una categoría")
-        .required("La categoría es requerida"),
-      minStock: Yup.number()
-        .integer()
-        .moreThan(4, "El Stock Mínimo debe ser 5 o más")
-        .required("El Stock Mínimo es requerido"),
-      actualStock: Yup.number()
-        .integer()
-        .min(
-          Yup.ref("minStock"),
-          "El Stock Actual no puede ser menor al Stock Mínimo"
-        )
-        .required("El Stock Actual es requerido"),
-    });
-  };
 
   // Configuración y gestión del formulario con Formik
   const formik = useFormik({
     initialValues: ingredient,
-    validationSchema: validationSchema(),
+    validationSchema: validationSchemaIngredient(),
     validateOnChange: true,
     validateOnBlur: true,
     onSubmit: (obj: Ingredient) => handleSaveUpdate(obj),

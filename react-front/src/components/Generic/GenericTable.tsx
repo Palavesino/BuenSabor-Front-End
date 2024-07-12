@@ -10,6 +10,7 @@ import {
 } from "react-bootstrap";
 import { TableProps } from "./CamposTablaGenerica";
 import { BsCircleFill } from "react-icons/bs";
+import { TiCancel } from "react-icons/ti";
 import { IoIosEye } from "react-icons/io";
 import {
   FaArrowAltCircleDown,
@@ -25,6 +26,7 @@ function GenericTable<T>({
   actions,
   onAdd,
   onUpdate,
+  onCancel,
   onDelete,
   onView,
   onhighLogic,
@@ -177,10 +179,20 @@ function GenericTable<T>({
                     onClick={() => onUpdate!(item)}
                   />
                 )}
+                {actions.cancel && (
+                  <TiCancel
+                    className="icon-Cancel"
+                    onClick={() => onCancel!(item)}
+                  />
+                )}
                 {actions.delete && (
                   <FaTrashAlt onClick={() => onDelete!(item)} />
                 )}
-                {actions.view && <IoIosEye onClick={() => onView!(item)} />}
+                {actions.view && (
+                  <IoIosEye
+                  className="icon-View"
+                   onClick={() => onView!(item)} />
+                  )}
               </td>
             </tr>
           ))}

@@ -6,7 +6,7 @@ import { useGenericGet } from "../../../Services/useGenericGet";
 import { ModalType } from "../../Enum/ModalType";
 import Menu from "../Menu";
 import { Row, Col } from "react-bootstrap";
-import { Role, User } from "../../../Interfaces/User";
+import { User } from "../../../Interfaces/User";
 import UserForm from "./UserForm";
 
 /*
@@ -24,8 +24,6 @@ const UserTable = () => {
     const [modalType, setModalType] = useState<ModalType>(ModalType.None);
     // Estado para indicar si es necesario refrescar los datos
     const [refetch, setRefetch] = useState(false);
-
-    const [roles, setRoles] = useState<Role[]>([]);
 
     const [users, setUsers] = useState<User[]>([]);
 
@@ -54,15 +52,11 @@ const UserTable = () => {
         "Users",
         refetch
     );
-    const data2 = useGenericGet<Role>(
-        "/api/roles/all",
-        "Roles"
-    );
+
 
     useEffect(() => {
         // Actualizar los Usuarios cuando se obtiene nueva data
         setUsers(data);
-        setRoles(data2);
         setRefetch(false);
     }, [data]);
 
@@ -171,7 +165,6 @@ const UserTable = () => {
                 </Col>
                 {showModal && (
                     <UserForm
-                        roles={roles}
                         user={user}
                         title={title}
                         show={showModal}

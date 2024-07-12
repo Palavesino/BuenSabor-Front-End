@@ -22,6 +22,7 @@ const Step_1_form: React.FC<Step1Props> = ({ nextStep, formik }) => {
     "Product Categories"
   );
 
+
   // Obtiene las categorías desde la API cuando renderice la pág
   useEffect(() => {
     setCategories(data);
@@ -44,6 +45,45 @@ const Step_1_form: React.FC<Step1Props> = ({ nextStep, formik }) => {
             />
             <Form.Control.Feedback type="invalid">
               {formik.errors.manufacturedProduct?.denomination}
+            </Form.Control.Feedback>
+          </Form.Group>
+
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <Form.Group>
+            <Form.Label>Precio de Costo</Form.Label>
+            <Form.Control
+              name="manufacturedProduct.price.costPrice"
+              type="number"
+              value={formik.values.manufacturedProduct.price?.costPrice || ""}
+              onChange={formik.handleChange}
+              isInvalid={Boolean(
+                formik.errors.manufacturedProduct?.price?.costPrice &&
+                formik.touched.manufacturedProduct?.price?.costPrice
+              )}
+            />
+            <Form.Control.Feedback type="invalid">
+              {formik.errors.manufacturedProduct?.price?.costPrice}
+            </Form.Control.Feedback>
+          </Form.Group>
+        </Col>
+        <Col>
+          <Form.Group>
+            <Form.Label>Precio de Venta</Form.Label>
+            <Form.Control
+              name="manufacturedProduct.price.sellPrice"
+              type="number"
+              value={formik.values.manufacturedProduct.price?.sellPrice || ""}
+              onChange={formik.handleChange}
+              isInvalid={Boolean(
+                formik.errors.manufacturedProduct?.price?.sellPrice &&
+                formik.touched.manufacturedProduct?.price?.sellPrice
+              )}
+            />
+            <Form.Control.Feedback type="invalid">
+              {formik.errors.manufacturedProduct?.price?.sellPrice}
             </Form.Control.Feedback>
           </Form.Group>
         </Col>

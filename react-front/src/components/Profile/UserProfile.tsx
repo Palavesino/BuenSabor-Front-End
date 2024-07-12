@@ -1,8 +1,5 @@
 import { Row, Col, Image, Card, Table, Button, Modal } from "react-bootstrap";
 import { useEffect, useState } from "react";
-import { User } from "../../Interfaces/User";
-import { useAuth0 } from "@auth0/auth0-react";
-import { useGetUserComplete } from './hooks/use-GetUserComplete';
 import PasswordForm from "../Auth0/SignUp/UserFormComplete/PasswordForm";
 import { ModalType } from "../Enum/ModalType";
 import { FaCamera } from "react-icons/fa";
@@ -12,21 +9,18 @@ import ImageForm from "./Picture/ImageForm";
 import { useGetImageId } from "../../Util/useGetImageId";
 import { Image as UserImage } from "../../Interfaces/Image";
 import { FaUserCircle } from "react-icons/fa";
+import { usePermission } from "../../context/PermissionContext";
 const UserProfile = () => {
+    const { userComplete } = usePermission();
     const [showModal, setShowModal] = useState(false);
     const [image, setImage] = useState<UserImage>(); // Usar el nuevo nombre
     const [refetch, setRefetch] = useState(false);
     const [modalType, setModalType] = useState<ModalType>(ModalType.None);
-    const { user } = useAuth0();
     const getImage = useGetImageId();
-    const getUserComplete = useGetUserComplete(); // Renombramos la función
-    const [userComplete, setUserComplete] = useState<User | null>(null); // Añadimos el tipo de estado y establecemos un valor inicial
     useEffect(() => {
         const fetchUserComplete = async () => {
-            if (user?.sub) {
-                const userData = await getUserComplete(user.sub);
-                const imageData = await getImage(userData.id, "u");
-                setUserComplete(userData as User);
+            if (userComplete) {
+                const imageData = await getImage(userComplete.id, "u");
                 setImage(imageData);
             }
         };
@@ -64,7 +58,7 @@ const UserProfile = () => {
                                         )}
                                         <Button className="edit-button" onClick={changeImage}><FaCamera className="profile-camareIcon" /><br />Editar</Button>
                                     </div>
-                                    <Card.Title className='profile-Title'>{user?.name}</Card.Title>
+                                    <Card.Title className='profile-Title'>{userComplete.name}</Card.Title>
                                 </Card.Body>
                             </Card>
 
@@ -124,17 +118,17 @@ const UserProfile = () => {
                                 </tbody>
                             </Table>
                         </Col>
-                        {modalType === ModalType.ChangePass && user?.sub && (
+                        {modalType === ModalType.ChangePass && userComplete && (
                             <Modal show={showModal} onHide={() => setShowModal(false)} centered backdrop="static">
-                                <PasswordForm setShowModal={setShowModal} userSub={user?.sub} />
+                                <PasswordForm setShowModal={setShowModal} userSub={userComplete.auth0UserId} />
                             </Modal>
                         )}
-                        {modalType === ModalType.ChangeImage && user?.sub && (
+                        {modalType === ModalType.ChangeImage && userComplete && (
                             <Modal show={showModal} onHide={() => setShowModal(false)} centered backdrop="static">
                                 <ImageForm setShowModal={setShowModal} userId={userComplete.id} obj={image} setRefetch={setRefetch} />
                             </Modal>
                         )}
-                        {modalType === ModalType.Edit && user?.sub && (
+                        {modalType === ModalType.Edit && userComplete && (
                             <Modal show={showModal} onHide={() => setShowModal(false)} centered backdrop="static" className="modal-lg">
                                 <UserCompleteForm setShowModal={setShowModal} userComplete={userComplete} modalType={modalType} setRefetch={setRefetch} />
                             </Modal>

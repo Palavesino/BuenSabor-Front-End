@@ -35,6 +35,11 @@ const ProductTable = () => {
     minStock: 0,
     actualStock: 0,
     productCategoryID: 0,
+    price: {
+      id: 0,
+      costPrice: 0,
+      sellPrice: 0,
+    },
   });
   // Estado para almacenar el título del modal
   const [title, setTitle] = useState("");
@@ -50,16 +55,15 @@ const ProductTable = () => {
 
   // Manejar el clic en un elemento de la tabla
   const handleClick = (
-    category: Product,
+    p: Product,
     newTitle: string,
     modal: ModalType
   ) => {
     setTitle(newTitle);
-    setProduct(category);
+    setProduct(p);
     setModalType(modal);
     setShowModal(true);
   };
-
   // Manejar la edición de un producto
   const handleEdit = (r: Product) => {
     handleClick(r, "Editar Producto", ModalType.Edit);
@@ -87,6 +91,11 @@ const ProductTable = () => {
       minStock: 0,
       actualStock: 0,
       productCategoryID: 0,
+      price: {
+        id: 0,
+        costPrice: 0,
+        sellPrice: 0,
+      },
     };
     handleClick(newProduct, "Nuevo Producto", ModalType.Create);
   };

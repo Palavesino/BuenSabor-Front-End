@@ -1,7 +1,6 @@
 // Importaciones de componentes, funciones y modelos
 import { Button, Col, Form, Row, Modal } from "react-bootstrap";
 import { useFormik } from "formik";
-import * as Yup from "yup";
 import "./CategoryForm.css";
 import { Category } from "../../../Interfaces/Category";
 import { useEffect, useState } from "react";
@@ -10,6 +9,7 @@ import { useGenericPut } from "../../../Services/useGenericPut";
 import { useGenericChangeStatus } from "../../../Services/useGenericChangeStatus";
 import { ModalType } from "../../Enum/ModalType";
 import GetTypeCategories from "./hooks/use-typeCategorys";
+import { validationSchemaCategory } from "../../../Util/YupValidation";
 interface CategoryModalProps {
   show: boolean; // Indica si el modal debe mostrarse o no
   onHide: () => void; // Función que se ejecuta cuando el modal se cierra
@@ -39,11 +39,13 @@ const CategoryModal: React.FC<CategoryModalProps> = ({
   const genericPost = useGenericPost(); // Hook personalizado para realizar una petición POST genérica a la API
   const genericPut = useGenericPut(); // Hook personalizado para realizar una petición PUT genérica a la API
   const updateCategoryStatus = useGenericChangeStatus(); // Hook personalizado para actualizar el estado de una categoría
-  const data = GetTypeCategories(typeSelect, category);
+  const data = modalType !== ModalType.ChangeStatus ? GetTypeCategories(typeSelect, category) : null;
 
   // Obtiene las categorías desde la API cuando renderice la pág
   useEffect(() => {
-    setCategories(data);
+    if (data && data.length > 0) {
+      setCategories(data);
+    }
   }, [data]);
 
   // Maneja la lógica de guardar o actualizar una categoría
@@ -96,21 +98,11 @@ const CategoryModal: React.FC<CategoryModalProps> = ({
     }
   };
 
-  // Define el esquema de validación del formulario
-  const validationSchema = () => {
-    return Yup.object().shape({
-      id: Yup.number().integer().min(0),
-      denomination: Yup.string().required("La denominación es requerida"),
-      type: Yup.string().required("El Tipo es requerido"),
-      categoryFatherId: Yup.number().integer().min(0).nullable(),
-      categoryFatherDenomination: Yup.string().nullable(),
-    });
-  };
 
   // Configuración y gestión del formulario con Formik
   const formik = useFormik({
     initialValues: category,
-    validationSchema: validationSchema(),
+    validationSchema: validationSchemaCategory(),
     validateOnChange: true,
     validateOnBlur: true,
     onSubmit: (obj: Category) => handleSaveUpdate(obj),
@@ -172,7 +164,7 @@ const CategoryModal: React.FC<CategoryModalProps> = ({
                       onBlur={formik.handleBlur}
                       isInvalid={Boolean(
                         formik.errors.denomination &&
-                          formik.touched.denomination
+                        formik.touched.denomination
                       )}
                     />
                     <Form.Control.Feedback type="invalid">

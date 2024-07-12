@@ -1,4 +1,5 @@
 import { Image } from "./Image";
+import { Price } from "./Price";
 
 export interface ManufacturedProduct {
   id: number;
@@ -7,6 +8,8 @@ export interface ManufacturedProduct {
   availability: boolean;
   manufacturedProductCategoryID: number;
   cookingTime: string;
+  price: Price
+  quantity?: number;
 }
 export interface Recipe {
   id: number;

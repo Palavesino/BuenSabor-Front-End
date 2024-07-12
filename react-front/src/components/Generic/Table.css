@@ -16,14 +16,17 @@
   font-size: 20px;
   padding: 0;
 }
+.icon-Cancel:hover,
 .icon-Low:hover {
   color: red;
   transition: 0.3s;
 }
+
 .icon-High {
   font-size: 20px;
   padding: 0;
 }
+.icon-View:hover,
 .icon-High:hover {
   color: green;
   transition: 0.3s;
@@ -62,6 +65,7 @@
 .td-Accion .icon-Low,
 .td-Accion .icon-Edit,
 .td-Accion .icon-Delete,
+.td-Accion .icon-Cancel,
 .td-Accion .icon-View {
   /* Estilos para los íconos dentro del td-Accion */
   font-size: 24px; /* Tamaño de los íconos */

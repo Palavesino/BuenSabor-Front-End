@@ -1,7 +1,6 @@
 // Importaciones de componentes, funciones y modelos
 import { Button, Col, Form, Row, Modal } from "react-bootstrap";
 import { useFormik } from "formik";
-import * as Yup from "yup";
 import { ModalType } from "../../Enum/ModalType";
 import { Auth0User, Role, User } from "../../../Interfaces/User";
 import { useUserPost } from "./hooks/use-UserPost";
@@ -9,6 +8,9 @@ import { useRolPost } from "./hooks/use-RolePost";
 import { useStatusPut } from "./hooks/use-StatusUpdate";
 import { useRolesDelete } from "./hooks/use-RolesDelete";
 import { useEmailExists } from "./hooks/use-EmailExists";
+import { useGenericGet } from "../../../Services/useGenericGet";
+import { useEffect, useState } from "react";
+import { validationSchemaUser } from "../../../Util/YupValidation";
 
 // Interfaz que define las propiedades esperadas por el componente UserForm
 interface UserModalProps {
@@ -19,7 +21,6 @@ interface UserModalProps {
     setRefetch: React.Dispatch<React.SetStateAction<boolean>>; // Función para actualizar el estado y volver a obtener los datos después de realizar una acción en el modal
     modalType: ModalType; // Tipo de modal, indica si es para editar, crear o cambiar el estado de un Usuario
     state: boolean; // Estado actual del Usuario
-    roles: Role[];
 }
 
 /*
@@ -35,7 +36,6 @@ const UserForm: React.FC<UserModalProps> = ({
     setRefetch,
     modalType,
     state,
-    roles,
 }) => {
 
     const userPost = useUserPost(); // Hook personalizado para realizar una petición POST genérica a la API
@@ -43,7 +43,16 @@ const UserForm: React.FC<UserModalProps> = ({
     const updateUserStatus = useStatusPut(); // Hook personalizado para actualizar el estado de un usuario
     const deleteRolesFromUser = useRolesDelete(); // Hook personalizado para Eliminar roles de  un usuario
     const checkEmailExists = useEmailExists(); // Hook personalizado para verificar si email del usuario ya existe en la BD
-
+    const data = modalType !== ModalType.ChangeStatus ? useGenericGet<Role>(
+        "/api/roles/all",
+        "Roles"
+    ) : null;
+    const [roles, setRoles] = useState<Role[]>([]);
+    useEffect(() => {
+        if (data && data.length > 0) {
+            setRoles(data);
+        }
+    }, [data]);
     // Maneja la lógica de guardar o actualizar un Usuario
     const handleSaveUpdate = async (u: typeof requestBody) => {
         const isNew = modalType === ModalType.Create;
@@ -73,48 +82,6 @@ const UserForm: React.FC<UserModalProps> = ({
         setRefetch(true);
         onHide();
     };
-    // Define el esquema de validación del formulario
-    const validationSchema = (modalType: ModalType) => {
-        switch (modalType) {
-            case 2:
-                return Yup.object().shape({
-                    role: Yup.object().shape({
-                        idAuth0Role: Yup.string().required('Ingrese Rol'),
-                    }),
-                });
-            default:
-                return Yup.object().shape({
-                    auth0User: Yup.object().shape({
-                        email: Yup.string().email('Ingrese un email válido').required('Ingrese el email')
-                            .test('checkEmail', 'El correo electrónico ya existe',
-                                value => {
-                                    return new Promise((resolve) => {
-                                        setTimeout(() => {
-                                            checkEmailExists(value)
-                                                .then(exists => resolve(!exists))
-                                                .catch(() => resolve(false));
-                                        }, 500);
-                                    });
-                                }
-                            ),
-                        password: Yup
-                            .string()
-                            .required('Ingrese password')
-                            .matches(/(?=.*\d)/, 'El password debe contener al menos un dígito')
-                            .matches(/(?=.*[a-z])/, 'El password debe contener al menos una letra minúscula')
-                            .matches(/(?=.*[A-Z])/, 'El password debe contener al menos una letra mayúscula')
-                            .min(8, 'El password debe tener al menos 8 caracteres'),
-                    }),
-                    role: Yup.object().shape({
-                        idAuth0Role: Yup.string().required('Ingrese Rol'),
-                    }),
-                    confirmPassword: Yup.string()
-                        .required('Confirme el password')
-                        .oneOf([Yup.ref('auth0User.password')], 'Los password y confirmPassword deben coincidir'),
-
-                });
-        }
-    };
     let auh0User: Auth0User = {
         email: user.email,
         password: "",
@@ -128,7 +95,7 @@ const UserForm: React.FC<UserModalProps> = ({
     // Configuración y gestión del formulario con Formik
     const formik = useFormik({
         initialValues: requestBody,
-        validationSchema: validationSchema(modalType),
+        validationSchema: validationSchemaUser(modalType, checkEmailExists),
         validateOnChange: true,
         validateOnBlur: true,
         onSubmit: (obj: typeof requestBody) => handleSaveUpdate(obj),

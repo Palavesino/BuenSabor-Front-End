@@ -7,6 +7,8 @@ import { useGenericGet } from "../../../Services/useGenericGet";
 import { MproductXRecipe } from "../../../Interfaces/ManufacturedProduct";
 import { useGetImageId } from "../../../Util/useGetImageId";
 import { Image } from "../../../Interfaces/Image";
+import { useGenericGetXID } from "../../../Services/useGenericGetXID";
+import { Price } from "../../../Interfaces/Price";
 interface M_ProductEditProps {
   onHide: () => void; // Función que se ejecuta cuando el modal se cierra
   formik: FormikProps<MproductXRecipe>;// Proporciona acceso a las funciones y estados de Formik para manejar el estado del formulario.
@@ -27,9 +29,14 @@ const M_ProductEdit: React.FC<M_ProductEditProps> = ({
     "/api/categories/filter/unlocked/type/M",
     "Product Categories"
   );
+  const data2 = useGenericGetXID<Price>(
+    `/api/price/2`, formik.values.manufacturedProduct.id
+  );
+
   // Obtiene las categorías desde la API cuando renderice la pág
   useEffect(() => {
-    if (data) {
+    if (data.length > 0 && data2.id ) {
+      formik.setFieldValue("manufacturedProduct.price", data2);
       setCategories(data);
       // Obtener la imagen cuando se obtengan las categorías
       const fetchImage = async () => {
@@ -38,8 +45,7 @@ const M_ProductEdit: React.FC<M_ProductEditProps> = ({
       };
       fetchImage();
     }
-  }, [data]);
-
+  }, [data, data2]);
 
   return (
     <>
@@ -63,7 +69,44 @@ const M_ProductEdit: React.FC<M_ProductEditProps> = ({
           </Form.Group>
         </Col>
       </Row>
-
+      <Row>
+        <Col>
+          <Form.Group>
+            <Form.Label>Precio de Costo</Form.Label>
+            <Form.Control
+              name="manufacturedProduct.price.costPrice"
+              type="number"
+              value={formik.values.manufacturedProduct.price?.costPrice || ""}
+              onChange={formik.handleChange}
+              isInvalid={Boolean(
+                formik.errors.manufacturedProduct?.price?.costPrice &&
+                formik.touched.manufacturedProduct?.price?.costPrice
+              )}
+            />
+            <Form.Control.Feedback type="invalid">
+              {formik.errors.manufacturedProduct?.price?.costPrice}
+            </Form.Control.Feedback>
+          </Form.Group>
+        </Col>
+        <Col>
+          <Form.Group>
+            <Form.Label>Precio de Venta</Form.Label>
+            <Form.Control
+              name="manufacturedProduct.price.sellPrice"
+              type="number"
+              value={formik.values.manufacturedProduct.price?.sellPrice || ""}
+              onChange={formik.handleChange}
+              isInvalid={Boolean(
+                formik.errors.manufacturedProduct?.price?.sellPrice &&
+                formik.touched.manufacturedProduct?.price?.sellPrice
+              )}
+            />
+            <Form.Control.Feedback type="invalid">
+              {formik.errors.manufacturedProduct?.price?.sellPrice}
+            </Form.Control.Feedback>
+          </Form.Group>
+        </Col>
+      </Row>
       <Row>
         <Col>
           <Form.Group>
@@ -168,7 +211,6 @@ const M_ProductEdit: React.FC<M_ProductEditProps> = ({
           Guardar
         </Button>
       </Modal.Footer>
-
     </>
   );
 };

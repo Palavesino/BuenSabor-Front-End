@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useFormik } from "formik";
-import * as Yup from "yup";
 import { ManufacturedProduct, MproductXRecipe } from "../../../Interfaces/ManufacturedProduct";
 import Step_1_form from "./Step_1_form";
 import Step_2_form from "./Step_2_form";
@@ -10,6 +9,7 @@ import Step_3_form from "./Step_3_form";
 import { useGenericChangeStatus } from "../../../Services/useGenericChangeStatus";
 import GetRecipeForm from "./hooks/use-recipeForm";
 import M_ProductEdit from "./M_ProductEdit";
+import { validationSchemaManufacturedProduct } from "../../../Util/YupValidation";
 
 interface MproductModalProps {
     show: boolean; // Indica si el modal debe mostrarse o no
@@ -59,9 +59,6 @@ const MP_Form: React.FC<MproductModalProps> = ({
         image: {
             id: 0,
             name: "",
-            route: "",
-            type: "",
-            size: 0,
             productId: null,
             userId: null,
             manufacturedProductId: Mproduct.id,
@@ -69,7 +66,6 @@ const MP_Form: React.FC<MproductModalProps> = ({
         },
         file: null,
     };
-
     // Maneja la lógica de guardar o actualizar un Producto Manufacturado
     const handleSaveUpdate = async (Mproduct: MproductXRecipe) => {
         await postXput("/api/manufactured-products/save", "/api/manufactured-products/update", Mproduct);
@@ -88,69 +84,10 @@ const MP_Form: React.FC<MproductModalProps> = ({
         setRefetch(true);
         onHide();
     };
-
-    // Define el esquema de validación del formulario con Yup
-    const validationSchema = () => {
-        return Yup.object().shape({
-            manufacturedProduct: Yup.object().shape({
-                id: Yup.number().integer().min(0),
-                denomination: Yup.string().required("La denominación es requerida"),
-                manufacturedProductCategoryID: Yup.number()
-                    .integer()
-                    .moreThan(0, "Selecciona una categoría")
-                    .required("La categoría es requerida"),
-                description: Yup.string().required("La Descripción es requerida"),
-                cookingTime: Yup.string().required("El tiempo de preparado es requerido"),
-            }),
-            recipe:
-                Yup.object().when('manufacturedProduct.id', {
-                    is: (manufacturedProductId: number) => {
-                        return manufacturedProductId === 0;
-                    },
-                    then: () =>
-                        Yup.object({
-                            id: Yup.number().integer().min(0),
-                            denomination: Yup.string().required("La denominación es requerida"),
-                            description: Yup.string().required("La descripción es requerida"),
-                            steps: Yup.array()
-                                .of(
-                                    Yup.object().shape({
-                                        description: Yup.string().required("La descripción del paso es requerida"),
-                                    })
-                                )
-                                .min(3, 'Debe haber al menos 3 pasos en la receta'),
-                        }),
-                }),
-            file: Yup.mixed().when("manufacturedProduct.id", (id: unknown, schema) => {
-                if (Number(id) === 0) {
-                    return schema.required("La Imagen es requerida").test(
-                        "FILE_SIZE",
-                        "El archivo subido es demasiado grande.",
-                        (value) => !value || (value && (value as File).size <= 1024 * 1024 * 10) 
-                    ).test(
-                        "FILE_FORMAT",
-                        "El archivo subido tiene un formato no compatible.",
-                        (value) => !value || (value && ["image/jpg", "image/jpeg", "image/png"].includes((value as File).type))
-                    );
-                } else {
-                    return schema.nullable().notRequired().test(
-                        "FILE_SIZE",
-                        "El archivo subido es demasiado grande.",
-                        (value) => !value || (value && (value as File).size <= 1024 * 1024 * 10)
-                    ).test(
-                        "FILE_FORMAT",
-                        "El archivo subido tiene un formato no compatible.",
-                        (value) => !value || (value && ["image/jpg", "image/jpeg", "image/png"].includes((value as File).type))
-                    );
-                }
-            })
-        })
-    };
-
     // Configuración y gestión del formulario con Formik
     const formik = useFormik({
         initialValues: recipeXmproduct,
-        validationSchema: validationSchema(),
+        validationSchema: validationSchemaManufacturedProduct(),
         validateOnChange: true,
         validateOnBlur: true,
         onSubmit: (obj: MproductXRecipe) => handleSaveUpdate(obj),

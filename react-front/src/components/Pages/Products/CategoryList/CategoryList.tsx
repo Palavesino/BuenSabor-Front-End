@@ -6,13 +6,8 @@ import image from "../../../../assets/images/868BD45E.jpeg";
 
 // Importaciones de estilos
 import "./CategoryList.css";
+import { Category } from "../../../../Interfaces/Category";
 
-// temporal
-interface Category {
-  id: number;
-  image: string;
-  title: string;
-}
 
 /**
  * Propiedades del componente CategoryList.
@@ -23,7 +18,7 @@ interface Category {
 interface CategoryListProps {
   categories: Category[];
   selectedCategory: number | null;
-  onCategoryClick: (categoryId: number) => void;
+  onCategoryClick: (categoryId: number, isProduct: boolean) => void;
 }
 
 /*
@@ -46,14 +41,13 @@ const CategoryList: React.FC<CategoryListProps> = ({
         <CListGroupItem
           key={category.id}
           component="button"
-          className={`cui-list-group-item ${
-            category.id === selectedCategory ? "active" : ""
-          }`}
-          onClick={() => onCategoryClick(category.id)}
+          className={`cui-list-group-item ${category.id === selectedCategory ? "active" : ""
+            }`}
+          onClick={() => onCategoryClick(category.id, (category.type === "P"))}
         >
           <img src={image} alt={`image${category.id}`} />{" "}
           {/* src={category.image} */}
-          {category.title}
+          {category.denomination}
         </CListGroupItem>
       ))}
     </CListGroup>

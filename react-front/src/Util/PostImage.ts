@@ -1,22 +1,19 @@
 import { toast } from "react-toastify";
-import { Image } from "../Interfaces/Image";
 import { useAuth0 } from "@auth0/auth0-react";
 
 export const usePostImage = () => {
     const { getAccessTokenSilently } = useAuth0();
-    const PostImage = async (obj: Image, file?: File, edit: boolean = false, message: boolean = false) => {
+    const PostImage = async (filter: number, idFilter: number, file?: File, edit: boolean = false, message: boolean = false, idImage?: number) => {
         try {
             let accessToken = await getAccessTokenSilently();
             const formData = new FormData();
-            const dtoBlob = new Blob([JSON.stringify(obj)], { type: 'application/json' });
-            formData.append('dto', dtoBlob);
             if (file) {
                 formData.append('imageFile', file, file.name);
             } else {
                 console.error("No se encuentra archivo")
             }
             if (edit) {
-                const imageResponse = await fetch(`/api/images/replace-image/${obj.id}`, {
+                const imageResponse = await fetch(`/api/images/replace-image/${filter}/${idFilter}/${idImage}`, {
                     method: 'POST',
                     headers: {
                         Authorization: `Bearer ${accessToken}`,
@@ -31,7 +28,7 @@ export const usePostImage = () => {
                     toast.success(`😎 Editado Exitosamente!`, { position: "top-center" });
                 }
             } else {
-                const response = await fetch('/api/images/save-image', {
+                const response = await fetch(`/api/images/save-image/${filter}/${idFilter}`, {
                     method: 'POST',
                     headers: {
                         Authorization: `Bearer ${accessToken}`,

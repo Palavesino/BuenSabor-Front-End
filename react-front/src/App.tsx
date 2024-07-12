@@ -2,6 +2,7 @@
 import { BrowserRouter } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import { PermissionProvider } from "./context/PermissionContext.tsx";
+import { CartProvider } from "./context/CartContext.tsx";
 // Importaciones de componentes, funciones y modelos
 import Footer from "./components/Common/Footer/Footer.tsx";
 import NavBar from "./components/Common/NavBar/NavBar.tsx";
@@ -18,14 +19,16 @@ function App() {
 
       <BrowserRouter>
         <PermissionProvider>
-          <div className="root">
-            <NavBar />
-            <div className="main-container">
-              <Router />
+          <CartProvider>
+            <div className="root">
+              <NavBar />
+              <div className="main-container">
+                <Router />
+              </div>
+              <Footer />
+              <ToastContainer />
             </div>
-            <Footer />
-            <ToastContainer />
-          </div>
+          </CartProvider>
         </PermissionProvider>
       </BrowserRouter>
     </>

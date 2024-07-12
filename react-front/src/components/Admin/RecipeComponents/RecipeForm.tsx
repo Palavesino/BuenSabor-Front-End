@@ -1,7 +1,6 @@
 // Importaciones de componentes, funciones y modelos
 import { Form, Modal } from "react-bootstrap";
 import { useFormik } from "formik";
-import * as Yup from "yup";
 import { useEffect, useState } from "react";
 import { useGenericPut } from "../../../Services/useGenericPut";
 import { ModalType } from "../../Enum/ModalType";
@@ -9,6 +8,7 @@ import { Recipe } from "../../../Interfaces/ManufacturedProduct";
 import Step_2_recipeForm from "./Step_2_recipeForm";
 import Step_1_recipeForm from "./Step_1_recipeForm";
 import { useGenericGetXID } from "../../../Services/useGenericGetXID";
+import { validationSchemaRecipe } from "../../../Util/YupValidation";
 
 interface RecipeFormProps {
   show: boolean; // Indica si el modal debe mostrarse o no
@@ -69,33 +69,17 @@ const RecipeForm: React.FC<RecipeFormProps> = ({
     onHide();
   };
 
-  // Define el esquema de validación del formulario
-  const validationSchema = () => {
-    return Yup.object().shape({
-      id: Yup.number().integer().min(0),
-      denomination: Yup.string().required("La denominación es requerida"),
-      description: Yup.string().required("La descripción es requerida"),
-      steps: Yup.array()
-        .of(
-          Yup.object().shape({
-            description: Yup.string().required(
-              "La descripción del paso es requerida"
-            ),
-          })
-        )
-        .min(3, 'Debe haber al menos 3 pasos en la receta'),
-    });
-  };
+
 
   // Configuración y gestión del formulario con Formik
   const formik = useFormik({
     initialValues: recipe,
-    validationSchema: validationSchema(),
+    validationSchema: validationSchemaRecipe(),
     validateOnChange: true,
     validateOnBlur: true,
     onSubmit: (obj: Recipe) => handleUpdate(obj),
   });
- // Renderiza el componente según el paso actual
+  // Renderiza el componente según el paso actual
   let componentToRender;
   switch (step) {
     case 1:

@@ -22,22 +22,12 @@ const ImageForm: React.FC<ImageFormProps> = ({ userId, setShowModal, obj, setRef
     //const [image,Setimage] = useState<String>("");
 
     const handleSave = async (newImage: FormValues) => {
-        const dto: Image = {
-            id: 0,
-            name: "",
-            route: "",
-            type: "",
-            size: 0,
-            productId: null,
-            userId: userId,
-            manufacturedProductId: null,
-            base64: "",
-        };
+
         if (obj) {
-            await changeUserImage(obj, newImage.file ? newImage.file : undefined, true, true);
+            await changeUserImage(1, userId, newImage.file ? newImage.file : undefined, true, true, obj.id);
         } else {
 
-            await changeUserImage(dto, newImage.file ? newImage.file : undefined, false, true)
+            await changeUserImage(1, userId, newImage.file ? newImage.file : undefined, false, true)
         }
         setShowModal(false);
         setRefetch(true);

@@ -1,11 +1,11 @@
 import { User } from "../../../../Interfaces/User";
 import { ModalType } from "../../../Enum/ModalType";
-import { ValidationSchemaUserComplete } from "./Validation/ValidationSchemaUserComplete";
 import { usePostUserComplete } from "../hooks/use-PostUserComplete";
 import { useFormik } from "formik";
 import { Button, Form, Modal, Alert, Col, Row } from "react-bootstrap";
 import { GiPlagueDoctorProfile } from "react-icons/gi";
 import "./UserSingUp.css";
+import { validationSchemaUserComplete } from "../../../../Util/YupValidation";
 
 type HandleNewPassType = (u: User) => void;
 
@@ -29,7 +29,7 @@ const UserCompleteForm: React.FC<UserCompleteFormProps> = ({ handleNewUser, setR
     // Formik userComplete
     const formik = useFormik({
         initialValues: userComplete,
-        validationSchema: ValidationSchemaUserComplete,
+        validationSchema: validationSchemaUserComplete,
         validateOnChange: true,
         validateOnBlur: true,
         onSubmit: (obj: User) => {

@@ -1,5 +1,5 @@
 // Importaciones de dependencias
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // Importaciones de componenetes, funciones y modelos
 import CategoryList from "./CategoryList/CategoryList";
@@ -7,25 +7,10 @@ import CategoryList from "./CategoryList/CategoryList";
 // Importaciones de estilos
 import "./Products.css";
 import ProductCard from "./ProductCard/ProductCard";
-
-interface Product {
-  id: number;
-  image: string;
-  title: string;
-  link: string;
-  category_id: string;
-}
-
-interface Category {
-  id: number;
-  image: string;
-  title: string;
-}
-
-interface ProductsProps {
-  products: Product[];
-  categories: Category[];
-}
+import { Category } from "../../../Interfaces/Category";
+import { ItemList } from "../../../Interfaces/ItemList";
+import { useGetItems } from "./hook/use-GetItems";
+import { useGenericGet } from "../../../Services/useGenericGet";
 
 /*
  * Componente de productos
@@ -33,19 +18,46 @@ interface ProductsProps {
  * Utiliza el componente `CategoryList` para mostrar una lista de categorías de productos.
  * Cada producto se muestra en una tarjeta (`CCard`) con una imagen, título y un botón.
  */
-const Products: React.FC<ProductsProps> = ({ products, categories }) => {
+const Products = () => {
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
+  const [isProduct, setIsProduct] = useState(false);
+  // Estado para almacenar los productos
+  const [categories, setCategorys] = useState<Category[]>([]);
+  // Estado para almacenar las manufactured-products
+  const [items, setItems] = useState<ItemList>({ productDTOList: [], manufacturedProductDTOList: [] });
+  const getItems = useGetItems();
+  const data = useGenericGet<Category>(
+    "/api/categories/filter/catalogue",
+    "Categorías Product And Manufactured",
 
-  const filteredProducts = selectedCategory
-    ? products.filter(
-        (product) => parseInt(product.category_id) === selectedCategory
-      )
-    : products;
+  );
+  useEffect(() => {
+    async function getProducts() {
+      const fetchedItems = await getItems();
+      if (fetchedItems) {
+        setItems(fetchedItems);
+      }
+    }
+    // Actualizar las categorías cuando se obtiene nueva data
+    if (data && data.length > 0) {
+      getProducts();
+      setCategorys(data);
+    }
+  }, [data]);
 
-  const handleCategoryClick = (categoryId: number) => {
+  const filteredProducts = selectedCategory ? (
+    isProduct
+      ? (items.productDTOList || []).filter((item) => item.productCategoryID === selectedCategory)
+      : (items.manufacturedProductDTOList || []).filter((item) => item.manufacturedProductCategoryID === selectedCategory)
+  ) : (
+    isProduct ? items.productDTOList || [] : items.manufacturedProductDTOList || []
+  );
+
+
+  const handleCategoryClick = (categoryId: number, isProduct: boolean) => {
+    setIsProduct(isProduct);
     setSelectedCategory(categoryId);
   };
-
   return (
     <div className="products-page">
       <div className="categories-container">
@@ -56,9 +68,10 @@ const Products: React.FC<ProductsProps> = ({ products, categories }) => {
         />
       </div>
       <div className="products-container">
-        {filteredProducts.map((product) => (
-          <ProductCard key={product.id} product={product} />
+        {filteredProducts && filteredProducts.map((product) => (
+          <ProductCard key={product.id} product={product} isProduct={isProduct} />
         ))}
+
       </div>
     </div>
   );

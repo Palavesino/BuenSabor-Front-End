@@ -14,6 +14,7 @@ export interface Action {
   lowLogic?: boolean; // Permitir la acción de baja (opcional)
   highLogic?: boolean; // Permitir la acción de alta (opcional)
   view?: boolean; // Permitir la acción de visualización (opcional)
+  cancel?: boolean; // Permitir la acción de visualización (opcional)
   offSearch?: boolean; // Bloquear la a visualización del search (opcional
 }
 
@@ -23,6 +24,7 @@ export interface TableProps<T> {
   actions: Action; // Acciones disponibles para la tabla
   onAdd?: () => void; // Manejador de evento para la acción de agregar (opcional)
   onUpdate?: (item: T) => void; // Manejador de evento para la acción de actualización (opcional)
+  onCancel?: (item: T) => void; // Manejador de evento para la acción de Cancelar (opcional)
   onDelete?: (item: T) => void; // Manejador de evento para la acción de eliminación (opcional)
   onView?: (item: T) => void; // Manejador de evento para la acción de visualización (opcional)
   onlowLogic?: (item: T) => void; // Manejador de evento para la acción de baja (opcional)

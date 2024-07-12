@@ -1,3 +1,5 @@
+import { Price } from "./Price";
+
 export interface Product {
   id: number;
   denomination: string;
@@ -6,4 +8,6 @@ export interface Product {
   minStock: number;
   actualStock: number;
   productCategoryID: number;
+  price: Price;
+  quantity?: number;
 }

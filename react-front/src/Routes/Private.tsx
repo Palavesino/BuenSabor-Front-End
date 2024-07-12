@@ -12,7 +12,9 @@ const ListarCategorys = lazy(() => import('../components/Admin/CategoriesCompone
 const Menu = lazy(() => import('../components/Admin/Menu'));
 const ProductTable = lazy(() => import('../components/Admin/ProductComponents/ProductTable'));
 const UserProfile = lazy(() => import('../components/Profile/UserProfile.tsx'));
-
+const Carrito = lazy(() => import('../components/Pages/Cart/Cart.tsx'));
+const PaymentConfirmation = lazy(() => import('../components/Pages/PaymentMP/PaymentConfirmation.tsx'));
+const OrderUserTable = lazy(() => import('../components/Order/OrderUserTable.tsx'));
 interface Props {
     permission: UserRole;
 }
@@ -26,9 +28,12 @@ export const Private = ({ permission }: Props) => {
             <Route path="/recipe" element={<RouteAccessRole isRolPermited={permission === UserRole.admin} > <RecipesTable /> </RouteAccessRole>}></Route>
             <Route path="/categoria" element={<RouteAccessRole isRolPermited={permission === UserRole.admin} > <ListarCategorys /> </RouteAccessRole>}></Route>
             <Route path="/admin" element={<RouteAccessRole isRolPermited={permission === UserRole.admin} > <Menu /> </RouteAccessRole>}></Route>
-            <Route path="/carrito" element={<h1>Carrito</h1>}></Route>
+            <Route path="/carrito" element={<Carrito />}></Route>
+            <Route path="/carrito/:idOrder" element={<Carrito />}></Route>
             <Route path="/products" element={<RouteAccessRole isRolPermited={permission === UserRole.admin} > <ProductTable /> </RouteAccessRole>}></Route>
             <Route path="/profile" element={<RouteAccessRole isRolPermited={permission !== UserRole.espectador} > <UserProfile /> </RouteAccessRole>}></Route>
+            <Route path="/payment" element={<RouteAccessRole isRolPermited={permission !== UserRole.espectador} > <PaymentConfirmation /> </RouteAccessRole>}></Route>
+            <Route path="/user/orders" element={<RouteAccessRole isRolPermited={permission !== UserRole.espectador} > <OrderUserTable /> </RouteAccessRole>}></Route>
         </RoutesWithNotFound>
     )
 }

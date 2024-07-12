@@ -5,8 +5,6 @@ import ProductDetails from "../components/Pages/ProductDetails/ProductDetails.ts
 import Products from "../components/Pages/Products/Products.tsx";
 
 // Importaciones de Assets
-import products from "../components/Pages/Products/JSON/products.json";
-import categories from "../components/Pages/Products/JSON/categories.json";
 import AuthGuard from "./AuthGuard.tsx";
 import RoutesWithNotFound from "../Util/routes-with-not-found.tsx";
 import { Suspense, lazy, useState } from "react";
@@ -29,34 +27,37 @@ const Router = () => {
 
   });
   return (
+    <>
+      <Suspense fallback={<h1>Loding...</h1>}>
+        {firstLogIn ? <UserSingUp firstLogIn={firstLogIn} setFirstLogIn={setFirstLogIn} /> : null}
+        <RoutesWithNotFound>
 
-    <Suspense fallback={<h1>Loding...</h1>}>
-      {firstLogIn ? <UserSingUp firstLogIn={firstLogIn} setFirstLogIn={setFirstLogIn} /> : null}
-      <RoutesWithNotFound>
+          <Route path="/" element={
+            <RouteAccessRole
+              isRolPermited={permission === UserRole.user || permission === UserRole.admin || permission === UserRole.espectador}
+              path={permission === UserRole.cajero ? "/cajero" : (permission === UserRole.delivery ? "/Delivery" : (permission === UserRole.cocinero ? "/cocina" : "/"))}
+            >
+              <Home />
+            </RouteAccessRole>
+          } />
+          <Route element={<AuthGuard />}>
+            <Route path="/private/*" element={<Private permission={permission} />}></Route>
+          </Route>
 
-        <Route path="/" element={
-          <RouteAccessRole
-            isRolPermited={permission === UserRole.user || permission === UserRole.admin || permission === UserRole.espectador}
-            path={permission === UserRole.cajero ? "/cajero" : (permission === UserRole.delivery ? "/Delivery" : (permission === UserRole.cocinero ? "/cocina" : "/"))}
-          >
-            <Home />
-          </RouteAccessRole>
-        } />
-        <Route element={<AuthGuard />}>
-          <Route path="/private/*" element={<Private permission={permission} />}></Route>
-        </Route>
-        <Route
-          path="/productos"
-          element={<Products products={products} categories={categories} />}
-        ></Route>
-        <Route path="/promociones" element={<h1>Promociones</h1>}></Route>
-        <Route
-          path="/productos/:productId"
-          element={<ProductDetails products={products} />}
-        />
-        <Route path="/unauthenticated" element={<Page401 />} />
-      </RoutesWithNotFound>
-    </Suspense>
+          <Route path="/promociones" element={<h1>Promociones</h1>}></Route>
+          <Route
+            path="/productos"
+            element={<Products />}
+          ></Route>
+          <Route path="/promociones" element={<h1>Promociones</h1>}></Route>
+          <Route
+            path="/productos/:type/:productId"
+            element={<ProductDetails />}
+          />
+          <Route path="/unauthenticated" element={<Page401 />} />
+        </RoutesWithNotFound>
+      </Suspense>
+    </>
   );
 };
 

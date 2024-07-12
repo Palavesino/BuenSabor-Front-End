@@ -7,49 +7,55 @@ import CarouselMultiItems from "./CarouselMultiItems/CarouselMultiItems";
 
 // Importaciones de estilos
 import "./ProductDetails.css";
+import { ManufacturedProduct } from "../../../Interfaces/ManufacturedProduct";
+import { useEffect, useState } from "react";
+import { Product } from "../../../Interfaces/Product";
+import { useGenericGetXID } from "../../../Services/useGenericGetXID";
 
-// temporal hasta aplicar apis al componente
-interface Product {
-  id: number;
-  image: string;
-  title: string;
-  link: string;
-  category_id: string;
-}
 
 /**
  * Propiedades del componente ProductDetails. (temporales ya que hay que hay que desarrollar query para los productos relacionados)
  * @prop {Product[]} products - Un array de objetos Product para mostrar el carrusel de productos relacionados.
  */
-interface ProductDetailsProps {
-  products: Product[];
-}
 
 // explicacion del componente
-const ProductDetails: React.FC<ProductDetailsProps> = ({ products }) => {
+const ProductDetails = () => {
   const { productId } = useParams<{ productId: string }>();
+  const { type } = useParams<{ type: string }>();
+  // Estado para almacenar las manufactured-products
+  const [item, setItem] = useState<Product | ManufacturedProduct | null>(
+    type === 'P' ? {} as Product : (type === 'M' ? {} as ManufacturedProduct : null)
+  );
+
+  const data = item !== null ? useGenericGetXID<ManufacturedProduct | Product>(
+    `${type === 'M' ? `/api/manufactured-products/sell` : type === 'P' ? `/api/products/sell` : ''}`,
+    Number(productId), true
+  ) : null;
+
+  useEffect(() => {
+    setItem(data);
+  }, [data]);
 
   if (!productId || isNaN(parseInt(productId))) {
     return <div>No se encontró el producto</div>;
   }
 
-  const parsedProductId = parseInt(productId);
 
-  const product = products.find((p) => p.id === parsedProductId);
-
-  if (!product) {
-    return <div>No se encontró el producto</div>;
-  }
 
   // Renderizado del componente
   return (
-    <div className="product-details-page">
-      <ProductDetailsCard product={product} />
+    <>
+      {item !== null && (
 
-      <h2 className="related-productos-title">Productos relacionados</h2>
-      
-      <CarouselMultiItems items={products} itemsPerSlide={5}/>
-    </div>
+        <div className="product-details-page">
+          <ProductDetailsCard product={item} />
+
+          {/* <h2 className="related-productos-title">Productos relacionados</h2> */}
+
+          {/* <CarouselMultiItems items={Mproducts} itemsPerSlide={5} /> */}
+        </div>
+      )}
+    </>
   );
 };
 

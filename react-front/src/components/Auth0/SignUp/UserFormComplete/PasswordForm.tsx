@@ -2,8 +2,8 @@ import React from "react";
 import { FaUserLock } from "react-icons/fa";
 import { Button, Form, Modal } from "react-bootstrap";
 import { useFormik } from "formik";
-import { ValidationSchemaPassword } from "./Validation/ValidationSchemaPassword";
 import { usePatchUserPassword } from "../hooks/use-PatchUserPassword";
+import { validationSchemaPassword } from "../../../../Util/YupValidation";
 import "./UserSingUp.css";
 
 type RequestBodyType = {
@@ -32,7 +32,7 @@ const PasswordForm: React.FC<PasswordFormProps> = ({ handleNewPass, userSub, set
             password: '',
             confirmPassword: '',
         },
-        validationSchema: ValidationSchemaPassword,
+        validationSchema: validationSchemaPassword,
         validateOnChange: true,
         validateOnBlur: true,
         onSubmit: (values: RequestBodyType) => {
