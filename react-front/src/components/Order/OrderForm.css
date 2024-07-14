@@ -54,22 +54,14 @@
     border: 2px solid black;
 }
 
+.address input,
+.apartment input,
 .phone input {
-    width: 50%;
+    width: 80%;
     max-width: 14rem;
     border: 2px solid black;
 }
 
-.address {
-    margin-top: 1rem;
-    
-}
-
-.address .address-select {
-    width: 50%;
-    max-width: 14rem;
-    border: 2px solid black;
-}
 
 .col-label {
     padding-right: 2rem;

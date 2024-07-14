@@ -13,14 +13,11 @@ const PaymentConfirmation = () => {
     const updatePaidStatus = usePutPaid();
     const queryParams = queryString.parse(location.search);
     const { payment_id, status, preference_id } = queryParams;
-
-
     useEffect(() => {
-        if (status !== null) {
+        if (status !== null && status !== "null") {
             const fetchPaid = async () => {
                 await updatePaidStatus(Number(payment_id), String(preference_id), String(status));
             };
-
             fetchPaid();
         }
     }, [status]);

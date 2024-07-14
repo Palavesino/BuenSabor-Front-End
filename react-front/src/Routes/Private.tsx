@@ -19,7 +19,6 @@ interface Props {
     permission: UserRole;
 }
 export const Private = ({ permission }: Props) => {
-    // console.log(permission);
     return (
         <RoutesWithNotFound>
             <Route path="/user" element={<RouteAccessRole isRolPermited={permission === UserRole.admin} > <UserTable /> </RouteAccessRole>}></Route>
@@ -29,7 +28,6 @@ export const Private = ({ permission }: Props) => {
             <Route path="/categoria" element={<RouteAccessRole isRolPermited={permission === UserRole.admin} > <ListarCategorys /> </RouteAccessRole>}></Route>
             <Route path="/admin" element={<RouteAccessRole isRolPermited={permission === UserRole.admin} > <Menu /> </RouteAccessRole>}></Route>
             <Route path="/carrito" element={<Carrito />}></Route>
-            <Route path="/carrito/:idOrder" element={<Carrito />}></Route>
             <Route path="/products" element={<RouteAccessRole isRolPermited={permission === UserRole.admin} > <ProductTable /> </RouteAccessRole>}></Route>
             <Route path="/profile" element={<RouteAccessRole isRolPermited={permission !== UserRole.espectador} > <UserProfile /> </RouteAccessRole>}></Route>
             <Route path="/payment" element={<RouteAccessRole isRolPermited={permission !== UserRole.espectador} > <PaymentConfirmation /> </RouteAccessRole>}></Route>

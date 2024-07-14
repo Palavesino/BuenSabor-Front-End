@@ -16,27 +16,22 @@ import { OrderStatus } from "../Enum/OrderStatus";
 interface OrderFormProps {
     setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
     show: boolean;
-    idOrder?: number;
 }
 
 
-const OrderForm: React.FC<OrderFormProps> = ({ show, setShowModal, idOrder }) => {
+const OrderForm: React.FC<OrderFormProps> = ({ show, setShowModal }) => {
     const { cart, clearCart } = useCart();
     const { userComplete } = usePermission();
     const [idPreference, setIdPreference] = useState<string>('');
+    const [isDelivery, setIsDelivery] = useState(false);
     const orderPost = useOrderSave(); // Hook personalizado para realizar una petición POST genérica a la API
     const subtotal = cart.reduce((acc, item) => acc + item.subtotal, 0);
     const discount = subtotal > 5000 ? parseFloat((subtotal * 0.1).toFixed(2)) : 0;
-    // useEffect(() => {
-    //     if (idPreference) {
-    //         setShowModal(false);  // Cerrar el modal principal
-    //     }
-    // }, [idPreference]);
+
     const totalCookingTime = cart.reduce((acc, item) => {
         if (item.itemManufacturedProduct && item.itemManufacturedProduct.cookingTime) {
             // Descomponer el tiempo en horas, minutos y segundos
             const [hours, minutes, seconds] = item.itemManufacturedProduct.cookingTime.split(':').map(Number);
-
             // Sumar los tiempos
             acc += hours * 3600 + minutes * 60 + seconds;
         }
@@ -52,10 +47,9 @@ const OrderForm: React.FC<OrderFormProps> = ({ show, setShowModal, idOrder }) =>
     // Crear una cadena con el formato HH:MM:SS
     const totalTimeString = `${totalHours.toString().padStart(2, '0')}:${totalMinutes.toString().padStart(2, '0')}:${totalSeconds.toString().padStart(2, '0')}`;
 
-
     const handleSaveUpdate = async (o: typeof requestBody) => {
         const order: Order = {
-            id: idOrder || 0,
+            id: 0,
             address: o.address,
             apartment: userComplete?.apartment || "",
             discount: discount,
@@ -89,20 +83,19 @@ const OrderForm: React.FC<OrderFormProps> = ({ show, setShowModal, idOrder }) =>
     const requestBody = {
         phone: userComplete?.phone || 0,
         address: userComplete?.address || "",
+        apartment: userComplete?.apartment || "",
         deliveryMethod: "",
         paymentType: "",
 
     };
     const formik = useFormik({
         initialValues: requestBody,
-        validationSchema: validationSchemaOrder,
+        validationSchema: validationSchemaOrder(isDelivery),
         validateOnChange: true,
         validateOnBlur: true,
-        // onSubmit: (values: typeof requestBody) => console.log(JSON.stringify(values)),
+       // onSubmit: (values: typeof requestBody) => console.log(JSON.stringify(values)),
         onSubmit: (values: typeof requestBody) => handleSaveUpdate(values),
     });
-    console.log("idPreference:", idPreference);
-
     return (
         <>
             {!idPreference ? (
@@ -126,7 +119,13 @@ const OrderForm: React.FC<OrderFormProps> = ({ show, setShowModal, idOrder }) =>
                                             name="deliveryMethod"
                                             id="delivery"
                                             value="delivery"
-                                            onChange={formik.handleChange}
+                                            //onChange={handleDeliveryMethodChange}
+                                            onChange={(event) => {
+                                                const input = event.target as HTMLInputElement;
+                                                formik.setFieldValue("deliveryMethod", input.value);
+                                                formik.setFieldValue("paymentType", "");
+                                                setIsDelivery(true);
+                                            }}
                                             className="radio-button"
                                             isInvalid={Boolean(
                                                 formik.errors.deliveryMethod && formik.touched.deliveryMethod
@@ -140,7 +139,12 @@ const OrderForm: React.FC<OrderFormProps> = ({ show, setShowModal, idOrder }) =>
                                             name="deliveryMethod"
                                             id="local"
                                             value="local"
-                                            onChange={formik.handleChange}
+                                            onChange={(event) => {
+                                                const input = event.target as HTMLInputElement;
+                                                formik.setFieldValue("deliveryMethod", input.value);
+                                                formik.setFieldValue("paymentType", "");
+                                                setIsDelivery(false);
+                                            }}
                                             className="radio-button"
                                             isInvalid={Boolean(
                                                 formik.errors.deliveryMethod && formik.touched.deliveryMethod
@@ -154,89 +158,109 @@ const OrderForm: React.FC<OrderFormProps> = ({ show, setShowModal, idOrder }) =>
                                     {formik.errors.deliveryMethod}
                                 </Form.Control.Feedback>
                             </Form.Group>
-                            <Row>
-                                <Col className="phone">
-                                    <Form.Group controlId="formPhone">
-                                        <Form.Label>Teléfono</Form.Label>
-                                        <Form.Control
-                                            placeholder="Teléfono"
-                                            type="number"
-                                            name="phone"
-                                            onChange={formik.handleChange || ""}
-                                            value={formik.values.phone}
-                                            isInvalid={Boolean(
-                                                formik.errors.phone && formik.touched.phone
-                                            )}
-                                        />
-                                        <Form.Control.Feedback type="invalid">
-                                            {formik.errors.phone}
-                                        </Form.Control.Feedback>
-                                    </Form.Group>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col className="address">
-                                    <Form.Group>
-                                        <Form.Select
-                                            name="address"
-                                            onChange={(event) => {
-                                                formik.setFieldValue("address", event.target.value);
-                                            }}
-                                            className="address-select"
-                                            isInvalid={Boolean(
-                                                formik.errors.address && formik.touched.address
-                                            )}
-                                        >
-                                            <option value="">Dirección</option>
-                                            <option value="G">GODOY CRUZ</option>
-                                            <option value="L">LUJAN</option>
-                                            <option value="M">MAIPU</option>
-                                            <option value="O">OTRO</option>
-                                        </Form.Select>
-                                        <Form.Control.Feedback type="invalid">
-                                            {formik.errors.address}
-                                        </Form.Control.Feedback>
-                                    </Form.Group>
-                                </Col>
-                            </Row>
-                            <Form.Group>
-                                <Row className="row-typePay">
-                                    <Col className="col-label">
-                                        <Form.Label>Forma de pago</Form.Label>
+                            {formik.values.deliveryMethod === 'delivery' && (
+                                <Row>
+                                    <Col className="phone">
+                                        <Form.Group controlId="formPhone">
+                                            <Form.Label>Teléfono</Form.Label>
+                                            <Form.Control
+                                                placeholder="Teléfono"
+                                                type="number"
+                                                name="phone"
+                                                onChange={formik.handleChange || ""}
+                                                value={formik.values.phone}
+                                                isInvalid={Boolean(
+                                                    formik.errors.phone && formik.touched.phone
+                                                )}
+                                            />
+                                            <Form.Control.Feedback type="invalid">
+                                                {formik.errors.phone}
+                                            </Form.Control.Feedback>
+                                        </Form.Group>
                                     </Col>
-                                    <Col>
-                                        <Form.Check
-                                            className="radio-button-typePay"
-                                            type="radio"
-                                            label="Mercado Pago"
-                                            name="paymentType"
-                                            id="mercadoPago"
-                                            value="mp"
-                                            onChange={formik.handleChange}
-                                            isInvalid={Boolean(
-                                                formik.errors.paymentType && formik.touched.paymentType
-                                            )}
-                                        />
+                                    <Col className="address">
+                                        <Form.Group>
+                                            <Form.Label>Dirección</Form.Label>
+                                            <Form.Control
+                                                placeholder="Dirección"
+                                                type="text"
+                                                name="address"
+                                                onChange={formik.handleChange}
+                                                value={formik.values.address}
+                                                isInvalid={Boolean(
+                                                    formik.errors.address && formik.touched.address
+                                                )}
+                                            />
+                                            <Form.Control.Feedback type="invalid">
+                                                {formik.errors.address}
+                                            </Form.Control.Feedback>
+                                        </Form.Group>
                                     </Col>
-                                    <Col>
-                                        <Form.Check
-                                            className="radio-button-typePay"
-                                            type="radio"
-                                            label="Efectivo"
-                                            name="paymentType"
-                                            id="cash"
-                                            value="cash"
-                                            onChange={formik.handleChange}
-                                            isInvalid={Boolean(
-                                                formik.errors.paymentType && formik.touched.paymentType
-                                            )}
-                                        />
+                                    <Col className="apartment">
+                                        <Form.Group>
+                                            <Form.Label>Departamento</Form.Label>
+                                            <Form.Control
+                                                placeholder="Departamento"
+                                                type="text"
+                                                name="apartment"
+                                                onChange={formik.handleChange}
+                                                value={formik.values.apartment}
+                                                isInvalid={Boolean(
+                                                    formik.errors.apartment && formik.touched.apartment
+                                                )}
+                                            />
+                                            <Form.Control.Feedback type="invalid">
+                                                {formik.errors.apartment}
+                                            </Form.Control.Feedback>
+                                        </Form.Group>
                                     </Col>
                                 </Row>
-                                <Form.Control.Feedback type="invalid">
-                                    {formik.errors.paymentType}
-                                </Form.Control.Feedback>
-                            </Form.Group>
+                            )}
+                            {formik.values.deliveryMethod !== '' && (
+                                <Form.Group>
+                                    <Row className="row-typePay">
+                                        <Col className="col-label">
+                                            <Form.Label>Forma de pago</Form.Label>
+                                        </Col>
+                                        <Col sm={formik.values.deliveryMethod !== 'local' ? 7 : 5}>
+                                            <Form.Check
+                                                className="radio-button-typePay"
+                                                type="radio"
+                                                label="Mercado Pago"
+                                                name="paymentType"
+                                                id="mercadoPago"
+                                                value="mp"
+                                                checked={formik.values.paymentType === 'mp'}
+                                                onChange={formik.handleChange}
+                                                isInvalid={Boolean(
+                                                    formik.errors.paymentType && formik.touched.paymentType
+                                                )}
+                                            />
+                                        </Col>
+                                        {formik.values.deliveryMethod === 'local' && (
+                                            <Col>
+                                                <Form.Check
+                                                    className="radio-button-typePay"
+                                                    type="radio"
+                                                    label="Efectivo"
+                                                    name="paymentType"
+                                                    id="cash"
+                                                    value="cash"
+                                                    checked={formik.values.paymentType === 'cash'}
+                                                    onChange={formik.handleChange}
+                                                    isInvalid={Boolean(
+                                                        formik.errors.paymentType && formik.touched.paymentType
+                                                    )}
+                                                />
+                                            </Col>
+                                        )}
+                                    </Row>
+                                    <Form.Control.Feedback type="invalid">
+                                        {formik.errors.paymentType}
+                                    </Form.Control.Feedback>
+                                </Form.Group>
+                            )}
+
                             <Row>
                                 <label className="col-label" > Resume de Pedido</label>
                             </Row>

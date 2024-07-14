@@ -6,12 +6,8 @@ import { useCart } from "../../../context/CartContext";
 import { BsCartXFill, BsCartCheckFill } from "react-icons/bs";
 import { useState } from "react";
 import OrderForm from "../../Order/OrderForm";
-import { Order } from "../../../Interfaces/Order";
 
-interface CartTableProps {
-    idOrder?: number;
-}
-const CartTable: React.FC<CartTableProps> = ({ idOrder }) => {
+const CartTable = () => {
     const { cart, removeFromCart, clearCart } = useCart();
     const total = cart.reduce((acc, item) => acc + item.subtotal, 0);
     const [showModal, setShowModal] = useState(false);
@@ -83,7 +79,7 @@ const CartTable: React.FC<CartTableProps> = ({ idOrder }) => {
             )}
 
             {showModal && (
-                <OrderForm show={showModal} setShowModal={setShowModal} idOrder={idOrder} />
+                <OrderForm show={showModal} setShowModal={setShowModal}/>
             )}
         </>
     );

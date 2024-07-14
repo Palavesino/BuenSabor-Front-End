@@ -6,8 +6,6 @@ import { Order } from "../../Interfaces/Order";
 import { ModalType } from "../Enum/ModalType";
 import { useGenericGet } from "../../Services/useGenericGet";
 import { usePermission } from "../../context/PermissionContext";
-import { useCart } from "../../context/CartContext";
-import { useNavigate } from 'react-router-dom';
 import CancelModal from "./CancelModal";
 import { OrderStatus } from "../Enum/OrderStatus";
 
@@ -24,8 +22,6 @@ const OrderUserTable = () => {
     const [showModal, setShowModal] = useState(false);
     // Estado para el tipo de modal
     const [modalType, setModalType] = useState<ModalType>(ModalType.None);
-    const { setCart } = useCart();
-    const navigate = useNavigate();
     const { userComplete } = usePermission();
     // Estado para indicar si es necesario refrescar los datos
     const [refetch, setRefetch] = useState(false);
@@ -57,10 +53,6 @@ const OrderUserTable = () => {
         setShowModal(true);
     };
 
-    const handleEdit = (o: Order) => {
-        setCart(o.orderDetails);
-        navigate(`/private/carrito/${o.id}`);
-    };
     const handleCancel = (o: Order) => {
         handleClick(o, ModalType.Cancel);
     };
@@ -81,11 +73,9 @@ const OrderUserTable = () => {
                         ]}
                         actions={{
                             width: 0.5,
-                            update: true,
                             view: true,
                             cancel: true,
                         }}
-                        onUpdate={handleEdit}
                         onCancel={handleCancel}
                     />
                 </Col>
