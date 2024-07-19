@@ -96,7 +96,7 @@ const NavBar = () => {
               <LoginButton />
             )}
 
-            <Link to="/private/carrito" className="shopping-cart-icon item">
+            <Link to="/carrito" className="shopping-cart-icon item">
               <BsCart3 />
             </Link>
           </Nav>

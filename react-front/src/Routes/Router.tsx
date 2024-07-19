@@ -14,7 +14,7 @@ import { UserSingUp } from "../components/Auth0/SignUp/UserSignUp.tsx";
 const Home = lazy(() => import('../components/Pages/Home/Home'));
 const Private = lazy(() => import('./Private.tsx'));
 const Page401 = lazy(() => import('../components/Pages/401/Page401.tsx'));
-
+const Carrito = lazy(() => import('../components/Pages/Cart/Cart.tsx'));
 
 
 
@@ -43,7 +43,7 @@ const Router = () => {
           <Route element={<AuthGuard />}>
             <Route path="/private/*" element={<Private permission={permission} />}></Route>
           </Route>
-
+          <Route path="/carrito" element={<Carrito />}></Route>
           <Route path="/promociones" element={<h1>Promociones</h1>}></Route>
           <Route
             path="/productos"

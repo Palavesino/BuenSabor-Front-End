@@ -1,12 +1,9 @@
 import { useEffect, useState } from "react";
-import { useAuth0 } from "@auth0/auth0-react";
-
-export const useGenericGet = <T>(
+export const useGenericPublicGet = <T>(
   endpoint: string,
   entidadMsj: string,
   refetch?: boolean
 ) => {
-  const { getAccessTokenSilently } = useAuth0();
 
   const [data, setData] = useState<T[]>([]);
 
@@ -16,11 +13,10 @@ export const useGenericGet = <T>(
 
   const fetchData = async () => {
     try {
-      const token = await getAccessTokenSilently();
       const response = await fetch(`${endpoint}`, {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
         },
       });
 

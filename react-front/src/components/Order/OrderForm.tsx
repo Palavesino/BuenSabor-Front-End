@@ -71,12 +71,9 @@ const OrderForm: React.FC<OrderFormProps> = ({ show, setShowModal }) => {
         if (order.paymentType !== "mp") {
             setShowModal(false);
         } else if (response) {
-            console.log("Response from orderPost: ", JSON.stringify(response, null, 2));
             setIdPreference(response.preferenceId);
         }
         clearCart();
-        //console.log(JSON.stringify(order, null, 2));
-        //setShowModal(false);
     };
 
     // Formik Password

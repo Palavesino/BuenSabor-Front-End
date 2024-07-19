@@ -41,7 +41,6 @@ const UserCompleteForm: React.FC<UserCompleteFormProps> = ({ handleNewUser, setR
                     obj.lastName = userComplete.lastName;
                 }
                 handleSave(obj);
-                // console.log(JSON.stringify(obj, null, 2))
             };
         },
     });

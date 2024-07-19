@@ -10,7 +10,7 @@ import "./ProductDetails.css";
 import { ManufacturedProduct } from "../../../Interfaces/ManufacturedProduct";
 import { useEffect, useState } from "react";
 import { Product } from "../../../Interfaces/Product";
-import { useGenericGetXID } from "../../../Services/useGenericGetXID";
+import { useGenericPublicGetXID } from "../../../Services/useGenericPublicGetXID";
 
 
 /**
@@ -27,7 +27,7 @@ const ProductDetails = () => {
     type === 'P' ? {} as Product : (type === 'M' ? {} as ManufacturedProduct : null)
   );
 
-  const data = item !== null ? useGenericGetXID<ManufacturedProduct | Product>(
+  const data = item !== null ? useGenericPublicGetXID<ManufacturedProduct | Product>(
     `${type === 'M' ? `/api/manufactured-products/sell` : type === 'P' ? `/api/products/sell` : ''}`,
     Number(productId), true
   ) : null;

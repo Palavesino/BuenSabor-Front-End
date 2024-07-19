@@ -10,7 +10,7 @@ import ProductCard from "./ProductCard/ProductCard";
 import { Category } from "../../../Interfaces/Category";
 import { ItemList } from "../../../Interfaces/ItemList";
 import { useGetItems } from "./hook/use-GetItems";
-import { useGenericGet } from "../../../Services/useGenericGet";
+import { useGenericPublicGet } from "../../../Services/useGenericPublicGet";
 
 /*
  * Componente de productos
@@ -26,8 +26,8 @@ const Products = () => {
   // Estado para almacenar las manufactured-products
   const [items, setItems] = useState<ItemList>({ productDTOList: [], manufacturedProductDTOList: [] });
   const getItems = useGetItems();
-  const data = useGenericGet<Category>(
-    "/api/categories/filter/catalogue",
+  const data = useGenericPublicGet<Category>(
+    "/api/categories/public/filter/catalogue",
     "Categorías Product And Manufactured",
 
   );

@@ -1,15 +1,11 @@
-import { useAuth0 } from "@auth0/auth0-react";
 
 export const useGetItems = () => {
-    const { getAccessTokenSilently } = useAuth0();
     const getItems = async () => {
         try {
-            const token = await getAccessTokenSilently();
-            const response = await fetch(`/api/order/items`, {
+            const response = await fetch(`/api/order/public/items`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
                 },
             });
             if (response.ok) {

@@ -6,11 +6,21 @@ import { useCart } from "../../../context/CartContext";
 import { BsCartXFill, BsCartCheckFill } from "react-icons/bs";
 import { useState } from "react";
 import OrderForm from "../../Order/OrderForm";
+import { usePermission } from "../../../context/PermissionContext";
+import { UserRole } from "../../Enum/UserRole";
 
 const CartTable = () => {
+    const { permission } = usePermission();
     const { cart, removeFromCart, clearCart } = useCart();
     const total = cart.reduce((acc, item) => acc + item.subtotal, 0);
     const [showModal, setShowModal] = useState(false);
+    const handleClick = () => {
+        if (permission !== UserRole.espectador) {
+            setShowModal(true);
+        } else {
+            alert("Necesitas Estar Logeada Para Poder comprar");
+        }
+    };
 
     return (
         <>
@@ -72,14 +82,14 @@ const CartTable = () => {
             </Table>
             {cart.length > 0 && (
                 <div className="div-button-buyProduct">
-                    <Button className="button-buyProduct" onClick={() => setShowModal(true)} >
+                    <Button className="button-buyProduct" onClick={handleClick} >
                         Comprar Productos <BsCartCheckFill className="shopping-buy-cart-icon" />
                     </Button>
                 </div>
             )}
 
             {showModal && (
-                <OrderForm show={showModal} setShowModal={setShowModal}/>
+                <OrderForm show={showModal} setShowModal={setShowModal} />
             )}
         </>
     );

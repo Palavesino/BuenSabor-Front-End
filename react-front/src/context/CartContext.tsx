@@ -40,7 +40,6 @@ function useCartReducer() {
 // Proveedor del contexto del carrito
 export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const { state, addToCart, removeFromCart, clearCart, decreaseCartQuantity, setCart } = useCartReducer();
-    console.log(JSON.stringify(state, null, 2));
 
     return (
         <CartContext.Provider value={{ cart: state, setCart, addToCart, removeFromCart, clearCart, decreaseCartQuantity }}>
