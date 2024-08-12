@@ -54,7 +54,7 @@ const OrderForm: React.FC<OrderFormProps> = ({ show, setShowModal }) => {
             apartment: userComplete?.apartment || "",
             discount: discount,
             estimatedTime: totalTimeString,
-            paid: PaymentStatus.IN_PROCESS,
+            paid: o.paymentType !== 'mp' ? PaymentStatus.APPROVED : PaymentStatus.IN_PROCESS,
             state: OrderStatus.PENDING,
             isCanceled: false,
             phone: requestBody.phone as string,
@@ -90,7 +90,7 @@ const OrderForm: React.FC<OrderFormProps> = ({ show, setShowModal }) => {
         validationSchema: validationSchemaOrder(isDelivery),
         validateOnChange: true,
         validateOnBlur: true,
-       // onSubmit: (values: typeof requestBody) => console.log(JSON.stringify(values)),
+        // onSubmit: (values: typeof requestBody) => console.log(JSON.stringify(values)),
         onSubmit: (values: typeof requestBody) => handleSaveUpdate(values),
     });
     return (

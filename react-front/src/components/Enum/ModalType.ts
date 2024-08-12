@@ -9,4 +9,5 @@ export enum ModalType {
   ChangePass,
   ChangeImage,
   Cancel,
+  View
 }

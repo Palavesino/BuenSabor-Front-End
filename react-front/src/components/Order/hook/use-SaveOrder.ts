@@ -1,9 +1,10 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { toast } from "react-toastify";
 import { Order } from "../../../Interfaces/Order";
+import { Bill } from "../../../Interfaces/Bill";
 
 
-const fetchWithAuth = async (url: string, method: string, token: string, body: Order) => {
+const fetchWithAuth = async (url: string, method: string, token: string, body: Order | Bill) => {
     const options: RequestInit = {
         method,
         headers: {
@@ -27,7 +28,12 @@ export const useOrderSave = () => {
         try {
             const token = await getAccessTokenSilently();
             const data = await fetchWithAuth(`/api/order/saveComplete`, "POST", token, obj);
-
+            const requestBody = {
+                id: 0,
+                orderId: data.id,
+                base64: ''
+            }
+            await fetchWithAuth(`/api/bill/save`, "POST", token, requestBody);
             if (obj.paymentType !== "mp") {
                 toast.success("😎 Orden Generada Exitosamente!", { position: "top-center" });
                 return data;

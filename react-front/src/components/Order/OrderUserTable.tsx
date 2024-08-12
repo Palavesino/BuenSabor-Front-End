@@ -8,6 +8,7 @@ import { useGenericGet } from "../../Services/useGenericGet";
 import { usePermission } from "../../context/PermissionContext";
 import CancelModal from "./CancelModal";
 import { OrderStatus } from "../Enum/OrderStatus";
+import ShowBill from "../Bill/ShowBill";
 
 
 /*
@@ -56,6 +57,9 @@ const OrderUserTable = () => {
     const handleCancel = (o: Order) => {
         handleClick(o, ModalType.Cancel);
     };
+    const handleView = (o: Order) => {
+        handleClick(o, ModalType.View);
+    }
     // Renderizado del componente
     return (
         <>
@@ -77,9 +81,10 @@ const OrderUserTable = () => {
                             cancel: true,
                         }}
                         onCancel={handleCancel}
+                        onView={handleView}
                     />
                 </Col>
-                {showModal && (
+                {(showModal && modalType === ModalType.Cancel) && (
                     <CancelModal
                         state={state}
                         idOrder={idOrder}
@@ -87,6 +92,13 @@ const OrderUserTable = () => {
                         onHide={() => setShowModal(false)}
                         setRefetch={setRefetch}
                         modalType={modalType}
+                    />
+                )}
+                {(showModal && modalType === ModalType.View) && (
+                    <ShowBill
+                        onHide={() => setShowModal(false)}
+                        orderId={idOrder}
+                        show={showModal}
                     />
                 )}
             </Row>

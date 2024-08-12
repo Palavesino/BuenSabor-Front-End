@@ -17,7 +17,6 @@ const Page401 = lazy(() => import('../components/Pages/401/Page401.tsx'));
 const Carrito = lazy(() => import('../components/Pages/Cart/Cart.tsx'));
 
 
-
 const Router = () => {
   const { permission } = usePermission();
   //Inicializar una variable con un valor obtenido del almacenamiento local, o true si no hay ningún valor almacenado.
