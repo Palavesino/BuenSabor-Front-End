@@ -11,8 +11,7 @@ interface WalletMPProps {
 
 const WalletMP: React.FC<WalletMPProps> = ({ preferenceId, show }) => {
     useEffect(() => {
-        // initMercadoPago('TEST-2e745a9d-9ee7-473f-a7a2-d539c36f2f22', { locale: 'es-AR' });
-        initMercadoPago('APP_USR-4166ca93-9a80-4d5a-8e33-cff21c055ee0', { locale: 'es-AR' });
+        initMercadoPago( import.meta.env.VITE_MP_PUBLIC_KEY || "", { locale: 'es-AR' });
     }, []);
 
     return (
