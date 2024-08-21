@@ -64,7 +64,7 @@ const ProductForm: React.FC<ProductModalProps> = ({
       if (data2 && Object.keys(data2).length > 0) {
         formik.setFieldValue("product.price", data2);
         const fetchImage = async () => {
-          const requestBody: Image = await getImage(formik.values.product.id, "p");
+          const requestBody: Image = await getImage(formik.values.product.id, "P");
           setOldImage(requestBody)
         };
         fetchImage();

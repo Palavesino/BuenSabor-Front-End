@@ -1,0 +1,47 @@
+.title {
+    font-family:cursive;
+    font-weight: bold;
+    font-size: 18px; 
+    margin-left: 45%;
+    padding: 0;
+  }
+  .table-ingredients-container{
+    max-height: 18.75rem; 
+    overflow: auto; 
+  }
+  .button-add {
+    width: 10%;
+    border-radius: 5px; 
+    padding: 0;
+    margin-top: 10px; 
+    
+  }
+  .td-denomination {
+    text-align: center;     
+  }
+  
+  .td-unit {
+    width: 25%; 
+  }
+  
+  .td-quantity {
+    width: 15%; 
+  }
+  
+  .td-button-delete {
+    width: 10%; 
+    vertical-align: middle;
+    text-align: center;     
+  }
+  
+  .button-delete-ingredient {
+    font-size: 35px;
+    padding: 0;
+    margin: 0; 
+  }
+  .button-delete-ingredient:hover {
+    color: red;
+    transition: 0.3s;
+  }
+
+  

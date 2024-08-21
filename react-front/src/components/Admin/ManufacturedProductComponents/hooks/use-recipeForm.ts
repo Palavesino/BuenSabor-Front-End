@@ -44,7 +44,7 @@ const GetRecipeForm = () => {
       // Verifica si la respuesta es exitosa
       if (response.ok) {
         if (edit) {
-          const image: Image = await getImage(obj.manufacturedProduct.id, "mp");
+          const image: Image = await getImage(obj.manufacturedProduct.id, "M");
           // Realiza una solicitud POST para insertar la imagen
           if (obj.file) {
             await changeImage(3, obj.manufacturedProduct.id, obj.file, true, false, image.id);

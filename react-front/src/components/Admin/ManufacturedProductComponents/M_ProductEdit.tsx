@@ -40,7 +40,7 @@ const M_ProductEdit: React.FC<M_ProductEditProps> = ({
       setCategories(data);
       // Obtener la imagen cuando se obtengan las categorías
       const fetchImage = async () => {
-        const imageData = await getImage(formik.values.manufacturedProduct.id, "mp");
+        const imageData = await getImage(formik.values.manufacturedProduct.id, "M");
         setImage(imageData);
       };
       fetchImage();

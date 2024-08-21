@@ -20,7 +20,7 @@ const UserProfile = () => {
     useEffect(() => {
         const fetchUserComplete = async () => {
             if (userComplete) {
-                const imageData = await getImage(userComplete.id, "u");
+                const imageData = await getImage(userComplete.id, "U");
                 setImage(imageData);
             }
         };
@@ -52,7 +52,10 @@ const UserProfile = () => {
                                 <Card.Body>
                                     <div className='profile-Body-div'>
                                         {(image) ? (
-                                            <Image className='profile-image' src={`data:image/jpg;base64,${image?.base64}`} roundedCircle />
+                                            <>
+                                            <Image className='profile-image' src={`../../../uploads/users/${image?.name}`} roundedCircle />
+                                            </>
+                                            
                                         ) : (
                                             <FaUserCircle className='profile-image' />
                                         )}

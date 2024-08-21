@@ -10,6 +10,7 @@ import { useGenericChangeStatus } from "../../../Services/useGenericChangeStatus
 import GetRecipeForm from "./hooks/use-recipeForm";
 import M_ProductEdit from "./M_ProductEdit";
 import { validationSchemaManufacturedProduct } from "../../../Util/YupValidation";
+import Step_4_form from "./Step_4_form";
 
 interface MproductModalProps {
     show: boolean; // Indica si el modal debe mostrarse o no
@@ -55,14 +56,13 @@ const MP_Form: React.FC<MproductModalProps> = ({
             denomination: "",
             description: "",
             steps: [],
+            ingredients: [],
         },
         image: {
             id: 0,
             name: "",
-            productId: null,
-            userId: null,
-            manufacturedProductId: Mproduct.id,
-            base64: "",
+            relationType: "",
+            relationId: Mproduct.id,
         },
         file: null,
     };
@@ -87,10 +87,13 @@ const MP_Form: React.FC<MproductModalProps> = ({
     // Configuración y gestión del formulario con Formik
     const formik = useFormik({
         initialValues: recipeXmproduct,
-        validationSchema: validationSchemaManufacturedProduct(),
+        //  validationSchema: validationSchemaManufacturedProduct(),
         validateOnChange: true,
         validateOnBlur: true,
-        onSubmit: (obj: MproductXRecipe) => handleSaveUpdate(obj),
+        //   onSubmit: (obj: MproductXRecipe) => handleSaveUpdate(obj),
+        onSubmit: (obj: MproductXRecipe) => {
+            console.log(JSON.stringify(obj, null, 2));
+        },
     });
     // Renderiza el componente correspondiente al paso actual del formulario
     let componentToRender;
@@ -107,6 +110,12 @@ const MP_Form: React.FC<MproductModalProps> = ({
             );
             break;
         case 3:
+            title = "Lista de Ingredientes";
+            componentToRender = (
+                <Step_4_form formik={formik} previousStep={() => SetStep(step - 1)} nextStep={() => SetStep(step + 1)} />
+            );
+            break;
+        case 4:
             title = "Lista de Pasos";
             componentToRender = (
                 <Step_3_form formik={formik} previousStep={() => SetStep(step - 1)} />

@@ -1,4 +1,5 @@
 import { Image } from "./Image";
+import { Ingredient } from "./Ingredient";
 import { Price } from "./Price";
 
 export interface ManufacturedProduct {
@@ -17,11 +18,15 @@ export interface Recipe {
   description: string;
   manufacturedProductId: number;
   steps: recipeSteps[];
+  ingredients: IngredientXQuantity[];
 }
 export interface recipeSteps {
   description: string;
 }
-
+export interface IngredientXQuantity {
+  ingredient: Ingredient;
+  quantity:number;
+}
 export interface MproductXRecipe {
   manufacturedProduct: ManufacturedProduct;
   recipe: Recipe;

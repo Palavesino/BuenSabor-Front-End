@@ -7,13 +7,20 @@ export const usePostImage = () => {
         try {
             let accessToken = await getAccessTokenSilently();
             const formData = new FormData();
+            let relationType = filter === 1
+                ? "U"
+                : (filter === 2 ? "P"
+                    : "M"
+                )
+            formData.append('relationType', relationType);
+            formData.append('relationId', idFilter.toString());
             if (file) {
                 formData.append('imageFile', file, file.name);
             } else {
                 console.error("No se encuentra archivo")
             }
             if (edit) {
-                const imageResponse = await fetch(`/api/images/replace-image/${filter}/${idFilter}/${idImage}`, {
+                const imageResponse = await fetch(`/api/images/replace-image/${idImage}`, {
                     method: 'POST',
                     headers: {
                         Authorization: `Bearer ${accessToken}`,
@@ -28,7 +35,7 @@ export const usePostImage = () => {
                     toast.success(`😎 Editado Exitosamente!`, { position: "top-center" });
                 }
             } else {
-                const response = await fetch(`/api/images/save-image/${filter}/${idFilter}`, {
+                const response = await fetch(`/api/images/save-image`, {
                     method: 'POST',
                     headers: {
                         Authorization: `Bearer ${accessToken}`,

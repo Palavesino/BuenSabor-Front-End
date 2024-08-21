@@ -4,8 +4,8 @@ export const useGetImageId = () => {
     const GetImageId = async (id: number, filter: string) => {
         try {
             let accessToken = await getAccessTokenSilently();
-
-            const response = await fetch(`/api/images/${filter}/${id}`, {
+                                     
+            const response = await fetch(`/api/images/filter/${filter}/${id}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
