@@ -10,6 +10,7 @@ import WalletMP from "./WalletMP";
 import { validationSchemaOrder } from "../../Util/YupValidation";
 import { PaymentStatus } from "../Enum/Paid";
 import { OrderStatus } from "../Enum/OrderStatus";
+import { useSendEmail } from "../Bill/hook/use-SendEmail";
 
 
 
@@ -25,6 +26,7 @@ const OrderForm: React.FC<OrderFormProps> = ({ show, setShowModal }) => {
     const [idPreference, setIdPreference] = useState<string>('');
     const [isDelivery, setIsDelivery] = useState(false);
     const orderPost = useOrderSave(); // Hook personalizado para realizar una petición POST genérica a la API
+    const sendEmail = useSendEmail(); // Hook personalizado para realizar una petición POST genérica a la API
     const subtotal = cart.reduce((acc, item) => acc + item.subtotal, 0);
     const discount = subtotal > 5000 ? parseFloat((subtotal * 0.1).toFixed(2)) : 0;
 
@@ -68,10 +70,15 @@ const OrderForm: React.FC<OrderFormProps> = ({ show, setShowModal }) => {
 
         }
         const response = await orderPost(order);
-        if (order.paymentType !== "mp") {
-            setShowModal(false);
-        } else if (response) {
-            setIdPreference(response.preferenceId);
+        if (response) {
+            if (order.paymentType === "mp") {
+                setIdPreference(response.preferenceId);
+                order.id = response.orderId
+            }else {
+                order.id = response.id
+                setShowModal(false);
+            }
+         await sendEmail(order.id);
         }
         clearCart();
     };

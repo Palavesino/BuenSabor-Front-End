@@ -3,5 +3,5 @@ export interface ItemPaymentMarketDTO {
     preferenceId: string | null;
     paymentID: number | null;
     status: string | null;
-    // orderId: number;
+    orderId: number;
 }
