@@ -56,7 +56,7 @@ const MP_Form: React.FC<MproductModalProps> = ({
             denomination: "",
             description: "",
             steps: [],
-            ingredients: [],
+            ingredientsQuantity: [],
         },
         image: {
             id: 0,
@@ -87,13 +87,13 @@ const MP_Form: React.FC<MproductModalProps> = ({
     // Configuración y gestión del formulario con Formik
     const formik = useFormik({
         initialValues: recipeXmproduct,
-        //  validationSchema: validationSchemaManufacturedProduct(),
+        validationSchema: validationSchemaManufacturedProduct(),
         validateOnChange: true,
         validateOnBlur: true,
-        //   onSubmit: (obj: MproductXRecipe) => handleSaveUpdate(obj),
-        onSubmit: (obj: MproductXRecipe) => {
-            console.log(JSON.stringify(obj, null, 2));
-        },
+        onSubmit: (obj: MproductXRecipe) => handleSaveUpdate(obj),
+        // onSubmit: (obj: MproductXRecipe) => {
+        //     console.log(JSON.stringify(obj, null, 2));
+        // },
     });
     // Renderiza el componente correspondiente al paso actual del formulario
     let componentToRender;

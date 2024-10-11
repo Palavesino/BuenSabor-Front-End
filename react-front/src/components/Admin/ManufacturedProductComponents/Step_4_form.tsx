@@ -35,7 +35,7 @@ const Step_4_form: React.FC<Step4Props> = ({ formik, previousStep, nextStep }) =
 
     if (!selectedIngredient) return;
 
-    const currentIngredients = formik.values.recipe.ingredients || [];
+    const currentIngredients = formik.values.recipe.ingredientsQuantity || [];
     const isDuplicate = currentIngredients.some(
       (item) => item.ingredient.id === selectedIngredient.id
     );
@@ -50,19 +50,19 @@ const Step_4_form: React.FC<Step4Props> = ({ formik, previousStep, nextStep }) =
       { ingredient: selectedIngredient, quantity: 0 },
     ];
 
-    formik.setFieldValue("recipe.ingredients", updatedIngredients);
+    formik.setFieldValue("recipe.ingredientsQuantity", updatedIngredients);
     setIngredientId("");
   };
   // Función para eliminar un Ingrediente de la lista de Ingredientes en el formulario
   const removeIngredient = (index: number) => {
-    const updatedIngredient = [...formik.values.recipe.ingredients];
+    const updatedIngredient = [...formik.values.recipe.ingredientsQuantity];
     updatedIngredient.splice(index, 1);
-    formik.setFieldValue("recipe.ingredients", updatedIngredient);
+    formik.setFieldValue("recipe.ingredientsQuantity", updatedIngredient);
   };
   const handleQuantityChange = (index: number, value: number) => {
-    const updatedIngredients = [...formik.values.recipe.ingredients];
+    const updatedIngredients = [...formik.values.recipe.ingredientsQuantity];
     updatedIngredients[index].quantity = value;
-    formik.setFieldValue("recipe.ingredients", updatedIngredients);
+    formik.setFieldValue("recipe.ingredientsQuantity", updatedIngredients);
   };
 
 
@@ -74,13 +74,13 @@ const Step_4_form: React.FC<Step4Props> = ({ formik, previousStep, nextStep }) =
           <Form.Group>
             <Form.Label>Ingrediente</Form.Label>
             <Form.Control
-              name="recipe.ingredients"
+              name="recipe.ingredientsQuantity.ingredient.id"
               as="select"
               value={ingredientId || ""}
               onChange={(e) => setIngredientId(e.target.value)}
               isInvalid={
-                formik.touched.recipe?.ingredients &&
-                !!formik.errors.recipe?.ingredients
+                formik.touched.recipe?.ingredientsQuantity &&
+                !!formik.errors.recipe?.ingredientsQuantity
               }
             >
               <option value={0}>Seleccionar</option>
@@ -91,7 +91,7 @@ const Step_4_form: React.FC<Step4Props> = ({ formik, previousStep, nextStep }) =
               ))}
             </Form.Control>
             <Form.Control.Feedback type="invalid">
-              {formik.errors.recipe?.ingredients ? (
+              {formik.errors.recipe?.ingredientsQuantity ? (
                 'Debe haber al menos 3 ingredientes en la receta'
               ) : null}
             </Form.Control.Feedback>
@@ -119,16 +119,16 @@ const Step_4_form: React.FC<Step4Props> = ({ formik, previousStep, nextStep }) =
                 </tr>
               </thead>
               <tbody>
-                {formik.values.recipe.ingredients.map((ingredientXQuantity, index) => (
+                {formik.values.recipe.ingredientsQuantity.map((ingredientXQuantity, index) => (
                   <tr key={index}>
                     <td>{ingredientXQuantity.ingredient.denomination}</td>
                     <td>{ingredientXQuantity.ingredient.unit}</td>
                     <td>
                       <Form.Control
                         type="number"
-                        value={ingredientXQuantity.quantity || 0}
+                        value={ingredientXQuantity.quantity || 1}
                         onChange={(e) => handleQuantityChange(index, parseFloat(e.target.value))}
-                        min="0"
+                        min="1"
                       />
                     </td>
                     <td className="td-button-delete">

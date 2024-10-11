@@ -1,6 +1,6 @@
 import { Image } from "./Image";
-import { Ingredient } from "./Ingredient";
 import { Price } from "./Price";
+import { Recipe } from "./Recipe";
 
 export interface ManufacturedProduct {
   id: number;
@@ -11,21 +11,6 @@ export interface ManufacturedProduct {
   cookingTime: string;
   price: Price
   quantity?: number;
-}
-export interface Recipe {
-  id: number;
-  denomination: string;
-  description: string;
-  manufacturedProductId: number;
-  steps: recipeSteps[];
-  ingredients: IngredientXQuantity[];
-}
-export interface recipeSteps {
-  description: string;
-}
-export interface IngredientXQuantity {
-  ingredient: Ingredient;
-  quantity:number;
 }
 export interface MproductXRecipe {
   manufacturedProduct: ManufacturedProduct;

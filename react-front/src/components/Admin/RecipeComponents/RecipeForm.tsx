@@ -4,11 +4,12 @@ import { useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { useGenericPut } from "../../../Services/useGenericPut";
 import { ModalType } from "../../Enum/ModalType";
-import { Recipe } from "../../../Interfaces/ManufacturedProduct";
 import Step_2_recipeForm from "./Step_2_recipeForm";
 import Step_1_recipeForm from "./Step_1_recipeForm";
 import { useGenericGetXID } from "../../../Services/useGenericGetXID";
 import { validationSchemaRecipe } from "../../../Util/YupValidation";
+import { Recipe } from "../../../Interfaces/Recipe";
+import Step_3_recipeForm from "./Step_3_recipeForm";
 
 interface RecipeFormProps {
   show: boolean; // Indica si el modal debe mostrarse o no
@@ -40,6 +41,7 @@ const RecipeForm: React.FC<RecipeFormProps> = ({
     denomination: " ",
     description: "",
     steps: [],
+    ingredientsQuantity: []
   });
   // Hook personalizado para realizar una petición Get genérica a la API
   const data = useGenericGetXID<Recipe>(
@@ -89,6 +91,15 @@ const RecipeForm: React.FC<RecipeFormProps> = ({
       );
       break;
     case 2:
+      title = "Lista de Pasos";
+      componentToRender = (
+        <Step_3_recipeForm formik={formik}
+          previousStep={() => SetStep(step - 1)}
+          nextStep={() => SetStep(step + 1)}
+        />
+      );
+      break;
+    case 3:
       title = "Lista de Pasos";
       componentToRender = (
         <Step_2_recipeForm

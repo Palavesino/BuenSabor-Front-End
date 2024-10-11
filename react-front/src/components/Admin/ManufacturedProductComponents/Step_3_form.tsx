@@ -22,7 +22,10 @@ const Step_3_form: React.FC<Step3Props> = ({ formik, previousStep }) => {
         if (step) {
             const currentSteps = formik.values.recipe.steps || [];
             // Agregar el paso actual al array de pasos
-            const updatedSteps = [...currentSteps, { description: step }];
+            const updatedSteps = [
+                ...currentSteps,
+                { description: step, stepNumber: currentSteps.length + 1 }
+            ];
             // Actualizar el valor del campo en Formik con los pasos actualizados
             formik.setFieldValue("recipe.steps", updatedSteps);
             // Limpiar la entrada del paso después de agregarlo al array de pasos
@@ -33,8 +36,17 @@ const Step_3_form: React.FC<Step3Props> = ({ formik, previousStep }) => {
     // Función para eliminar un paso de la lista de pasos en el formulario
     const removeStep = (index: number) => {
         const updatedSteps = [...formik.values.recipe.steps];
-        updatedSteps.splice(index, 1); // Eliminar el elemento en el índice dado
-        formik.setFieldValue("recipe.steps", updatedSteps);
+        
+        // Eliminar el paso en el índice dado
+        updatedSteps.splice(index, 1);
+        
+        // Recalcular los stepNumber para los pasos restantes
+        const recalculatedSteps = updatedSteps.map((step, i) => ({
+            ...step,
+            stepNumber: i + 1 
+        }));
+    
+        formik.setFieldValue("recipe.steps", recalculatedSteps);
     };
 
     // Renderizado del componente

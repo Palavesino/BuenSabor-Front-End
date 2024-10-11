@@ -1,6 +1,6 @@
-import { Recipe } from "../../../Interfaces/ManufacturedProduct";
 import { FormikProps } from "formik";
 import { Button, Col, Form, Row, Modal } from "react-bootstrap";
+import { Recipe } from "../../../Interfaces/Recipe";
 interface Step_1_recipeFormProps {
   nextStep: () => void;//Una función que avanza al siguiente paso del formulario.
   formik: FormikProps<Recipe>;// Proporciona acceso a las funciones y estados de Formik para manejar el estado del formulario.

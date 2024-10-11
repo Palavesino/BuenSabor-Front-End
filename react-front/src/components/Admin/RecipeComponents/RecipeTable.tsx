@@ -6,7 +6,7 @@ import { useGenericGet } from "../../../Services/useGenericGet";
 import { ModalType } from "../../Enum/ModalType";
 import Menu from "../Menu";
 import { Row, Col } from "react-bootstrap";
-import { Recipe } from "../../../Interfaces/ManufacturedProduct";
+import { Recipe } from "../../../Interfaces/Recipe";
 
 /*
   El componente RecipesTable se encarga de mostrar una tabla de recetas y
@@ -29,6 +29,7 @@ const RecipesTable = () => {
     denomination: "",
     description: "",
     steps: [],
+    ingredientsQuantity: []
   });
   // Estado para almacenar el título del modal
   const [title, setTitle] = useState("");

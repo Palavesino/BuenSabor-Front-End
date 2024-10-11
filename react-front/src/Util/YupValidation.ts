@@ -78,8 +78,11 @@ export const validationSchemaManufacturedProduct = () => {
             description: Yup.string().required("La Descripción es requerida"),
             cookingTime: Yup.string().required("El tiempo de preparado es requerido"),
             price: Yup.object().shape({
-                sellPrice: Yup.number().required("El Precio de Venta es requerido").min(0, "No puede Ingresar Valor Negativo"),
                 costPrice: Yup.number().required("El Precio de Costo es requerido").min(0, "No puede Ingresar Valor Negativo"),
+                sellPrice: Yup.number().required("El Precio de Venta es requerido").min(
+                    Yup.ref("costPrice"),
+                    "El Precio de Venta no puede ser menor al Precio de Costo"
+                ),
             }),
         }),
         recipe:
@@ -99,6 +102,13 @@ export const validationSchemaManufacturedProduct = () => {
                                 })
                             )
                             .min(3, 'Debe haber al menos 3 pasos en la receta'),
+                        ingredientsQuantity: Yup.array()
+                            .of(
+                                Yup.object().shape({
+                                    quantity: Yup.number().required("Cantidad es requerido").min(0, "No puede Ingresar Valor Negativo"),
+                                })
+                            )
+                            .min(3, 'Debe haber al menos 3 Ingredientes en la receta'),
                     }),
             }),
         file: Yup.mixed().when("manufacturedProduct.id", (id: unknown, schema) => {
@@ -193,6 +203,13 @@ export const validationSchemaRecipe = () => {
                 })
             )
             .min(3, 'Debe haber al menos 3 pasos en la receta'),
+        ingredientsQuantity: Yup.array()
+            .of(
+                Yup.object().shape({
+                    quantity: Yup.number().required("Cantidad es requerido").min(0, "No puede Ingresar Valor Negativo"),
+                })
+            )
+            .min(3, 'Debe haber al menos 3 Ingredientes en la receta'),
     });
 };
 
@@ -234,15 +251,15 @@ export const validationSchemaUser = (modalType: ModalType, checkEmailExists: (em
     }
 };
 
-export const validationSchemaOrder = (isDelivery : boolean) => {
+export const validationSchemaOrder = (isDelivery: boolean) => {
     return Yup.object().shape({
         deliveryMethod: Yup.string()
             .required("El método de entrega es requerido"),
-            phone: isDelivery ? Yup.string().required('El teléfono es requerido')
+        phone: isDelivery ? Yup.string().required('El teléfono es requerido')
             .matches(/^[0-9]+$/, 'El número de teléfono solo puede contener dígitos')
             .min(10, 'El número de teléfono debe tener al menos 10 dígitos') : Yup.string(),
-            address: isDelivery ? Yup.string().required('La dirección es requerida') : Yup.string(),
-            apartment: isDelivery ? Yup.string().required('El apartamento es requerido') : Yup.string(),
+        address: isDelivery ? Yup.string().required('La dirección es requerida') : Yup.string(),
+        apartment: isDelivery ? Yup.string().required('El apartamento es requerido') : Yup.string(),
         paymentType: Yup.string()
             .required("La forma de pago es requerida")
     });

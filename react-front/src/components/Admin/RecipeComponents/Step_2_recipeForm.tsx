@@ -1,9 +1,9 @@
 import { FormikProps } from "formik";
 import { Button, Col, Form, Row, Modal } from "react-bootstrap";
 import { useState } from "react";
-import { Recipe } from "../../../Interfaces/ManufacturedProduct";
 import { TiDelete } from "react-icons/ti";
 import "../ManufacturedProductComponents/Step_3_form.css";
+import { Recipe } from "../../../Interfaces/Recipe";
 interface Step_2_recipeFormProps {
     previousStep: () => void;//Una función que retrocede al anterior paso del formulario.
     formik: FormikProps<Recipe>;// Proporciona acceso a las funciones y estados de Formik para manejar el estado del formulario.
@@ -17,18 +17,30 @@ const Step_2_recipeForm: React.FC<Step_2_recipeFormProps> = ({ formik, previousS
     const addStep = () => {
         if (step) {
             const currentSteps = formik.values.steps || [];
-            // Agrega el paso actual a la matriz de pasos
-            const updatedSteps = [...currentSteps, { description: step }];
-            // Actualiza el valor del campo Formik con los pasos actualizados
+            // Agregar el paso actual al array de pasos
+            const updatedSteps = [
+                ...currentSteps,
+                { description: step, stepNumber: currentSteps.length + 1 }
+            ];
+            // Actualizar el valor del campo en Formik con los pasos actualizados
             formik.setFieldValue("steps", updatedSteps);
-            // Borra la entrada del paso después de agregarla a la matriz de pasos
+            // Limpiar la entrada del paso después de agregarlo al array de pasos
             setStep("");
         }
     };
     const removeStep = (index: number) => {
         const updatedSteps = [...formik.values.steps];
-        updatedSteps.splice(index, 1); // Eliminar el elemento en el índice dado
-        formik.setFieldValue("steps", updatedSteps);
+
+        // Eliminar el paso en el índice dado
+        updatedSteps.splice(index, 1);
+
+        // Recalcular los stepNumber para los pasos restantes
+        const recalculatedSteps = updatedSteps.map((step, i) => ({
+            ...step,
+            stepNumber: i + 1
+        }));
+
+        formik.setFieldValue("steps", recalculatedSteps);
     };
 
 
