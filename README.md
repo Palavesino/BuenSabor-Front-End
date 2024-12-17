@@ -14,3 +14,18 @@ Dicen que la glotonería es un pecado, si eso es cierto te invitamos a entrar y 
 - Palavesino Facundo
 - Kevin Dallas
 - Emanuel Toledo
+
+## Links de Figma  
+
+- [Wireframe](https://www.figma.com/file/6mYNITqJrCvFjz5QXaYxal/El-Buen-Sabor?node-id=0-1&t=DpR56qB2K5XJi0m1-0)
+- [Diseño](https://www.figma.com/file/6mYNITqJrCvFjz5QXaYxal/El-Buen-Sabor?type=design&node-id=33%3A36&mode=design&t=CCl56FciA65z1iY8-1)
+  
+## Link de BackEnd  
+- [BackEnd](https://github.com/EmaToledo/BuenSabor-Back-End)
+
+## Tecnologías
+[![](https://github.com/Palavesino/Curso-Egg/blob/master/java2.png?raw=true)](https://www.java.com/es/)
+[![](https://github.com/Palavesino/Curso-Egg/blob/master/mysql.png?raw=true)](https://www.mysql.com/)
+[![](https://github.com/Palavesino/Curso-Egg/blob/master/Spring_boot.png?raw=true)](https://spring.io/)
+[![](https://github.com/Palavesino/Curso-Egg/blob/master/js%20ultimate%2010.jpg?raw=true)](https://developer.mozilla.org/es/docs/Web/JavaScript)
+[![](https://github.com/Palavesino/Curso-Egg/blob/master/react.png?raw=true)](https://es.reactjs.org/)
