@@ -17,8 +17,8 @@ export interface Recipe {
   denomination: string;
   description: string;
   manufacturedProductId: number;
-  steps: recipeSteps[];
-  ingredients: IngredientXQuantity[];
+  steps: recipeSteps[] | null;
+  ingredients: Ingredient[] | null;
 }
 export interface recipeSteps {
   description: string;
@@ -33,3 +33,4 @@ export interface MproductXRecipe {
   image: Image;
   file: File | null;
 }
+

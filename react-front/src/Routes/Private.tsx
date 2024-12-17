@@ -14,6 +14,12 @@ const ProductTable = lazy(() => import('../components/Admin/ProductComponents/Pr
 const UserProfile = lazy(() => import('../components/Profile/UserProfile.tsx'));
 const PaymentConfirmation = lazy(() => import('../components/Pages/PaymentMP/PaymentConfirmation.tsx'));
 const OrderUserTable = lazy(() => import('../components/Order/OrderUserTable.tsx'));
+const Cajero = lazy(() => import('../components/Cajero/Cajero.tsx'));
+const Delivery = lazy(() => import('../components/Delivery/Delivery.tsx'));
+const Cocinero = lazy(() => import('../components/Cocinero/Cocinero.tsx'));
+
+const Estadistica = lazy(() => import('../components/Admin/Estadisticas/EstadisticaProduct.tsx'));
+
 interface Props {
     permission: UserRole;
 }
@@ -30,6 +36,11 @@ export const Private = ({ permission }: Props) => {
             <Route path="/profile" element={<RouteAccessRole isRolPermited={permission !== UserRole.espectador} > <UserProfile /> </RouteAccessRole>}></Route>
             <Route path="/payment" element={<RouteAccessRole isRolPermited={permission !== UserRole.espectador} > <PaymentConfirmation /> </RouteAccessRole>}></Route>
             <Route path="/user/orders" element={<RouteAccessRole isRolPermited={permission !== UserRole.espectador} > <OrderUserTable /> </RouteAccessRole>}></Route>
+            <Route path="/cajero" element={<RouteAccessRole isRolPermited={permission === UserRole.cajero} > <Cajero /> </RouteAccessRole>}></Route>
+            <Route path="/delivery" element={<RouteAccessRole isRolPermited={permission === UserRole.delivery} > <Delivery /> </RouteAccessRole>}></Route>
+            <Route path="/cocinero" element={<RouteAccessRole isRolPermited={permission === UserRole.cocinero} > <Cocinero /> </RouteAccessRole>}></Route>
+            
+            <Route path="/estadistica" element={<RouteAccessRole isRolPermited={permission === UserRole.admin} > <Estadistica /> </RouteAccessRole>}></Route>
         </RoutesWithNotFound>
     )
 }

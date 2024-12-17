@@ -1,0 +1,112 @@
+.buttonexport{
+    background: linear-gradient(150deg,  #f6bd5a, black);
+    color: white;
+    border-Radius: 10px;
+    padding: 5px;
+    margin-top: 20px;
+}
+
+.buttonexport:hover{
+    background: linear-gradient(150deg, #5d5d5d,  #eea629);
+    color: black;
+}
+
+.Fechaimputs {
+    font-size: 1rem; 
+    padding: 6px; 
+    border: 2px solid #f6bd5a; 
+    border-radius: 8px; 
+    background-color: #ffffff; 
+    color: #000000; 
+    cursor: pointer; 
+  }
+  
+  
+  .Fechaimputs:hover {
+    border-color: #d89e45;
+    background-color: #ffeccb;
+  }
+  
+  
+.ButtonFilter {
+  font-size: 1rem; 
+  padding: 6px;
+  margin-left: 10px;
+  border: 2px solid #f6bd5a; 
+  border-radius: 8px; 
+  background-color: #ffffff;
+  color: #000000; 
+  cursor: pointer; 
+}
+  
+  .ButtonFilter:hover {
+    border-color: #d89e45;
+    background-color: #ffeccb;
+  }
+
+  .custom-select {
+    background-color: #f6bd5a;
+    color: white;
+    border: 2px solid #d89e45;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 200px;
+  }
+  
+  .custom-select:hover {
+    background-color: #d89e45;
+  }
+  
+  .custom-option {
+    background-color: white;
+    color: black;
+    padding: 10px;
+  }
+  
+  .custom-option:hover {
+    background-color: #d89e45;
+    color: white;
+  }
+
+  .rounded-select {
+    border: 1px solid orange; 
+    border-radius: 8px; 
+    padding: 5px 10px; 
+    background-color: white; 
+    color: black; 
+    font-size: 15px; 
+    cursor: pointer; 
+  }
+  
+  .rounded-select:hover{
+    background:  #ffeccb;
+    border-color: darkorange; 
+  }
+  
+  .custom-option{
+    background: #ffeccb;
+  }
+
+.Blockingreso{
+  flex: 1;
+    background-Color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-Radius: 8px;
+    padding: 1rem;
+    text-align: center;
+    box-Shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.Vpedido{
+  background-color: #5181c9; 
+    border-color: #244980;     
+    color: black;   
+    border-radius: 5px;  
+    padding: 5px;  
+}
+
+.Vpedido:hover{
+  background-color: #2968c7; 
+}

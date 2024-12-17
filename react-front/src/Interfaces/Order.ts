@@ -18,6 +18,7 @@ export interface Order {
     userLastName: string;
     deliveryMethod: string;
     paymentType: string;
+    dateTime: string | Date;  
     orderDetails: OrderDetail[];
 }
 export function initializeOrder() {
@@ -36,6 +37,7 @@ export function initializeOrder() {
         userName: "",
         userLastName: "",
         deliveryMethod: "",
+        dateTime: "",
         orderDetails: [],
     }
 }
