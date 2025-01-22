@@ -42,16 +42,8 @@ export const validationSchemaCategory = () => {
         categoryFatherDenomination: Yup.string().nullable(),
     });
 };
-
-export const validationSchemaIngredient = () => {
+export const validationStock = () => {
     return Yup.object().shape({
-        id: Yup.number().integer().min(0),
-        denomination: Yup.string().required("La denominación es requerida"),
-        unit: Yup.string().required("La unidad es requerida"),
-        ingredientCategoryID: Yup.number()
-            .integer()
-            .moreThan(0, "Selecciona una categoría")
-            .required("La categoría es requerida"),
         minStock: Yup.number()
             .integer()
             .moreThan(4, "El Stock Mínimo debe ser 5 o más")
@@ -64,6 +56,146 @@ export const validationSchemaIngredient = () => {
             )
             .required("El Stock Actual es requerido"),
     });
+};
+export const validationSchemaIngredient = (modalType: ModalType) => {
+
+    switch (modalType) {
+        case 1:
+            return Yup.object().shape({
+                ingredient: Yup.object().shape({
+                    id: Yup.number().integer().min(0),
+                    denomination: Yup.string().required("La denominación es requerida"),
+                    unit: Yup.string().required("La unidad es requerida"),
+                    ingredientCategoryID: Yup.number()
+                        .integer()
+                        .moreThan(0, "Selecciona una categoría")
+                        .required("La categoría es requerida"),
+                }),
+                stock: Yup.object().shape({
+                    minStock: Yup.number()
+                        .integer()
+                        .moreThan(4, "El Stock Mínimo debe ser 5 o más")
+                        .required("El Stock Mínimo es requerido"),
+                    actualStock: Yup.number()
+                        .integer()
+                        .min(
+                            Yup.ref("minStock"),
+                            "El Stock Actual no puede ser menor al Stock Mínimo"
+                        )
+                        .required("El Stock Actual es requerido"),
+                }),
+            });
+        default:
+            return Yup.object().shape({
+                ingredient: Yup.object().shape({
+                    id: Yup.number().integer().min(0),
+                    denomination: Yup.string().required("La denominación es requerida"),
+                    unit: Yup.string().required("La unidad es requerida"),
+                    ingredientCategoryID: Yup.number()
+                        .integer()
+                        .moreThan(0, "Selecciona una categoría")
+                        .required("La categoría es requerida"),
+                }),
+            });
+    }
+
+
+};
+export const validationSchemaProduct = (modalType: ModalType) => {
+    console.log(modalType)
+    switch (modalType) {
+        case 1:
+            return Yup.object().shape({
+                product: Yup.object().shape({
+                    denomination: Yup.string().required("La denominación es requerida"),
+                    productCategoryID: Yup.number()
+                        .integer()
+                        .moreThan(0, "Selecciona una categoría")
+                        .required("La categoría es requerido"),
+                    description: Yup.string().required("La Descripción es requerida"),
+                    price: Yup.object().shape({
+                        sellPrice: Yup.number().required("El Precio de Venta es requerido").min(0, "No puede Ingresar Valor Negativo"),
+                        costPrice: Yup.number().required("El Precio de Costo es requerido").min(0, "No puede Ingresar Valor Negativo"),
+                    }),
+                }),
+                stock: Yup.object().shape({
+                    minStock: Yup.number()
+                        .integer()
+                        .moreThan(4, "El Stock Mínimo debe ser 5 o más")
+                        .required("El Stock Mínimo es requerido"),
+                    actualStock: Yup.number()
+                        .integer()
+                        .min(
+                            Yup.ref("minStock"),
+                            "El Stock Actual no puede ser menor al Stock Mínimo"
+                        )
+                        .required("El Stock Actual es requerido"),
+                }),
+
+                file: Yup.mixed().when("product.id", (id: unknown, schema) => {
+                    if (Number(id) === 0) {
+                        return schema.required("La Imagen es requerida").test(
+                            "FILE_SIZE",
+                            "El archivo subido es demasiado grande.",
+                            (value) => !value || (value && (value as File).size <= 1024 * 1024 * 10)
+                        ).test(
+                            "FILE_FORMAT",
+                            "El archivo subido tiene un formato no compatible.",
+                            (value) => !value || (value && ["image/jpg", "image/jpeg", "image/png"].includes((value as File).type))
+                        );
+                    } else {
+                        return schema.nullable().notRequired().test(
+                            "FILE_SIZE",
+                            "El archivo subido es demasiado grande.",
+                            (value) => !value || (value && (value as File).size <= 1024 * 1024 * 10)
+                        ).test(
+                            "FILE_FORMAT",
+                            "El archivo subido tiene un formato no compatible.",
+                            (value) => !value || (value && ["image/jpg", "image/jpeg", "image/png"].includes((value as File).type))
+                        );
+                    }
+                }),
+            });
+        default:
+            return Yup.object().shape({
+                product: Yup.object().shape({
+                    denomination: Yup.string().required("La denominación es requerida"),
+                    productCategoryID: Yup.number()
+                        .integer()
+                        .moreThan(0, "Selecciona una categoría")
+                        .required("La categoría es requerido"),
+                    description: Yup.string().required("La Descripción es requerida"),
+                    price: Yup.object().shape({
+                        sellPrice: Yup.number().required("El Precio de Venta es requerido").min(0, "No puede Ingresar Valor Negativo"),
+                        costPrice: Yup.number().required("El Precio de Costo es requerido").min(0, "No puede Ingresar Valor Negativo"),
+                    }),
+                }),
+                file: Yup.mixed().when("product.id", (id: unknown, schema) => {
+                    if (Number(id) === 0) {
+                        return schema.required("La Imagen es requerida").test(
+                            "FILE_SIZE",
+                            "El archivo subido es demasiado grande.",
+                            (value) => !value || (value && (value as File).size <= 1024 * 1024 * 10)
+                        ).test(
+                            "FILE_FORMAT",
+                            "El archivo subido tiene un formato no compatible.",
+                            (value) => !value || (value && ["image/jpg", "image/jpeg", "image/png"].includes((value as File).type))
+                        );
+                    } else {
+                        return schema.nullable().notRequired().test(
+                            "FILE_SIZE",
+                            "El archivo subido es demasiado grande.",
+                            (value) => !value || (value && (value as File).size <= 1024 * 1024 * 10)
+                        ).test(
+                            "FILE_FORMAT",
+                            "El archivo subido tiene un formato no compatible.",
+                            (value) => !value || (value && ["image/jpg", "image/jpeg", "image/png"].includes((value as File).type))
+                        );
+                    }
+                }),
+            });
+    }
+
 };
 
 export const validationSchemaManufacturedProduct = () => {
@@ -137,57 +269,7 @@ export const validationSchemaManufacturedProduct = () => {
     })
 };
 
-export const validationSchemaProduct = () => {
-    return Yup.object().shape({
-        product: Yup.object().shape({
-            denomination: Yup.string().required("La denominación es requerida"),
-            productCategoryID: Yup.number()
-                .integer()
-                .moreThan(0, "Selecciona una categoría")
-                .required("La categoría es requerido"),
-            minStock: Yup.number().required("El Stock Mínimo es requerido")
-                .integer()
-                .min(3, "Stock min debe ser igual o mayor a 3")
-            ,
-            actualStock: Yup.number().required("El Stock Mínimo es requerido")
-                .integer()
-                .min(
-                    Yup.ref("minStock"),
-                    "El Stock Actual no puede ser menor al Stock Mínimo"
-                )
-            ,
-            description: Yup.string().required("La Descripción es requerida"),
-            price: Yup.object().shape({
-                sellPrice: Yup.number().required("El Precio de Venta es requerido").min(0, "No puede Ingresar Valor Negativo"),
-                costPrice: Yup.number().required("El Precio de Costo es requerido").min(0, "No puede Ingresar Valor Negativo"),
-            }),
-        }),
 
-        file: Yup.mixed().when("product.id", (id: unknown, schema) => {
-            if (Number(id) === 0) {
-                return schema.required("La Imagen es requerida").test(
-                    "FILE_SIZE",
-                    "El archivo subido es demasiado grande.",
-                    (value) => !value || (value && (value as File).size <= 1024 * 1024 * 10)
-                ).test(
-                    "FILE_FORMAT",
-                    "El archivo subido tiene un formato no compatible.",
-                    (value) => !value || (value && ["image/jpg", "image/jpeg", "image/png"].includes((value as File).type))
-                );
-            } else {
-                return schema.nullable().notRequired().test(
-                    "FILE_SIZE",
-                    "El archivo subido es demasiado grande.",
-                    (value) => !value || (value && (value as File).size <= 1024 * 1024 * 10)
-                ).test(
-                    "FILE_FORMAT",
-                    "El archivo subido tiene un formato no compatible.",
-                    (value) => !value || (value && ["image/jpg", "image/jpeg", "image/png"].includes((value as File).type))
-                );
-            }
-        }),
-    });
-};
 
 export const validationSchemaRecipe = () => {
     return Yup.object().shape({

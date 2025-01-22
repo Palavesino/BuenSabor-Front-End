@@ -32,8 +32,6 @@ const IngredientTable = () => {
     denomination: "",
     unit: "",
     availability: true,
-    minStock: 0,
-    actualStock: 0,
     ingredientCategoryID: 0,
   });
   // Estado para almacenar el título del modal
@@ -87,8 +85,6 @@ const IngredientTable = () => {
       denomination: "",
       unit: "",
       availability: true,
-      minStock: 0,
-      actualStock: 0,
       ingredientCategoryID: 0,
     };
     handleClick(newIngredient, "Nuevo Ingredient", ModalType.Create);
@@ -120,8 +116,6 @@ const IngredientTable = () => {
                   />
                 ),
               },
-              { field: "minStock", title: "MinStock", width: 1 },
-              { field: "actualStock", title: "Stock", width: 1 },
               {
                 field: "ingredientCategoryID",
                 title: "CategoryID",

@@ -1,13 +1,18 @@
 import { Price } from "./Price";
+import { Stock } from "./Stock";
 
 export interface Product {
   id: number;
   denomination: string;
   description: string;
   availability: boolean;
-  minStock: number;
-  actualStock: number;
   productCategoryID: number;
   price: Price;
   quantity?: number;
+}
+
+export interface ProductXStock {
+  product: Product;
+  stock: Stock;
+  file?: File | null,
 }

@@ -2,20 +2,17 @@
 import { Button, Col, Form, Row, Modal } from "react-bootstrap";
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
-import { useGenericPost } from "../../../Services/useGenericPost";
-import { useGenericPut } from "../../../Services/useGenericPut";
 import { useGenericChangeStatus } from "../../../Services/useGenericChangeStatus";
 import { ModalType } from "../../Enum/ModalType";
-import { Product } from "../../../Interfaces/Product";
+import { Product, ProductXStock } from "../../../Interfaces/Product";
 import { Category } from "../../../Interfaces/Category";
 import { useGenericGet } from "../../../Services/useGenericGet";
-import { usePostImage } from "../../../Util/PostImage";
 import { useGetImageId } from "../../../Util/useGetImageId";
-import { UseGetProductLastId } from "./hook/use-GetProductLastId";
 import { Image } from "../../../Interfaces/Image";
 import { Price } from "../../../Interfaces/Price";
 import { useGenericGetXID } from "../../../Services/useGenericGetXID";
 import { validationSchemaProduct } from "../../../Util/YupValidation";
+import ProductPostPut from "./hook/use-ProductPostPut";
 interface ProductModalProps {
   show: boolean; // Indica si el modal debe mostrarse o no
   onHide: () => void; // Función que se ejecuta cuando el modal se cierra
@@ -42,11 +39,8 @@ const ProductForm: React.FC<ProductModalProps> = ({
 }) => {
   const [categories, setCategories] = useState<Category[]>([]); // Almacena las categorías obtenidas de la API
   const [oldImage, setOldImage] = useState<Image>(); // Almacena la imagen obtenida de la API
-  const genericPost = useGenericPost(); // Hook personalizado para realizar una petición POST genérica a la API
-  const genericPut = useGenericPut(); // Hook personalizado para realizar una petición PUT genérica a la API
-  const changeImage = usePostImage();// Hook personalizado para realizar una petición POST  a la API
   const getImage = useGetImageId();// Hook personalizado para realizar una petición GET  a la API
-  const getLastId = UseGetProductLastId();
+  const postXUpdate = ProductPostPut();
   const updateProductStatus = useGenericChangeStatus(); // Hook personalizado para actualizar el estado de un Producto
   const data = modalType !== ModalType.ChangeStatus ? useGenericGet<Category>(
     "/api/categories/filter/unlocked/type/P",
@@ -74,18 +68,8 @@ const ProductForm: React.FC<ProductModalProps> = ({
   }, [data, data2]);
 
   // Maneja la lógica de guardar o actualizar  un producto
-  const handleSaveUpdate = async (p: typeof requestBody) => {
-    const isNew = p.product.id === 0;
-    if (!isNew) {
-      await genericPut<Product>("/api/products/update", p.product.id, p.product);
-      if (oldImage && p.file) {
-        await changeImage(2, p.product.id, p.file, true, false, oldImage.id);
-      }
-    } else {
-      await genericPost<Product>("/api/products/save", p.product);
-      const productId = await getLastId();
-      await changeImage(2, productId, p.file ? p.file : undefined);
-    }
+  const handleSaveUpdate = async (p: ProductXStock) => {
+    await postXUpdate('/api/products/save', '/api/products/update', p, oldImage)
     setRefetch(true);
     onHide();
   };
@@ -101,15 +85,23 @@ const ProductForm: React.FC<ProductModalProps> = ({
     setRefetch(true);
     onHide();
   };
-  
-  const requestBody = {
+
+  const requestBody: ProductXStock = {
     product,
-    file: null
+    file: null,
+    stock: {
+      id: 0,
+      actualStock: 0,
+      minStock: 0,
+      ingredientStockID: 0,
+      productStockID: null,
+      denomination: "",
+    }
   };
   // Configuración y gestión del formulario con Formik
   const formik = useFormik({
     initialValues: requestBody,
-    validationSchema: validationSchemaProduct(),
+    validationSchema: validationSchemaProduct(modalType),
     validateOnChange: true,
     validateOnBlur: true,
     onSubmit: (obj: typeof requestBody) => handleSaveUpdate(obj),
@@ -216,40 +208,45 @@ const ProductForm: React.FC<ProductModalProps> = ({
                 </Col>
               </Row>
               <Row>
-                <Col>
-                  <Form.Group>
-                    <Form.Label>Stock Mínimo</Form.Label>
-                    <Form.Control
-                      name="product.minStock"
-                      type="number"
-                      value={formik.values.product?.minStock || ""}
-                      onChange={formik.handleChange}
-                      isInvalid={Boolean(
-                        formik.errors.product?.minStock && formik.touched.product?.minStock
-                      )}
-                    />
-                    <Form.Control.Feedback type="invalid">
-                      {formik.errors.product?.minStock}
-                    </Form.Control.Feedback>
-                  </Form.Group>
-                </Col>
-                <Col>
-                  <Form.Group>
-                    <Form.Label>Stock Actual</Form.Label>
-                    <Form.Control
-                      name="product.actualStock"
-                      type="number"
-                      value={formik.values.product?.actualStock || ""}
-                      onChange={formik.handleChange}
-                      isInvalid={Boolean(
-                        formik.errors.product?.actualStock && formik.touched.product?.actualStock
-                      )}
-                    />
-                    <Form.Control.Feedback type="invalid">
-                      {formik.errors.product?.actualStock}
-                    </Form.Control.Feedback>
-                  </Form.Group>
-                </Col>
+                {modalType !== ModalType.Edit && (
+                  <>
+                    <Col>
+                      <Form.Group>
+                        <Form.Label>Stock Mínimo</Form.Label>
+                        <Form.Control
+                          name="stock.minStock"
+                          type="number"
+                          value={formik.values.stock?.minStock || ""}
+                          onChange={formik.handleChange}
+                          isInvalid={Boolean(
+                            formik.errors.stock?.minStock && formik.touched.stock?.minStock
+                          )}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {formik.errors.stock?.minStock}
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                    </Col>
+                    <Col>
+                      <Form.Group>
+                        <Form.Label>Stock Actual</Form.Label>
+                        <Form.Control
+                          name="stock.actualStock"
+                          type="number"
+                          value={formik.values.stock?.actualStock || ""}
+                          onChange={formik.handleChange}
+                          isInvalid={Boolean(
+                            formik.errors.stock?.actualStock && formik.touched.stock?.actualStock
+                          )}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {formik.errors.stock?.actualStock}
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                    </Col>
+                  </>
+                )}
+
                 <Col sm={6}>
                   <Form.Group>
                     <Form.Label>Categoría</Form.Label>

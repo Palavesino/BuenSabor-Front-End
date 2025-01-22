@@ -32,8 +32,6 @@ const ProductTable = () => {
     denomination: "",
     description: "",
     availability: true,
-    minStock: 0,
-    actualStock: 0,
     productCategoryID: 0,
     price: {
       id: 0,
@@ -88,8 +86,6 @@ const ProductTable = () => {
       denomination: "",
       description: "",
       availability: true,
-      minStock: 0,
-      actualStock: 0,
       productCategoryID: 0,
       price: {
         id: 0,
@@ -131,8 +127,6 @@ const ProductTable = () => {
                   />
                 ),
               },
-              { field: "minStock", title: "MinStock", width: 1 },
-              { field: "actualStock", title: "Stock", width: 1 },
               {
                 field: "productCategoryID",
                 title: "CategoryID",

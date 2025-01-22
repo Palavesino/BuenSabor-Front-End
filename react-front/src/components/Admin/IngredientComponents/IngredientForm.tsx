@@ -2,14 +2,13 @@
 import { Button, Col, Form, Row, Modal } from "react-bootstrap";
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
-import { useGenericPost } from "../../../Services/useGenericPost";
-import { useGenericPut } from "../../../Services/useGenericPut";
 import { useGenericChangeStatus } from "../../../Services/useGenericChangeStatus";
 import { ModalType } from "../../Enum/ModalType";
 import { Category } from "../../../Interfaces/Category";
 import { useGenericGet } from "../../../Services/useGenericGet";
-import { Ingredient } from "../../../Interfaces/Ingredient";
+import { Ingredient, IngredientXStock } from "../../../Interfaces/Ingredient";
 import { validationSchemaIngredient } from "../../../Util/YupValidation";
+import IngredientPostPut from "./hooks/use-IngredientPostPut";
 
 // Interfaz que define las propiedades esperadas por el componente IngredientForm
 interface IngredientModalProps {
@@ -37,14 +36,24 @@ const IngredientForm: React.FC<IngredientModalProps> = ({
   state,
 }) => {
   const [categories, setCategories] = useState<Category[]>([]); // Almacena las categorías obtenidas de la API
-  const genericPost = useGenericPost(); // Hook personalizado para realizar una petición POST genérica a la API
-  const genericPut = useGenericPut(); // Hook personalizado para realizar una petición PUT genérica a la API
+  const postXUpdate = IngredientPostPut(); // Hook personalizado para realizar una petición PUT genérica a la API
   const updateIngredientStatus = useGenericChangeStatus(); // Hook personalizado para actualizar el estado de un ingrediente
   const data = modalType !== ModalType.ChangeStatus ? useGenericGet<Category>(
     "/api/categories/filter/unlocked/type/I",
     "ingredient Categories"
   ) : null;
 
+  const ingredientXStock: IngredientXStock = {
+    ingredient: ingredient,
+    stock: {
+      id: 0,
+      actualStock: 0,
+      minStock: 0,
+      ingredientStockID: 0,
+      productStockID: null,
+      denomination: "",
+    }
+  }
   // Obtiene las categorías desde la API cuando se renderiza la página
   useEffect(() => {
     if (data && data.length > 0) {
@@ -53,17 +62,8 @@ const IngredientForm: React.FC<IngredientModalProps> = ({
   }, [data]);
 
   // Maneja la lógica de guardar o actualizar un ingrediente
-  const handleSaveUpdate = async (ingredient: Ingredient) => {
-    const isNew = ingredient.id === 0;
-    if (!isNew) {
-      await genericPut<Ingredient>(
-        "/api/ingredients/update",
-        ingredient.id,
-        ingredient
-      );
-    } else {
-      await genericPost<Ingredient>("/api/ingredients/save", ingredient);
-    }
+  const handleSaveUpdate = async (ingredientStock: IngredientXStock) => {
+    await postXUpdate('/api/ingredients/save', '/api/ingredients/update', ingredientStock)
     setRefetch(true);
     onHide();
   };
@@ -83,11 +83,11 @@ const IngredientForm: React.FC<IngredientModalProps> = ({
 
   // Configuración y gestión del formulario con Formik
   const formik = useFormik({
-    initialValues: ingredient,
-    validationSchema: validationSchemaIngredient(),
+    initialValues: ingredientXStock,
+    validationSchema: validationSchemaIngredient(modalType),
     validateOnChange: true,
     validateOnBlur: true,
-    onSubmit: (obj: Ingredient) => handleSaveUpdate(obj),
+    onSubmit: (obj: IngredientXStock) => handleSaveUpdate(obj),
   });
 
 
@@ -137,68 +137,72 @@ const IngredientForm: React.FC<IngredientModalProps> = ({
                   <Form.Group>
                     <Form.Label>Denominación</Form.Label>
                     <Form.Control
-                      name="denomination"
+                      name="ingredient.denomination"
                       type="text"
-                      value={formik.values.denomination || ""}
+                      value={formik.values.ingredient.denomination || ""}
                       onChange={formik.handleChange}
                       isInvalid={Boolean(
-                        formik.errors.denomination &&
-                        formik.touched.denomination
+                        formik.errors.ingredient?.denomination &&
+                        formik.touched.ingredient?.denomination
                       )}
                     />
                     <Form.Control.Feedback type="invalid">
-                      {formik.errors.denomination}
+                      {formik.errors.ingredient?.denomination}
                     </Form.Control.Feedback>
                   </Form.Group>
                 </Col>
               </Row>
 
               <Row>
-                <Col>
-                  <Form.Group>
-                    <Form.Label>Stock Mínimo</Form.Label>
-                    <Form.Control
-                      name="minStock"
-                      type="number"
-                      value={formik.values.minStock || ""}
-                      onChange={formik.handleChange}
-                      isInvalid={Boolean(
-                        formik.errors.minStock && formik.touched.minStock
-                      )}
-                    />
-                    <Form.Control.Feedback type="invalid">
-                      {formik.errors.minStock}
-                    </Form.Control.Feedback>
-                  </Form.Group>
-                </Col>
-                <Col>
-                  <Form.Group>
-                    <Form.Label>Stock Actual</Form.Label>
-                    <Form.Control
-                      name="actualStock"
-                      type="number"
-                      value={formik.values.actualStock || ""}
-                      onChange={formik.handleChange}
-                      isInvalid={Boolean(
-                        formik.errors.actualStock && formik.touched.actualStock
-                      )}
-                    />
-                    <Form.Control.Feedback type="invalid">
-                      {formik.errors.actualStock}
-                    </Form.Control.Feedback>
-                  </Form.Group>
-                </Col>
+                {modalType !== ModalType.Edit && (
+                  <>
+                    <Col>
+                      <Form.Group>
+                        <Form.Label>Stock Mínimo</Form.Label>
+                        <Form.Control
+                          name="stock.minStock"
+                          type="number"
+                          value={formik.values.stock.minStock || ""}
+                          onChange={formik.handleChange}
+                          isInvalid={Boolean(
+                            formik.errors.stock?.minStock && formik.touched.stock?.minStock
+                          )}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {formik.errors.stock?.minStock}
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                    </Col>
+                    <Col>
+                      <Form.Group>
+                        <Form.Label>Stock Actual</Form.Label>
+                        <Form.Control
+                          name="stock.actualStock"
+                          type="number"
+                          value={formik.values.stock.actualStock || ""}
+                          onChange={formik.handleChange}
+                          isInvalid={Boolean(
+                            formik.errors.stock?.actualStock && formik.touched.stock?.actualStock
+                          )}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {formik.errors.stock?.actualStock}
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                    </Col>
+                  </>
+                )}
                 <Col sm={6}>
                   <Form.Group>
                     <Form.Label>Categoría</Form.Label>
                     <Form.Control
-                      name="ingredientCategoryID"
+                      name="ingredient.ingredientCategoryID"
                       as="select"
-                      value={formik.values.ingredientCategoryID || ""}
+                      value={formik.values.ingredient.ingredientCategoryID || ""}
                       onChange={formik.handleChange}
                       isInvalid={
-                        formik.touched.ingredientCategoryID &&
-                        !!formik.errors.ingredientCategoryID
+                        formik.touched.ingredient?.ingredientCategoryID &&
+                        !!formik.errors.ingredient?.ingredientCategoryID
                       }
                     >
                       <option value={0}>Seleccionar</option>
@@ -210,7 +214,7 @@ const IngredientForm: React.FC<IngredientModalProps> = ({
                     </Form.Control>
 
                     <Form.Control.Feedback type="invalid">
-                      {formik.errors.ingredientCategoryID}
+                      {formik.errors.ingredient?.ingredientCategoryID}
                     </Form.Control.Feedback>
                   </Form.Group>
                 </Col>
@@ -220,21 +224,22 @@ const IngredientForm: React.FC<IngredientModalProps> = ({
                   <Form.Group>
                     <Form.Label>Unidad de Medida</Form.Label>
                     <Form.Control
-                      name="unit"
+                      name="ingredient.unit"
                       as="select"
-                      value={formik.values.unit || ""}
+                      value={formik.values.ingredient.unit || ""}
                       onChange={formik.handleChange}
                       isInvalid={Boolean(
-                        formik.errors.unit && formik.touched.unit
+                        formik.errors.ingredient?.unit && formik.touched.ingredient?.unit
                       )}
                     >
                       <option value="">Selecciona una unidad</option>
                       <option value="gr">Gramo</option>
                       <option value="kg">Kilo</option>
                       <option value="L">Litro </option>
+                      <option value="ud">Unidad </option>
                     </Form.Control>
                     <Form.Control.Feedback type="invalid">
-                      {formik.errors.unit}
+                      {formik.errors.ingredient?.unit}
                     </Form.Control.Feedback>
                   </Form.Group>
                 </Col>

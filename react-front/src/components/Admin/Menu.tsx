@@ -48,6 +48,15 @@ function Menu() {
           Ingredient
         </ListGroup.Item>
       </Link>
+      <Link to="/private/stock">
+        <ListGroup.Item
+          action
+          active={selectedItem === "stock"}
+          onClick={() => handleItemClick("stock")}
+        >
+          Stock
+        </ListGroup.Item>
+      </Link>
       <Link to="/private/Mproducts">
         <ListGroup.Item
           action

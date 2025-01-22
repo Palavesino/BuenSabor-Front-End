@@ -14,6 +14,7 @@ const ProductTable = lazy(() => import('../components/Admin/ProductComponents/Pr
 const UserProfile = lazy(() => import('../components/Profile/UserProfile.tsx'));
 const PaymentConfirmation = lazy(() => import('../components/Pages/PaymentMP/PaymentConfirmation.tsx'));
 const OrderUserTable = lazy(() => import('../components/Order/OrderUserTable.tsx'));
+const StockTable = lazy(() => import('../components/Admin/StockComponents/StockTable.tsx'));
 interface Props {
     permission: UserRole;
 }
@@ -22,6 +23,7 @@ export const Private = ({ permission }: Props) => {
         <RoutesWithNotFound>
             <Route path="/user" element={<RouteAccessRole isRolPermited={permission === UserRole.admin} > <UserTable /> </RouteAccessRole>}></Route>
             <Route path="/ingredients" element={<RouteAccessRole isRolPermited={permission === UserRole.cocinero || permission === UserRole.admin} > <IngredientTable /> </RouteAccessRole>}></Route>
+            <Route path="/stock" element={<RouteAccessRole isRolPermited={permission === UserRole.cocinero || permission === UserRole.admin} > <StockTable/> </RouteAccessRole>}></Route>
             <Route path="/Mproducts" element={<RouteAccessRole isRolPermited={permission === UserRole.admin} > <M_ProductTable /> </RouteAccessRole>}></Route>
             <Route path="/recipe" element={<RouteAccessRole isRolPermited={permission === UserRole.admin} > <RecipesTable /> </RouteAccessRole>}></Route>
             <Route path="/categoria" element={<RouteAccessRole isRolPermited={permission === UserRole.admin} > <ListarCategorys /> </RouteAccessRole>}></Route>
