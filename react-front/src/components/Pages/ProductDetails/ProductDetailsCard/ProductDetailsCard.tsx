@@ -93,6 +93,7 @@ const ProductDetailsCard: React.FC<ProductDetailsCardProps> = ({ product }) => {
             <CCardText className="card-description">{product.description}</CCardText>
             <CButton
               onClick={handleOnClick}
+              disabled={!product.availability}
               style={{
                 borderColor: "#F6BD5A",
                 color: "#F6BD5A",
@@ -102,7 +103,7 @@ const ProductDetailsCard: React.FC<ProductDetailsCardProps> = ({ product }) => {
               }}
               className="card-button"
             >
-              {insideCart ? "Quitar del Carrito" : "Agregar al carrito"}
+              {!product.availability ? 'No Hay Stock' : (insideCart ? "Quitar del Carrito" : "Agregar al carrito")}
             </CButton>
             <CCardText className="card-price">{`$${product.price?.sellPrice}`}</CCardText>
           </CCardBody>

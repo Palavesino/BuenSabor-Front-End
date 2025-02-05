@@ -11,6 +11,8 @@ import Router from "./Routes/Router.tsx";
 // Importaciones de estilos
 import "./App.css";
 import "react-toastify/dist/ReactToastify.css";
+import { SpinnerProvider } from "./context/SpinnerContext.tsx";
+import SpinnerLoading from "./components/SpinnerLoading/SpinnerLoading.tsx";
 
 function App() {
   // Renderizado del componente
@@ -18,18 +20,21 @@ function App() {
     <>
 
       <BrowserRouter>
-        <PermissionProvider>
-          <CartProvider>
-            <div className="root">
-              <NavBar />
-              <div className="main-container">
-                <Router />
+        <SpinnerProvider>
+          <PermissionProvider>
+            <CartProvider>
+              <div className="root">
+                <NavBar />
+                <div className="main-container">
+                  <Router />
+                  <SpinnerLoading />
+                </div>
+                <Footer />
+                <ToastContainer />
               </div>
-              <Footer />
-              <ToastContainer />
-            </div>
-          </CartProvider>
-        </PermissionProvider>
+            </CartProvider>
+          </PermissionProvider>
+        </SpinnerProvider>
       </BrowserRouter>
     </>
   );

@@ -69,13 +69,14 @@ const ProductForm: React.FC<ProductModalProps> = ({
 
   // Maneja la lógica de guardar o actualizar  un producto
   const handleSaveUpdate = async (p: ProductXStock) => {
-    await postXUpdate('/api/products/save', '/api/products/update', p, oldImage)
-    setRefetch(true);
     onHide();
+    await postXUpdate('/api/products/saveComplete', '/api/products/update', p, oldImage)
+    setRefetch(true);
   };
 
   // Maneja el cambio de estado de un producto
   const handleStateProducts = async () => {
+    onHide();
     const id = product.id;
     if (!state) {
       await updateProductStatus(id, "/api/products/block");
@@ -83,7 +84,6 @@ const ProductForm: React.FC<ProductModalProps> = ({
       await updateProductStatus(id, "/api/products/unlock");
     }
     setRefetch(true);
-    onHide();
   };
 
   const requestBody: ProductXStock = {

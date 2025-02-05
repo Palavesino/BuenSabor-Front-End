@@ -62,13 +62,13 @@ const RecipeForm: React.FC<RecipeFormProps> = ({
 
   // Maneja la lógica de actualizar una Receta
   const handleUpdate = async (recipe: Recipe) => {
+    onHide();
     await genericPut<Recipe>(
       "/api/recipes/update",
       recipe.id,
       recipe
     );
     setRefetch(true);
-    onHide();
   };
 
 

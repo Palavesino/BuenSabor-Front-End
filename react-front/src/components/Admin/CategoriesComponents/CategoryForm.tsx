@@ -50,6 +50,7 @@ const CategoryModal: React.FC<CategoryModalProps> = ({
 
   // Maneja la lógica de guardar o actualizar una categoría
   const handleSaveUpdate = async (category: Category) => {
+    onHide();
     const isNew = category.id === 0;
     if (!isNew) {
       await genericPut<Category>(
@@ -61,11 +62,11 @@ const CategoryModal: React.FC<CategoryModalProps> = ({
       await genericPost<Category>("/api/categories/save", category);
     }
     setRefetch(true);
-    onHide();
   };
 
   // Maneja el cambio de estado de una categoría
   const handleStateCategory = async () => {
+    onHide();
     const id = category.id;
     if (!state) {
       await updateCategoryStatus(id, "/api/categories/block");
@@ -73,7 +74,6 @@ const CategoryModal: React.FC<CategoryModalProps> = ({
       await updateCategoryStatus(id, "/api/categories/unlock");
     }
     setRefetch(true);
-    onHide();
   };
 
   // Maneja el cambio de la categoría padre en el formulario

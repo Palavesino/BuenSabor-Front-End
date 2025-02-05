@@ -49,8 +49,8 @@ export const cartReducer = (state: OrderDetail[], action: CountActionProps): Ord
                         quantity: 1,
                         subtotal: actionPayload.price.sellPrice,
                         ...(isProduct
-                            ? { itemProduct: actionPayload as Product }
-                            : { itemManufacturedProduct: actionPayload as ManufacturedProduct }
+                            ? { itemProduct: actionPayload as Product}
+                            : { itemManufacturedProduct: actionPayload as ManufacturedProduct}
                         )
                     }
                 ];

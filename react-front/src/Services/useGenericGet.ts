@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
+import { useSpinner } from "../context/SpinnerContext"; // Importar el SpinnerContext
 
 export const useGenericGet = <T>(
   endpoint: string,
@@ -7,6 +8,7 @@ export const useGenericGet = <T>(
   refetch?: boolean
 ) => {
   const { getAccessTokenSilently } = useAuth0();
+  const { showSpinner, hideSpinner } = useSpinner(); // Hook del SpinnerContext
 
   const [data, setData] = useState<T[]>([]);
 
@@ -15,6 +17,7 @@ export const useGenericGet = <T>(
   }, [refetch]);
 
   const fetchData = async () => {
+    showSpinner(); // Mostrar el spinner al iniciar la petición
     try {
       const token = await getAccessTokenSilently();
       const response = await fetch(`${endpoint}`, {
@@ -32,7 +35,10 @@ export const useGenericGet = <T>(
       }
     } catch (e) {
       console.error(`Error fetching ${entidadMsj} data:`, e);
+    } finally {
+      hideSpinner(); // Ocultar el spinner al finalizar la petición, incluso si falla
     }
   };
+
   return data;
 };

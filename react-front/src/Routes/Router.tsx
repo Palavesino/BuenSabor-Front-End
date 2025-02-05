@@ -10,6 +10,7 @@ import RoutesWithNotFound from "../Util/routes-with-not-found.tsx";
 import { Suspense, lazy, useState } from "react";
 import { usePermission } from "../context/PermissionContext.tsx";
 import { UserSingUp } from "../components/Auth0/SignUp/UserSignUp.tsx";
+import SpinnerLoading from "../components/SpinnerLoading/SpinnerLoading.tsx";
 
 const Home = lazy(() => import('../components/Pages/Home/Home'));
 const Private = lazy(() => import('./Private.tsx'));
@@ -44,6 +45,7 @@ const Router = () => {
           </Route>
           <Route path="/carrito" element={<Carrito />}></Route>
           <Route path="/promociones" element={<h1>Promociones</h1>}></Route>
+          <Route path="/spinner" element={<SpinnerLoading/>}></Route>
           <Route
             path="/productos"
             element={<Products />}

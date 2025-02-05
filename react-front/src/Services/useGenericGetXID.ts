@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
+import { useSpinner } from "../context/SpinnerContext"; // Importar SpinnerContext
 
 export const useGenericGetXID = <T>(
   endpoint: string,
@@ -7,6 +8,7 @@ export const useGenericGetXID = <T>(
   refetch?: boolean
 ) => {
   const { getAccessTokenSilently } = useAuth0();
+  const { showSpinner, hideSpinner } = useSpinner(); 
 
   const [data, setData] = useState<T>({} as T);
 
@@ -15,24 +17,28 @@ export const useGenericGetXID = <T>(
   }, [refetch]);
 
   const fetchData = async () => {
+    showSpinner();
     try {
       const token = await getAccessTokenSilently();
-
       const response = await fetch(`${endpoint}/${id}`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
+
       if (response.ok) {
         const data = await response.json();
         setData(data);
       } else {
-        console.error(`Error fetching  data:`, response.status);
+        console.error(`❌ Error al obtener datos:`, response.status);
       }
     } catch (e) {
-      console.error(`Error fetching data:`, e);
+      console.error(`❌ Error al obtener datos:`, e);
+    } finally {
+      hideSpinner();
     }
   };
+
   return data;
 };

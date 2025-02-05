@@ -55,6 +55,7 @@ const UserForm: React.FC<UserModalProps> = ({
     }, [data]);
     // Maneja la lógica de guardar o actualizar un Usuario
     const handleSaveUpdate = async (u: typeof requestBody) => {
+        onHide();
         const isNew = modalType === ModalType.Create;
         if (isNew) {
             await userPost("/api/users/saveAuth0User", u.role, u.auth0User);
@@ -70,17 +71,16 @@ const UserForm: React.FC<UserModalProps> = ({
             }
         }
         setRefetch(true);
-        onHide();
     };
     // Maneja el cambio de estado de un Usuario
     const handleStateUser = async () => {
+        onHide();
         if (!state) {
             await updateUserStatus(true, user.auth0UserId);
         } else {
             await updateUserStatus(false, user.auth0UserId);
         }
         setRefetch(true);
-        onHide();
     };
     let auh0User: Auth0User = {
         email: user.email,

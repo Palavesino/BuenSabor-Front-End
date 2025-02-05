@@ -4,11 +4,11 @@ import { Row, Col } from "react-bootstrap";
 import GenericTable from "../Generic/GenericTable";
 import { Order } from "../../Interfaces/Order";
 import { ModalType } from "../Enum/ModalType";
-import { useGenericGet } from "../../Services/useGenericGet";
 import { usePermission } from "../../context/PermissionContext";
 import CancelModal from "./CancelModal";
 import { OrderStatus } from "../Enum/OrderStatus";
 import ShowBill from "../Bill/ShowBill";
+import { useGetOrders } from "./hook/use-GetOrders";
 
 
 /*
@@ -24,6 +24,7 @@ const OrderUserTable = () => {
     // Estado para el tipo de modal
     const [modalType, setModalType] = useState<ModalType>(ModalType.None);
     const { userComplete } = usePermission();
+    const getUserOrders = useGetOrders();
     // Estado para indicar si es necesario refrescar los datos
     const [refetch, setRefetch] = useState(false);
     // Estado para almacenar  ordenes
@@ -31,18 +32,19 @@ const OrderUserTable = () => {
     const [idOrder, setIdOrder] = useState(0);
     const [state, setState] = useState<OrderStatus>(OrderStatus.PENDING);
 
-    // Obtener datos de las ordenes del usuario, utilizando el hook useGenericGet
-    const data = useGenericGet<Order>(
-        `/api/order/all/${userComplete?.id}`,
-        "User Orders",
-        refetch
-    );
-
     useEffect(() => {
-        // Actualizar los ordenes del usuario cuando se obtiene nueva data
-        setOrders(data);
-        setRefetch(false);
-    }, [data, userComplete]);
+        if (userComplete) {
+            const fetchData = async () => {
+                const data = await getUserOrders(userComplete.id);
+                if (data) {
+                    setOrders(data);
+                }
+                setRefetch(false);
+            };
+
+            fetchData();
+        }
+    }, [userComplete, refetch]);
 
     const handleClick = (
         o: Order,

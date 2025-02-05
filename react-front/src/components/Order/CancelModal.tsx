@@ -24,7 +24,7 @@ const CancelModal : React.FC<CancelModalProps> = ({
     const cancelOrderStatus = useGenericChangeStatus(); 
      // Maneja el cambio de estado de una Orden
   const handleStateOrder = async () => {
-      await cancelOrderStatus(idOrder, "/api/order/cencel");
+      await cancelOrderStatus(idOrder, "/api/order/cancel");
     setRefetch(true);
     onHide();
   };

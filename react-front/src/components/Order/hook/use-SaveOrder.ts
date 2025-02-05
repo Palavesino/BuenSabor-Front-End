@@ -26,6 +26,7 @@ export const useOrderSave = () => {
 
     const orderSave = async (obj: Order) => {
         try {
+            console.log(JSON.stringify(obj,null,2))
             const token = await getAccessTokenSilently();
             const data = await fetchWithAuth(`/api/order/saveComplete`, "POST", token, obj);
             const requestBody = {

@@ -63,13 +63,14 @@ const IngredientForm: React.FC<IngredientModalProps> = ({
 
   // Maneja la lógica de guardar o actualizar un ingrediente
   const handleSaveUpdate = async (ingredientStock: IngredientXStock) => {
-    await postXUpdate('/api/ingredients/save', '/api/ingredients/update', ingredientStock)
-    setRefetch(true);
     onHide();
+    await postXUpdate('/api/ingredients/saveComplete', '/api/ingredients/update', ingredientStock)
+    setRefetch(true);
   };
 
   // Maneja el cambio de estado de un ingrediente
   const handleStateIngredient = async () => {
+    onHide();
     const id = ingredient.id;
     if (!state) {
       await updateIngredientStatus(id, "/api/ingredients/block");
@@ -77,7 +78,6 @@ const IngredientForm: React.FC<IngredientModalProps> = ({
       await updateIngredientStatus(id, "/api/ingredients/unlock");
     }
     setRefetch(true);
-    onHide();
   };
 
 

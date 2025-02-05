@@ -58,23 +58,24 @@ const MP_Form: React.FC<MproductModalProps> = ({
             steps: [],
             ingredientsQuantity: [],
         },
-        image: {
-            id: 0,
-            name: "",
-            relationType: "",
-            relationId: Mproduct.id,
-        },
+        // image: {
+        //     id: 0,
+        //     name: "",
+        //     relationType: "",
+        //     relationId: Mproduct.id,
+        // },
         file: null,
     };
     // Maneja la lógica de guardar o actualizar un Producto Manufacturado
     const handleSaveUpdate = async (Mproduct: MproductXRecipe) => {
-        await postXput("/api/manufactured-products/save", "/api/manufactured-products/update", Mproduct);
         onHide();
+        await postXput("/api/manufactured-products/saveR", "/api/manufactured-products/update", Mproduct);
         setRefetch(true);
     };
 
     // Maneja el cambio de estado de un Producto Manufacturado
     const handleStateMproducts = async () => {
+        onHide();
         const id = Mproduct.id;
         if (!state) {
             await updateMproductStatus(id, "/api/manufactured-products/block");
@@ -82,7 +83,6 @@ const MP_Form: React.FC<MproductModalProps> = ({
             await updateMproductStatus(id, "/api/manufactured-products/unlock");
         }
         setRefetch(true);
-        onHide();
     };
     // Configuración y gestión del formulario con Formik
     const formik = useFormik({

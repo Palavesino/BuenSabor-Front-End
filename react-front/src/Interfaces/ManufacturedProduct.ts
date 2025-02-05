@@ -15,6 +15,6 @@ export interface ManufacturedProduct {
 export interface MproductXRecipe {
   manufacturedProduct: ManufacturedProduct;
   recipe: Recipe;
-  image: Image;
+  // image: Image;
   file: File | null;
 }

@@ -12,6 +12,8 @@ import { Link } from "react-router-dom";
 import "./ProductCard.css";
 import { ManufacturedProduct } from "../../../../Interfaces/ManufacturedProduct";
 import { Product } from "../../../../Interfaces/Product";
+import { useValidate } from "../../ProductDetails/hook/use-Validate";
+import { useEffect } from "react";
 
 /**
  * Propiedades del componente ProductCard.
@@ -27,6 +29,18 @@ interface ProductCardProps {
  * Recibe la propiedad `product` que representa los datos del producto a mostrar.
  */
 const ProductCard: React.FC<ProductCardProps> = ({ product, isProduct }) => {
+  // const validate = useValidate();
+  //   useEffect(() => {
+  //     const fetchData = async () => {
+  //         try {
+  //          await validate(product.id, isProduct ? 'P' : 'M'); // Valida la disponibilidad del producto
+  //         } catch (error) {
+  //           console.error("Error al verificar el producto:", error);
+  //         }
+  //     };
+  
+  //     fetchData(); // Llama a la validación al cargar el componente
+  //   }, []);
 
   // Renderizado del componente
   return (

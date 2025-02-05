@@ -1,5 +1,6 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { toast } from "react-toastify";
+import { useSpinner } from "../../../../context/SpinnerContext";
 /**
  Este hook proporciona una función (statusPut) que realiza una solicitud PATCH a una API 
  para actualizar el estado de bloqueo de un usuario específico utilizando el 
@@ -8,9 +9,10 @@ import { toast } from "react-toastify";
 export const useStatusPut = () => {
     // Obtiene las funciones necesarias de Auth0 React SDK
     const { getAccessTokenSilently } = useAuth0();
-
+    const { showSpinner, hideSpinner } = useSpinner();
     // Función que realiza una petición PATCH para actualizar el estado de bloqueo de un usuario
     const statusPut = async (status: boolean, userAuth0Id: string) => {
+        showSpinner();
         try {
             // Codifica el ID del usuario para incluirlo en la URL
             const encodedUserId = encodeURIComponent(userAuth0Id).replaceAll("|", "%7C");
@@ -49,6 +51,8 @@ export const useStatusPut = () => {
             });
             // Retorna null en caso de error
             return null;
+        } finally {
+            hideSpinner(); // Ocultar el spinner después de la solicitud
         }
     };
     return statusPut;

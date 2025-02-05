@@ -1,5 +1,6 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { toast } from "react-toastify";
+import { useSpinner } from "../../../../context/SpinnerContext";
 
 /*
 Este hook proporciona una función (rolesDelete) que realiza una solicitud DELETE a una API 
@@ -8,9 +9,11 @@ para eliminar roles específicos de un usuario utilizando el token de acceso obt
 export const useRolesDelete = () => {
     // Obtiene las funciones necesarias de Auth0 React SDK
     const { getAccessTokenSilently } = useAuth0();
+    const { showSpinner, hideSpinner } = useSpinner();
 
     // Define la función rolesDelete que realiza una petición DELETE para eliminar roles de un usuario
     const rolesDelete = async (userId: string, roles: string[]) => {
+        showSpinner();
         try {
             // Obtiene el token de acceso de forma silenciosa utilizando Auth0
             const token = await getAccessTokenSilently();
@@ -35,6 +38,8 @@ export const useRolesDelete = () => {
             toast.error(`Ah ocurrido un error` + error, {
                 position: "top-center",
             });
+        } finally {
+            hideSpinner(); // Ocultar el spinner después de la solicitud
         }
     };
     return rolesDelete;
