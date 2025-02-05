@@ -1,0 +1,23 @@
+.row-menu {
+  width: 12rem;
+  margin-top: 50px;
+  margin-left: 10px;
+}
+
+.row-menu a {
+  text-decoration: none;
+}
+.row-menu .list-group-item {
+  margin-top: 10px;
+  border: 2px solid black;
+  width: 100%;
+  border-radius: 35px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.row-menu .list-group-item:hover,
+.row-menu .list-group-item:focus,
+.row-menu .list-group-item:active {
+  background-color: #007bff; /* Cambiar el color de fondo en el estado de activo */
+  color: #fff; /* Cambiar el color del texto del enlace activo */
+}

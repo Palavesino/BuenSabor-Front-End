@@ -1,0 +1,73 @@
+.icon-CircleHigh {
+  color: green;
+}
+.icon-CircleLow {
+  color: red;
+}
+.icon-Edit {
+  font-size: 20px;
+  padding: 0;
+}
+.icon-Edit:hover {
+  color: blue;
+  transition: 0.3s;
+}
+.icon-Low {
+  font-size: 20px;
+  padding: 0;
+}
+.icon-Cancel:hover,
+.icon-Low:hover {
+  color: red;
+  transition: 0.3s;
+}
+
+.icon-High {
+  font-size: 20px;
+  padding: 0;
+}
+.icon-View:hover,
+.icon-High:hover {
+  color: green;
+  transition: 0.3s;
+}
+
+.button-New {
+  margin-right: 85%;
+  width: 6rem;
+  font-size: 1.2rem;
+  border-color: #f6bd5a;
+  color: #f6bd5a;
+  box-shadow: inset 11px 20px 9px -20px rgba(255, 201, 0, 0.4);
+  background-color: #111;
+  border-radius: 2rem;
+}
+.button-New:hover {
+  border-color: #f6bd5a;
+  background-color: #111;
+  color: green;
+  transition: 0.3s;
+}
+
+.button-Search {
+  margin-top: 10px;
+  width: 50%;
+  margin-left: 50%;
+}
+.td-hidden {
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.td-Accion .icon-High,
+.td-Accion .icon-Low,
+.td-Accion .icon-Edit,
+.td-Accion .icon-Delete,
+.td-Accion .icon-Cancel,
+.td-Accion .icon-View {
+  /* Estilos para los íconos dentro del td-Accion */
+  font-size: 24px; /* Tamaño de los íconos */
+  margin-right: 10px; /* Espacio entre los íconos */
+}

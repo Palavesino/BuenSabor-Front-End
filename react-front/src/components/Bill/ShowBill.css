@@ -1,0 +1,24 @@
+.div-hide {
+    position: absolute;
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+}
+.button-closeModal {
+    color: white;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    outline: none;
+    position: absolute;
+}
+
+.button-closeModal:hover {
+    color: red;
+    transition: 0.3s;
+}
+
+.button-closeModal span {
+    display: block;
+    line-height: 1;
+}

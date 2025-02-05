@@ -1,0 +1,22 @@
+.card-home {
+  margin-left: 7.5%;
+  max-width: 100%;
+  text-align: center;
+}
+.card-title {
+  margin-top: 5%;
+  font-size: 2rem;
+}
+
+.card-description {
+  margin-top: 10%;
+  font-size: 1.2rem;
+  white-space: pre-line;
+  text-align: center;
+}
+
+.card-button {
+  margin-top: 10%;
+  width: 14rem;
+  font-size: 1.2rem;
+}

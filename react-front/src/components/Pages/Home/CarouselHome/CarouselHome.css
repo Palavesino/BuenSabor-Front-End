@@ -1,0 +1,33 @@
+.carousel {
+  min-height: 35rem;
+  max-height: 40rem;
+}
+
+.carousel-item .d-block {
+  min-height: 35rem;
+  max-height: 40rem;
+  width: 100%;
+}
+
+.carousel-indicators li {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  width: 0.5rem;
+  height: 0.5rem;
+  margin-left: 0.5rem;
+  border-radius: 100%;
+  background-color: #000;
+  opacity: 0.5;
+}
+
+.carousel-indicators .active {
+  background-color: #fff;
+}
+
+.card {
+  border-radius: 0px;
+}
+
+.card img {
+  border-radius: 0px;
+}

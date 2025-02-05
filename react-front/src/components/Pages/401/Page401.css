@@ -1,0 +1,14 @@
+.Page-401 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.Page-401 h1 {
+    font-size: 10rem; 
+    font-weight: bold; 
+    position: absolute; 
+}
+.Page-401 p {
+    margin-top: 15rem;
+}

@@ -1,0 +1,22 @@
+/* SpinerLoading.css */
+.spinner-overlay {
+    padding-top: 17%;
+    color: #36ff2f;
+    position: fixed;           /* Fija el spinner en la pantalla */
+    top: 0;
+    left: 0;
+    width: 100vw;              /* Ocupar toda la pantalla */
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.3);  /* Fondo semitransparente */
+    display: flex;             /* Centrado con Flexbox */
+    justify-content: center;
+    /* align-items: center; */
+    z-index: 9999;             /* Asegura que esté por encima de otros elementos */
+  }
+  
+  .spinner-border {
+    width: 100px !important;   /* Tamaño del spinner */
+    height: 100px !important;
+    border-width: 10px !important;  /* Grosor del borde */
+  }
+  

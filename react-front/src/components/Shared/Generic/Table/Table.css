@@ -1,0 +1,54 @@
+.table {
+  margin-top: 2rem;
+  margin-left: 6rem;
+  width: calc(100% - 13rem);
+  border-radius: 1.5rem;
+  text-align: center;
+}
+
+.icons-container {
+  display: flex;
+  padding: 0;
+}
+
+.circle-enabled-icon {
+  color: green;
+}
+
+.circle-disabled-icon {
+  color: red;
+}
+
+.enabled-icon {
+  font-size: 1.5rem;
+  padding: 0;
+}
+
+.enabled-icon:hover {
+  color: green;
+  transition: 0.3s;
+}
+
+.disabled-icon {
+  font-size: 1.5rem;
+  padding: 0;
+}
+
+.disabled-icon:hover {
+  color: red;
+  transition: 0.3s;
+}
+
+.edit-icon {
+  font-size: 1.5rem;
+  padding: 0;
+}
+
+.edit-icon:hover {
+  color: blue;
+  transition: 0.3s;
+}
+
+.element-icon {
+  flex: 1;
+}

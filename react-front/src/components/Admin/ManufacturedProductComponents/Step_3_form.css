@@ -1,0 +1,62 @@
+.title {
+    font-family:cursive;
+    font-weight: bold;
+    font-size: 18px; 
+    margin-left: 45%;
+    padding: 0;
+  }
+  .list-item{
+    display: flex;
+  justify-content: space-between;
+  align-items: center;
+  }
+.div-List {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-y: auto; /* Aparecerá un scroll vertical si se excede la altura máxima */
+  }
+ul {
+    list-style-type: none;
+    padding: 0;
+    max-height: 200px; /* Puedes ajustar la altura máxima según tus necesidades */
+   
+  }
+  
+.text-item{
+    width: 800px; /* Diámetro del círculo en porcentaje del contenedor */
+    border-radius: 15px; /* Hacer un círculo */
+    background-color: #ffdab9; /* Color de fondo del círculo */
+    margin-bottom: 20px; /* Espacio entre los elementos */
+    border: 2px solid black; /* Borde negro de 2 píxeles */
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); /* Sombra con desplazamiento X, desplazamiento Y, desenfoque y color rgba */
+    text-align: center;
+    flex: 1;
+  }
+  .button-add {
+    width: 10%;
+    border-radius: 5px; 
+    padding: 0;
+    margin-top: 10px; 
+    
+  }
+  .button-delete {
+    font-size: 20px;
+    padding: 0;
+    margin-bottom: 20px;
+    margin-left: 10px; 
+    
+  }
+  .button-delete:hover {
+    color: red;
+    transition: 0.3s;
+  }
+  
+  ul li {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+
+  

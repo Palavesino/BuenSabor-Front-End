@@ -1,0 +1,43 @@
+.cui-list-group {
+  background-color: transparent;
+  height: auto;
+  width: 15rem;
+  border-radius: 2rem;
+  position: inherit;
+  box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.5);
+}
+
+.cui-list-group-item {
+  padding: 1rem;
+  background-color: transparent;
+  font-size: 0.8rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%; /* Ajusta este valor según tus necesidades */
+  display: block;
+}
+
+.cui-list-group-item.active {
+  background-color: black;
+  color: #f6bd5a;
+  border: 0.1rem solid #856c42;
+}
+
+.cui-list-group :hover {
+  background-color: black;
+  color: #f6bd5a;
+}
+
+.cui-list-group-item:focus {
+  background-color: black;
+  color: #f6bd5a;
+  border: 0.1rem solid #856c42;
+}
+
+.cui-list-group-item img {
+  border-radius: 2rem;
+  width: 3rem;
+  height: 3rem;
+  margin-right: 2rem;
+}

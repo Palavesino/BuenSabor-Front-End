@@ -1,0 +1,50 @@
+.div-counter {
+  display: flex;
+  align-items: center; /* Centra verticalmente */
+}
+.counter {
+  flex:0.5 ; /* Ocupa el espacio disponible entre los botones */
+  text-align: center; /* Centra el texto horizontalmente */
+  font-size: 1.875rem;
+  font-weight: bold;
+}
+.circle-Remove {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  border-radius: 50%;
+  border: 2px solid black;
+  cursor: pointer;
+}
+.icon-Remove {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 20px;
+}
+.circle-Remove:hover {
+  background-color: red;
+  transition: 0.3s;
+}
+.circle-Add {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  border-radius: 50%;
+  border: 2px solid black;
+  cursor: pointer;
+}
+.icon-Add {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 20px;
+}
+.circle-Add:hover {
+  background-color: greenyellow;
+  transition: 0.3s;
+}

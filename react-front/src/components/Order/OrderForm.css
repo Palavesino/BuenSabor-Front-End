@@ -1,0 +1,169 @@
+/* .modal-order .modal-content{
+    background-color: #000;
+    border: 2px solid rgb(246, 189, 90);
+    color: rgb(246, 189, 90);
+    font-size: 1.2rem;
+} */
+.modal-order .modal-content{
+    background-color: rgb(246, 189, 90);
+    border:2px solid #000;
+    color: #000;
+    font-size: 1.2rem;
+}
+.modal-footer {
+    border-top: none;
+    /* Esto quita el borde superior del modal footer */
+}
+
+.radio-button {
+    margin: 0.5rem;
+}
+
+.radio-button input[type="radio"] {
+    opacity: 0;
+    position: fixed;
+    width: 0;
+}
+
+.radio-button label {
+    display: inline-block;
+    background-color: #ddd;
+    font-family: sans-serif, Arial;
+    font-size: 1.2rem;
+    border: 2px solid black;
+    border-radius: 2rem;
+    background-color: rgb(248, 181, 65);
+    padding: 1px 1.6rem;
+}
+
+.radio-button label:hover {
+    background-color: white;
+}
+
+/* .radio-button input[type="radio"]:focus+label {
+    border: 2px dashed #444;
+} */
+.radio-button .invalid-feedback {
+    display: block;  /* Asegúrate de que el mensaje de error se muestre */
+    color: red;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+.radio-button input[type="radio"]:checked+label {
+    background-color: rgb(255, 255, 255);
+    border: 2px solid black;
+}
+
+.address input,
+.apartment input,
+.phone input {
+    width: 80%;
+    max-width: 14rem;
+    border: 2px solid black;
+}
+
+
+.col-label {
+    padding-right: 2rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    
+}
+
+.radio-button-typePay {
+    font-size: 1.2rem;
+}
+
+.row-typePay {
+    margin-top: 1rem;
+    border-bottom: 2px solid black;
+}
+
+.row-colWidht .col {
+    max-width: 16rem;
+}
+
+.text-rigth {
+    text-align: right;
+    margin-right: 2rem;
+}
+
+.button-order {
+    width: 15rem;
+    border: 2px solid black;
+    color: #f6bd5a;
+    box-shadow: inset 11px 20px 9px -20px rgba(255, 201, 0, 0.4);
+    background-color: #111;
+    border-radius: 2rem;
+    font-size: 1.2rem;
+}
+
+.button-order:hover {
+    border: 2px solid black;
+    background-color: #111;
+    color: rgb(7, 240, 7);
+    transition: 0.3s;
+
+}
+
+.button-closeModal {
+    color: #000;
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 2.3rem;
+    cursor: pointer;
+    outline: none;
+    position: absolute;
+    top: 0;
+    right: 10px;
+}
+.button-closeModal:hover{
+    background-color: rgb(246, 189, 90);
+    color: red;
+    transition: 0.3s;
+}
+
+.button-closeModal span {
+    display: block;
+    line-height: 1;
+}
+
+.scrollable-container {
+    max-height: 300px; 
+    overflow-y: auto; 
+    overflow-x: hidden; 
+    padding: 10px; 
+    border:2px solid black;
+}
+
+.scrollable-container::-webkit-scrollbar {
+    width: 12px; 
+}
+
+
+.scrollable-container::-webkit-scrollbar-thumb {
+    /* background-color:#f6bd5a; */
+    background-color: #000;
+    border-radius: 1rem; 
+}
+
+.truncate-text {
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    max-width: 16rem; 
+    cursor: pointer; 
+}
+
+/* .truncate-text:hover {
+    overflow: visible; 
+    z-index: 1; 
+} */
+.divVisible{
+    visibility:visible;
+}
+
+.divInvisible{
+    visibility:hidden;
+}
