@@ -1,0 +1,75 @@
+.card {
+    border-radius: 10px;
+}
+
+.button-container {
+    display: flex;
+    flex-wrap: wrap; /* Esto permite que los botones se ajusten si no caben en la línea */
+    gap: 10px; /* Esto da un espacio entre los botones */
+    align-items: center; /* Opcional: para alinear los botones verticalmente en el centro */
+  }
+  
+  .buttonProductosC {
+    background-color: #f6bd5a; 
+    border-color: #efa627;     
+    color: black;   
+    border-radius: 5px;  
+    padding: 0.4rem 0.5rem;  
+    margin-top: 15px;        
+  }
+  
+  .buttonProductosC:hover {
+    background-color: #efa627; 
+  }
+
+  .buttonCocinar {
+    background-color: #3e3e3e; 
+    border-color: #000000;     
+    color: white;   
+    border-radius: 5px;  
+    padding: 0.4rem 0.5rem;          
+  }
+  
+  .buttonCocinar:hover {
+    background-color: #000000; 
+  }
+
+  .cuenta {
+    background-color: #868f98;
+    color: black;
+    padding: 0.4rem;
+    width: 5rem;
+    text-align: center;
+    border-radius: 8px;
+  }
+
+  .card-title{
+    text-align: start;
+    margin-bottom: 10px;
+  }
+
+  .card-text {
+    text-align: start;
+    background: transparent;
+  }
+
+  .buttonModal{
+    background-color: #f6bd5a; 
+    border-color: #efa627;     
+    color: black;
+    margin-left: 5px;   
+    border-radius: 5px;  
+    padding: 0.1rem 0.2rem;     
+  }
+
+  .buttonModal:hover {
+    background-color: #efa627; 
+  }
+
+  .custom-modal-header {
+    background: linear-gradient(to right, #f6bd5a 50%, black 90%);
+        
+    color: white; 
+  }
+
+ 

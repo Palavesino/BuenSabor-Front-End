@@ -18,3 +18,4 @@ export interface MproductXRecipe {
   // image: Image;
   file: File | null;
 }
+

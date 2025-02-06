@@ -6,6 +6,7 @@ export const useGetUserRole = (id: string) => {
     const { getAccessTokenSilently } = useAuth0();
     const [data, setData] = useState<Role | null>(null);
 
+    
     useEffect(() => {
         const fetchData = async () => {
             try {

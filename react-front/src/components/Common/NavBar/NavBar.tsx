@@ -50,6 +50,26 @@ const NavBar = () => {
               </span>
             </Link>
 
+            <Link to="/cajero" className="item">
+              cajero
+            
+            </Link>
+
+            <Link to="/delivery" className="item">
+              Delivery
+            
+            </Link>
+
+            <Link to="/cocinero" className="item">
+              Cocinero
+            
+            </Link>
+
+            <Link to="/estadistica" className="item">
+              estadistica
+            
+            </Link>
+
             <Link to="/promociones" className="item">
               Promociones{" "}
               <span className="product-promotion-icon">
