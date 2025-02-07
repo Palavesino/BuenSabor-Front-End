@@ -67,18 +67,18 @@ const OrderForm: React.FC<OrderFormProps> = ({ show, setShowModal }) => {
             deliveryMethod: o.deliveryMethod,
             orderDetails: cart,
             paymentType: o.paymentType,
-
+            dateTime: new Date().toISOString(),
         }
         const response = await orderPost(order);
         if (response) {
             if (order.paymentType === "mp") {
                 setIdPreference(response.preferenceId);
                 order.id = response.orderId
-            }else {
+            } else {
                 order.id = response.id
                 setShowModal(false);
             }
-         await sendEmail(order.id);
+            await sendEmail(order.id);
         }
         clearCart();
     };

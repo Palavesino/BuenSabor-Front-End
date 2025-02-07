@@ -22,7 +22,7 @@ import { useValidate } from "./hook/use-Validate";
 const ProductDetails = () => {
   const { productId } = useParams<{ productId: string }>();
   const { type } = useParams<{ type: string }>();
-  const [refresh, setRefetch] = useState<boolean>(true);
+  // const [refresh, setRefetch] = useState<boolean>(true);
   // Estado para almacenar las manufactured-products
   const [item, setItem] = useState<Product | ManufacturedProduct | null>(
     type === 'P' ? {} as Product : (type === 'M' ? {} as ManufacturedProduct : null)
@@ -30,23 +30,23 @@ const ProductDetails = () => {
 
   const data = item !== null ? useGenericPublicGetXID<ManufacturedProduct | Product>(
     `${type === 'M' ? `/api/manufactured-products/sell` : type === 'P' ? `/api/products/sell` : ''}`,
-    Number(productId), refresh
+    Number(productId), true
   ) : null;
-  const validate = useValidate();
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        if (productId && type) {
-          const response = await validate(productId, type); // Valida la disponibilidad del producto
-          setRefetch(response);
-        }
-      } catch (error) {
-        console.error("Error al verificar el producto:", error);
-      }
-    };
+  // const validate = useValidate();
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       if (productId && type) {
+  //         const response = await validate(productId, type); // Valida la disponibilidad del producto
+  //         setRefetch(response);
+  //       }
+  //     } catch (error) {
+  //       console.error("Error al verificar el producto:", error);
+  //     }
+  //   };
 
-    fetchData(); // Llama a la validación al cargar el componente
-  }, []);
+  //   fetchData(); // Llama a la validación al cargar el componente
+  // }, []);
 
   useEffect(() => {
     setItem(data);

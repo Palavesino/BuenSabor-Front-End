@@ -4,11 +4,10 @@ import { ModalType } from "../components/Enum/ModalType";
 export const validationSchemaUserComplete = Yup.object().shape({
     name: Yup.string().required('Ingrese un nombre'),
     lastName: Yup.string().required('Ingrese un apellido'),
-    phones: Yup.array().of(
-        Yup.object().shape({
-            phone: Yup.number().required('Ingrese un número de teléfono')
-        })
-    ).min(1, 'Proporcione al menos una telefono'),
+    phone: Yup.string()
+        .required('Ingrese un número de teléfono')
+        .min(8, 'El número de teléfono debe tener al menos 8 caracteres')
+        .max(15, 'El número de teléfono no puede tener más de 15 caracteres'),
     addresses: Yup.array().of(
         Yup.object().shape({
             address: Yup.string().required('Ingrese una dirección'),

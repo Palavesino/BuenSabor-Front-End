@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Navbar, Container, Nav, NavDropdown, Col, Row } from "react-bootstrap";
 import { BsCart3, BsPersonCircle } from "react-icons/bs";
-import { CiDiscount1 } from "react-icons/ci";
+// import { CiDiscount1 } from "react-icons/ci";
 import { IoFastFoodOutline, IoSearch } from "react-icons/io5";
 import { usePermission } from "../../../context/PermissionContext";
 //import { MdOutlineNoFood } from "react-icons/md";
@@ -15,6 +15,7 @@ import LogoutButton from "./LogoutButton/LogoutButton";
 // Importacion de estilos
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./NavBar.css";
+import { UserRole } from "../../Enum/UserRole";
 
 /*
  *Componente de barra de navegación.
@@ -49,33 +50,28 @@ const NavBar = () => {
                 <IoFastFoodOutline />
               </span>
             </Link>
-
-            <Link to="/cajero" className="item">
-              cajero
-            
-            </Link>
-
-            <Link to="/delivery" className="item">
-              Delivery
-            
-            </Link>
-
-            <Link to="/cocinero" className="item">
-              Cocinero
-            
-            </Link>
-
-            <Link to="/estadistica" className="item">
-              estadistica
-            
-            </Link>
-
-            <Link to="/promociones" className="item">
+            {isAuthenticated && (
+              <>
+                {permission === UserRole.cajero && (
+                  <Link to="/cajero" className="item">Cajero</Link>
+                )}
+                {permission === UserRole.delivery && (
+                  <Link to="/delivery" className="item">Delivery</Link>
+                )}
+                {permission === UserRole.cocinero && (
+                  <Link to="/cocinero" className="item">Cocinero</Link>
+                )}
+                {permission === UserRole.admin && (
+                  <Link to="/estadistica" className="item">Estadística</Link>
+                )}
+              </>
+            )}
+            {/* <Link to="/promociones" className="item">
               Promociones{" "}
               <span className="product-promotion-icon">
                 <CiDiscount1 />
               </span>
-            </Link>
+            </Link> */}
 
             <Row>
               <Col>
@@ -100,12 +96,16 @@ const NavBar = () => {
                   <NavDropdown.Item href="/private/profile" className="text-truncate">
                     <p>{user?.name}</p>
                   </NavDropdown.Item>
-                  <NavDropdown.Item href="/private/categoria" className="text-truncate">
-                    <p>{permission}</p>
-                  </NavDropdown.Item>
-                  <NavDropdown.Item href="/private/user/orders" className="text-truncate">
-                    <p>Historial</p>
-                  </NavDropdown.Item>
+                  {(permission === UserRole.admin || permission === UserRole.cocinero) && (
+                    <NavDropdown.Item href="/private/categoria" className="text-truncate">
+                      <p>{permission}</p>
+                    </NavDropdown.Item>
+                  )}
+                  {permission === UserRole.user && (
+                    <NavDropdown.Item href="/private/user/orders" className="text-truncate">
+                      <p>Historial</p>
+                    </NavDropdown.Item>
+                  )}
                   {/* <NavDropdown.Divider /> */}
                   <NavDropdown.Item href="#action5">
                     <LogoutButton />

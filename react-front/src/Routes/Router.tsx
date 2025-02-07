@@ -1,7 +1,6 @@
 import { Route } from "react-router-dom";
 import { RouteAccessRole } from "./RouteAccessRole.tsx";
 import { UserRole } from "../components/Enum/UserRole";
-import ProductDetails from "../components/Pages/ProductDetails/ProductDetails.tsx";
 import Products from "../components/Pages/Products/Products.tsx";
 
 // Importaciones de Assets
@@ -20,6 +19,7 @@ const Carrito = lazy(() => import('../components/Pages/Cart/Cart.tsx'));
 const Cajero = lazy(() => import('../components/Cajero/Cajero.tsx'));
 const Delivery = lazy(() => import('../components/Delivery/Delivery.tsx'));
 const Cocinero = lazy(() => import('../components/Cocinero/Cocinero.tsx'));
+const ProductDetails = lazy(() => import('../components/Pages/ProductDetails/ProductDetails.tsx'));
 
 const Estadistica = lazy(() => import('../components/Admin/Estadisticas/Estadistica.tsx'));
 
