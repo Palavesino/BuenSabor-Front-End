@@ -44,15 +44,15 @@ const NavBar = () => {
               Home
             </Link>
 
-            <Link to="/productos" className="item">
+            {/* <Link to="/productos" className="item">
               Productos{" "}
               <span className="product-promotion-icon">
                 <IoFastFoodOutline />
               </span>
-            </Link>
+            </Link> */}
             {isAuthenticated && (
               <>
-                {permission === UserRole.cajero && (
+                {/* {permission === UserRole.cajero && (
                   <Link to="/cajero" className="item">Cajero</Link>
                 )}
                 {permission === UserRole.delivery && (
@@ -60,7 +60,7 @@ const NavBar = () => {
                 )}
                 {permission === UserRole.cocinero && (
                   <Link to="/cocinero" className="item">Cocinero</Link>
-                )}
+                )} */}
                 {permission === UserRole.admin && (
                   <Link to="/estadistica" className="item">Estadística</Link>
                 )}
@@ -73,7 +73,7 @@ const NavBar = () => {
               </span>
             </Link> */}
 
-            <Row>
+            {/* <Row>
               <Col>
                 <div className="box">
                   <div className="search-container">
@@ -86,7 +86,7 @@ const NavBar = () => {
                   </div>
                 </div>
               </Col>
-            </Row>
+            </Row> */}
             {isAuthenticated ? (
               <>
                 <NavDropdown
@@ -101,7 +101,7 @@ const NavBar = () => {
                       <p>{permission}</p>
                     </NavDropdown.Item>
                   )}
-                  {permission === UserRole.user && (
+                  {(permission === UserRole.user ||permission === UserRole.admin) && (
                     <NavDropdown.Item href="/private/user/orders" className="text-truncate">
                       <p>Historial</p>
                     </NavDropdown.Item>

@@ -72,7 +72,7 @@ const CartTable = () => {
                     ) : (
                         <tr>
                             <th colSpan={5} className="empty-cart-message">
-                                <Button href="/productos" className="button-addProduct">
+                                <Button href="/" className="button-addProduct">
                                     Agregue un Producto al Carrito ⮕
                                 </Button>
                             </th>

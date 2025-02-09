@@ -43,7 +43,8 @@ const Router = () => {
               isRolPermited={permission === UserRole.user || permission === UserRole.admin || permission === UserRole.espectador}
               path={permission === UserRole.cajero ? "/cajero" : (permission === UserRole.delivery ? "/Delivery" : (permission === UserRole.cocinero ? "/cocina" : "/"))}
             >
-              <Home />
+              <Products />
+              {/* <Home /> */}
             </RouteAccessRole>
           } />
           <Route element={<AuthGuard />}>

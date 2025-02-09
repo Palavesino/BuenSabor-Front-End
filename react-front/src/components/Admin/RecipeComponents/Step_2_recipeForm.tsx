@@ -30,7 +30,6 @@ const Step_2_recipeForm: React.FC<Step_2_recipeFormProps> = ({ formik, previousS
     };
     const removeStep = (index: number) => {
         const updatedSteps = [...formik.values.steps];
-
         // Eliminar el paso en el índice dado
         updatedSteps.splice(index, 1);
 

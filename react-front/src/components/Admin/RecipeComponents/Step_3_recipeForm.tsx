@@ -50,19 +50,19 @@ const Step_3_recipeForm: React.FC<Step3Props> = ({ formik, previousStep, nextSte
             { ingredient: selectedIngredient, quantity: 0 },
         ];
 
-        formik.setFieldValue("recipe.ingredientsQuantity", updatedIngredients);
+        formik.setFieldValue("ingredientsQuantity", updatedIngredients);
         setIngredientId("");
     };
     // Función para eliminar un Ingrediente de la lista de Ingredientes en el formulario
     const removeIngredient = (index: number) => {
         const updatedIngredient = [...formik.values.ingredientsQuantity];
         updatedIngredient.splice(index, 1);
-        formik.setFieldValue("recipe.ingredientsQuantity", updatedIngredient);
+        formik.setFieldValue("ingredientsQuantity", updatedIngredient);
     };
     const handleQuantityChange = (index: number, value: number) => {
         const updatedIngredients = [...formik.values.ingredientsQuantity];
         updatedIngredients[index].quantity = value;
-        formik.setFieldValue("recipe.ingredientsQuantity", updatedIngredients);
+        formik.setFieldValue("ingredientsQuantity", updatedIngredients);
     };
 
 
@@ -74,7 +74,7 @@ const Step_3_recipeForm: React.FC<Step3Props> = ({ formik, previousStep, nextSte
                     <Form.Group>
                         <Form.Label>Ingrediente</Form.Label>
                         <Form.Control
-                            name="recipe.ingredientsQuantity.ingredient.id"
+                            name="ingredientsQuantity.ingredient.id"
                             as="select"
                             value={ingredientId || ""}
                             onChange={(e) => setIngredientId(e.target.value)}

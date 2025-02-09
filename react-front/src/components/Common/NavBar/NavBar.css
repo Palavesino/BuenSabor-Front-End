@@ -7,7 +7,7 @@ nav {
   text-decoration: none;
   color: white;
   font-weight: bold;
-  font-size: 1rem;
+  font-size: 1.3rem;
   margin-right: 1.3rem;
   margin-left: 1.3rem;
   margin-top: .3rem;
@@ -34,13 +34,13 @@ nav {
   position: absolute;
   top: 0;
   right: 7rem;
-  font-size: 2rem;
+  font-size: 2.1rem;
 }
 
 .shopping-cart-icon {
   position: absolute;
   right: 13rem;
-  font-size: 1.5rem;
+  font-size: 1.7rem;
   top: .3rem;
 }
 
@@ -89,7 +89,7 @@ nav {
 
 .box {
   padding-top: .5rem;
-  margin-left: 3.5rem;
+  margin-left: 17rem;
   width: 15rem;
   height: 2.7rem;
 }
