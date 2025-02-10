@@ -9,9 +9,10 @@
 }
 
 .cui-product-card img {
-  width: 100%;
-  height: auto;
   border-radius: 1rem;
+  width: 100%; /* Ancho fijo */
+  height: 200px; /* Altura fija */
+  object-fit: cover;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 }

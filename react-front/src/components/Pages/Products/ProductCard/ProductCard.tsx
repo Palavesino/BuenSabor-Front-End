@@ -12,9 +12,9 @@ import { Link } from "react-router-dom";
 import "./ProductCard.css";
 import { ManufacturedProduct } from "../../../../Interfaces/ManufacturedProduct";
 import { Product } from "../../../../Interfaces/Product";
-import { useValidate } from "../../ProductDetails/hook/use-Validate";
-import { useEffect } from "react";
-
+import { useEffect, useState } from "react";
+import { Image } from "../../../../Interfaces/Image";
+import { useGetImageId } from "../../../../Util/useGetImageId";
 /**
  * Propiedades del componente ProductCard.
  * @prop {Product} product - El objeto Product que representa un producto a mostrar.
@@ -29,6 +29,19 @@ interface ProductCardProps {
  * Recibe la propiedad `product` que representa los datos del producto a mostrar.
  */
 const ProductCard: React.FC<ProductCardProps> = ({ product, isProduct }) => {
+  const [image, setImage] = useState<Image>()
+  const getImage = useGetImageId();
+  const rut = isProduct ? "../../../../../uploads/products/"
+    : "../../../../../uploads/manufactured_products/"
+  useEffect(() => {
+    const fetchImage = async () => {
+      if (product) {
+        const imageData = await getImage(product.id, (isProduct ? 'P' : 'M'));
+        setImage(imageData);
+      }
+    };
+    fetchImage();
+  }, []);
   // const validate = useValidate();
   //   useEffect(() => {
   //     const fetchData = async () => {
@@ -38,14 +51,18 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isProduct }) => {
   //           console.error("Error al verificar el producto:", error);
   //         }
   //     };
-  
+
   //     fetchData(); // Llama a la validación al cargar el componente
   //   }, []);
 
   // Renderizado del componente
   return (
     <CCard className="cui-product-card">
-      <CCardImage orientation="top" src="https://www.clarin.com/img/2022/11/25/tR-l3EmRl_2000x1500__1.jpg" />
+      {
+        image ? (<CCardImage orientation="top" src={`${rut}${image.name}`} />)
+          : <CCardImage orientation="top" src="https://www.clarin.com/img/2022/11/25/tR-l3EmRl_2000x1500__1.jpg" />
+      }
+
       <CCardBody>
         <CCardTitle className="cui-product-card-body-tittle" style={{ marginLeft: "-.1rem", fontSize: "1.3rem" }}>
           {product.denomination}

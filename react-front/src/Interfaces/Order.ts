@@ -18,7 +18,7 @@ export interface Order {
     userLastName: string;
     deliveryMethod: string;
     paymentType: string;
-    dateTime: string | Date;  
+    dateTime: string | Date| null;  
     orderDetails: OrderDetail[];
 }
 export function initializeOrder() {

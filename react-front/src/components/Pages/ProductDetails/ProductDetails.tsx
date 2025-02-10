@@ -11,7 +11,8 @@ import { useEffect, useState } from "react";
 import { Product } from "../../../Interfaces/Product";
 import { useGenericPublicGetXID } from "../../../Services/useGenericPublicGetXID";
 import { useValidate } from "./hook/use-Validate";
-
+import { Image } from "../../../Interfaces/Image";
+import { useGetImageId } from "../../../Util/useGetImageId";
 
 /**
  * Propiedades del componente ProductDetails. (temporales ya que hay que hay que desarrollar query para los productos relacionados)
@@ -22,6 +23,8 @@ import { useValidate } from "./hook/use-Validate";
 const ProductDetails = () => {
   const { productId } = useParams<{ productId: string }>();
   const { type } = useParams<{ type: string }>();
+  const [image, setImage] = useState<Image | null>(null)
+  const getImage = useGetImageId();
   // const [refresh, setRefetch] = useState<boolean>(true);
   // Estado para almacenar las manufactured-products
   const [item, setItem] = useState<Product | ManufacturedProduct | null>(
@@ -49,6 +52,13 @@ const ProductDetails = () => {
   // }, []);
 
   useEffect(() => {
+    const fetchImage = async () => {
+      if (productId && type) {
+        const imageData = await getImage(parseInt(productId), type);
+        setImage(imageData);
+      }
+    };
+    fetchImage();
     setItem(data);
   }, [data]);
 
@@ -65,7 +75,7 @@ const ProductDetails = () => {
       {item !== null && (
 
         <div className="product-details-page">
-          <ProductDetailsCard product={item} />
+          <ProductDetailsCard product={item} image={image} isProduct={type === 'P'}  />
 
           {/* <h2 className="related-productos-title">Productos relacionados</h2> */}
 

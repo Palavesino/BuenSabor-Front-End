@@ -336,9 +336,7 @@ export const validationSchemaOrder = (isDelivery: boolean) => {
     return Yup.object().shape({
         deliveryMethod: Yup.string()
             .required("El método de entrega es requerido"),
-        phone: isDelivery ? Yup.string().required('El teléfono es requerido')
-            .matches(/^[0-9]+$/, 'El número de teléfono solo puede contener dígitos')
-            .min(10, 'El número de teléfono debe tener al menos 10 dígitos') : Yup.string(),
+        phone: isDelivery ? Yup.string().required('El teléfono es requerido'): Yup.string(),
         address: isDelivery ? Yup.string().required('La dirección es requerida') : Yup.string(),
         apartment: isDelivery ? Yup.string().required('El apartamento es requerido') : Yup.string(),
         paymentType: Yup.string()
