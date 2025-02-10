@@ -11,7 +11,8 @@ import { useEffect, useState } from "react";
 import { Product } from "../../../Interfaces/Product";
 import { useGenericPublicGetXID } from "../../../Services/useGenericPublicGetXID";
 import { useValidate } from "./hook/use-Validate";
-
+import { Image } from "../../../Interfaces/Image";
+import { useGetImageId } from "../../../Util/useGetImageId";
 
 /**
  * Propiedades del componente ProductDetails. (temporales ya que hay que hay que desarrollar query para los productos relacionados)
@@ -22,7 +23,9 @@ import { useValidate } from "./hook/use-Validate";
 const ProductDetails = () => {
   const { productId } = useParams<{ productId: string }>();
   const { type } = useParams<{ type: string }>();
-  const [refresh, setRefetch] = useState<boolean>(true);
+  const [image, setImage] = useState<Image | null>(null)
+  const getImage = useGetImageId();
+  // const [refresh, setRefetch] = useState<boolean>(true);
   // Estado para almacenar las manufactured-products
   const [item, setItem] = useState<Product | ManufacturedProduct | null>(
     type === 'P' ? {} as Product : (type === 'M' ? {} as ManufacturedProduct : null)
@@ -30,25 +33,32 @@ const ProductDetails = () => {
 
   const data = item !== null ? useGenericPublicGetXID<ManufacturedProduct | Product>(
     `${type === 'M' ? `/api/manufactured-products/sell` : type === 'P' ? `/api/products/sell` : ''}`,
-    Number(productId), refresh
+    Number(productId), true
   ) : null;
-  const validate = useValidate();
+  // const validate = useValidate();
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       if (productId && type) {
+  //         const response = await validate(productId, type); // Valida la disponibilidad del producto
+  //         setRefetch(response);
+  //       }
+  //     } catch (error) {
+  //       console.error("Error al verificar el producto:", error);
+  //     }
+  //   };
+
+  //   fetchData(); // Llama a la validación al cargar el componente
+  // }, []);
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        if (productId && type) {
-          const response = await validate(productId, type); // Valida la disponibilidad del producto
-          setRefetch(response);
-        }
-      } catch (error) {
-        console.error("Error al verificar el producto:", error);
+    const fetchImage = async () => {
+      if (productId && type) {
+        const imageData = await getImage(parseInt(productId), type);
+        setImage(imageData);
       }
     };
-
-    fetchData(); // Llama a la validación al cargar el componente
-  }, []);
-
-  useEffect(() => {
+    fetchImage();
     setItem(data);
   }, [data]);
 
@@ -65,7 +75,7 @@ const ProductDetails = () => {
       {item !== null && (
 
         <div className="product-details-page">
-          <ProductDetailsCard product={item} />
+          <ProductDetailsCard product={item} image={image} isProduct={type === 'P'}  />
 
           {/* <h2 className="related-productos-title">Productos relacionados</h2> */}
 

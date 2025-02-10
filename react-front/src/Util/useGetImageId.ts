@@ -1,15 +1,10 @@
-import { useAuth0 } from "@auth0/auth0-react";
 export const useGetImageId = () => {
-    const { getAccessTokenSilently } = useAuth0();
     const GetImageId = async (id: number, filter: string) => {
         try {
-            let accessToken = await getAccessTokenSilently();
-                                     
-            const response = await fetch(`/api/images/filter/${filter}/${id}`, {
+            const response = await fetch(`/api/images/public/filter/${filter}/${id}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${accessToken}`,
                 },
             });
 

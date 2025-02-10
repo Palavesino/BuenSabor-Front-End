@@ -1,0 +1,47 @@
+.buttonProductos {
+    background-color: #5181c9; 
+    border-color: #244980;     
+    color: black;   
+    border-radius: 5px;  
+    padding: 0.5rem 1rem;          
+  }
+  
+  .buttonProductos:hover {
+    background-color: #2968c7; 
+  }
+
+  .buttonEntregar {
+    background-color: #59c951; 
+    border-color: #28751e;     
+    color: black;   
+    border-radius: 5px;  
+    padding: 0.5rem 1rem;          
+  }
+  
+  .buttonEntregar:hover {
+    background-color: #30a827; 
+  }
+
+  .buttonCocina {
+    background-color: #d5b843; 
+    border-color: #caa305;     
+    color: black;   
+    border-radius: 5px;  
+    padding: 0.5rem 1rem;          
+  }
+  
+  .buttonCocina:hover {
+    background-color: #caa50f; 
+  }
+
+  .buttonDelivery {
+    background-color: #ffdc50; 
+    border-color: #caa305;     
+    color: black;   
+    border-radius: 5px;  
+    padding: 0.5rem 1rem;              
+  }
+  
+  .buttonDelivery:hover {
+    background-color: #ffd325; 
+  }

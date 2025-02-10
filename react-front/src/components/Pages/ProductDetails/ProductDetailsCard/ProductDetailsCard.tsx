@@ -17,6 +17,7 @@ import { useEffect, useState } from "react";
 import { CartItem } from "../../../../Interfaces/CartItem";
 import { useCart } from "../../../../context/CartContext";
 import { Product } from "../../../../Interfaces/Product";
+import { Image } from "../../../../Interfaces/Image";
 
 // Esto es temporal hasta que se apliquen las apis al componente con la BD
 
@@ -27,12 +28,16 @@ import { Product } from "../../../../Interfaces/Product";
  */
 interface ProductDetailsCardProps {
   product: Product | ManufacturedProduct | null;
+  image: Image | null;
+  isProduct: boolean;
 }
 
 // eplicacion del componente
-const ProductDetailsCard: React.FC<ProductDetailsCardProps> = ({ product }) => {
+const ProductDetailsCard: React.FC<ProductDetailsCardProps> = ({ product, image, isProduct }) => {
   const { cart, addToCart, removeFromCart } = useCart();
   const [insideCart, SetInsideCart] = useState(false);
+  const rut = isProduct ? "../../../../../uploads/products/"
+    : "../../../../../uploads/manufactured_products/"
   // const itemCart: CartItem | null = product ? {
   //   id: product.id,
   //   idCategory: 'manufacturedProductCategoryID' in product ? product.manufacturedProductCategoryID : product.productCategoryID,
@@ -84,8 +89,10 @@ const ProductDetailsCard: React.FC<ProductDetailsCardProps> = ({ product }) => {
     >
       <CRow className="g-0">
         <CCol md={5}>
-          <CCardImage src="https://www.clarin.com/img/2022/11/25/tR-l3EmRl_2000x1500__1.jpg" />
-        </CCol>
+          {
+            image ? (<CCardImage orientation="top" src={`${rut}${image.name}`} />)
+              : <CCardImage orientation="top" src="https://www.clarin.com/img/2022/11/25/tR-l3EmRl_2000x1500__1.jpg" />
+          } </CCol>
 
         <CCol md={7}>
           <CCardBody>
