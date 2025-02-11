@@ -18,7 +18,7 @@ const Cajero = lazy(() => import('../components/Cajero/Cajero.tsx'));
 const Delivery = lazy(() => import('../components/Delivery/Delivery.tsx'));
 const Cocinero = lazy(() => import('../components/Cocinero/Cocinero.tsx'));
 
-const Estadistica = lazy(() => import('../components/Admin/Estadisticas/EstadisticaProduct.tsx'));
+const Estadistica = lazy(() => import('../components/Admin/Estadisticas/Estadistica.tsx'));
 
 const StockTable = lazy(() => import('../components/Admin/StockComponents/StockTable.tsx'));
 interface Props {

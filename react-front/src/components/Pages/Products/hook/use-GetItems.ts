@@ -1,6 +1,9 @@
+import { useSpinner } from "../../../../context/SpinnerContext";
 
 export const useGetItems = () => {
+    const { showSpinner, hideSpinner } = useSpinner();
     const getItems = async () => {
+        showSpinner()
         try {
             const response = await fetch(`/api/order/public/items`, {
                 method: "GET",
@@ -17,6 +20,8 @@ export const useGetItems = () => {
         } catch (error) {
             console.error("Error Get Items from BD = ", error);
 
+        }finally {
+            hideSpinner();
         }
 
     }

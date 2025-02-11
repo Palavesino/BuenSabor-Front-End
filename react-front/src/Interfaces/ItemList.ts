@@ -1,7 +1,9 @@
-import { ManufacturedProduct } from "./ManufacturedProduct";
-import { Product } from "./Product";
 
 export interface ItemList {
-    productDTOList: Product[];
-    manufacturedProductDTOList: ManufacturedProduct[];
+    id : number
+    itemID : number
+    itemDenomination : string
+    imageDenomination : string
+    categoryId : number
+    type : string
 }

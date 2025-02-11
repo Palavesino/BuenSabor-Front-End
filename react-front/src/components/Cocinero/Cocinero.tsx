@@ -18,7 +18,7 @@ const Cocinero: React.FC = () => {
   const [isTimeUp, setIsTimeUp] = useState<{ [key: number]: boolean }>({});
   const [isCountdownStarted, setIsCountdownStarted] = useState<{ [key: number]: boolean }>({});
   const update = updateOrderState();
-  
+
   useEffect(() => {
     const fetchOrders = async () => {
       const data = await getItem();
@@ -43,6 +43,40 @@ const Cocinero: React.FC = () => {
     setCurrentOrderDetails(orderDetails);
     setShowModal(true);
   };
+  const sumCookingTime = (orderDetails: OrderDetail[]): number => {
+    const totalCookingTime = orderDetails.reduce((total, orderDetail) => {
+        if (orderDetail.itemManufacturedProduct) {
+            // Obtener el tiempo de cocción en formato de texto (e.g., "30 min" o "1 hour")
+            const cookingTime = orderDetail.itemManufacturedProduct.cookingTime;
+            
+            // Convertir el tiempo de cocción a minutos
+            const timeInMinutes = convertCookingTimeToMinutes(cookingTime);
+            return total + timeInMinutes;
+        }
+        return total;
+    }, 0);
+
+    return totalCookingTime;
+};
+
+// Función para convertir el tiempo de cocción a minutos
+const convertCookingTimeToMinutes = (cookingTime: string): number => {
+    const timePattern = /(\d+)\s*(hour|minute|h|m)/i;
+    const match = cookingTime.match(timePattern);
+
+    if (match) {
+        const value = parseInt(match[1], 10);
+        const unit = match[2].toLowerCase();
+
+        // Convertir a minutos
+        if (unit === "hour" || unit === "h") {
+            return value * 60; // Convertir horas a minutos
+        } else if (unit === "minute" || unit === "m") {
+            return value; // Ya está en minutos
+        }
+    }
+    return 0; // Si no se puede parsear, devolvemos 0
+};
 
   const handleCloseModal = () => {
     setShowModal(false);
@@ -139,22 +173,25 @@ const Cocinero: React.FC = () => {
                     <div className="card-text">
                       <strong>Cliente</strong> {order.userName} {order.userLastName}
                       <br />
-                      <strong>Tiempo estimado </strong> {order.estimatedTime}
+                      <strong>Tiempo estimado </strong> {sumCookingTime(order.orderDetails)}
                       <br />
-                      <strong>Fecha del pedido</strong> {new Date(order.dateTime).toLocaleString()}
+                      <strong>Fecha del pedido</strong>
+                      {order.dateTime && (
+                        new Date(order.dateTime).toLocaleString()
+                      )}
                       <br />
                     </div>
 
                     <div className="button-container">
-                        {//order.orderDetails.length > 0 && (
-                          <div>
-                            <button className="buttonProductosC" onClick={() => handleShowModal(order.orderDetails)}>
-                              Ver Productos
-                            </button>
-                          </div>
+                      {//order.orderDetails.length > 0 && (
+                        <div>
+                          <button className="buttonProductosC" onClick={() => handleShowModal(order.orderDetails)}>
+                            Ver Productos
+                          </button>
+                        </div>
                         //)
-                        }
-                      
+                      }
+
                       <div className="mt-3">
                         {isCountdownStarted[order.id] && timeLeft > 0 ? (
                           <div>

@@ -14,13 +14,16 @@ const CartTable = () => {
     const { cart, removeFromCart, clearCart } = useCart();
     const total = cart.reduce((acc, item) => acc + item.subtotal, 0);
     const [showModal, setShowModal] = useState(false);
-    const handleClick = () => {
+    const handleClick = async () => {
         if (permission !== UserRole.espectador) {
             setShowModal(true);
+
         } else {
             alert("Necesitas Estar Logeada Para Poder comprar");
         }
     };
+
+
 
     return (
         <>

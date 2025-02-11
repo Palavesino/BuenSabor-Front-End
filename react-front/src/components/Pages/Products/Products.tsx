@@ -24,7 +24,7 @@ const Products = () => {
   // Estado para almacenar los productos
   const [categories, setCategorys] = useState<Category[]>([]);
   // Estado para almacenar las manufactured-products
-  const [items, setItems] = useState<ItemList>({ productDTOList: [], manufacturedProductDTOList: [] });
+  const [items, setItems] = useState<ItemList[]>([]);
   const getItems = useGetItems();
   const data = useGenericPublicGet<Category>(
     "/api/categories/public/filter/catalogue",
@@ -45,14 +45,11 @@ const Products = () => {
     }
   }, [data]);
 
-  const filteredProducts = selectedCategory ? (
-    isProduct
-      ? (items.productDTOList || []).filter((item) => item.productCategoryID === selectedCategory)
-      : (items.manufacturedProductDTOList || []).filter((item) => item.manufacturedProductCategoryID === selectedCategory)
-  ) : (
-    isProduct ? items.productDTOList || [] : items.manufacturedProductDTOList || []
-  );
-
+  const filteredProducts = selectedCategory
+    ? isProduct
+      ? items.filter((item) => item.categoryId === selectedCategory)
+      : items.filter((item) => item.categoryId === selectedCategory)
+    : items;
 
   const handleCategoryClick = (categoryId: number, isProduct: boolean) => {
     setIsProduct(isProduct);
