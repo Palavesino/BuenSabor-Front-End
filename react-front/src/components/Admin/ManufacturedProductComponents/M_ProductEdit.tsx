@@ -35,7 +35,7 @@ const M_ProductEdit: React.FC<M_ProductEditProps> = ({
 
   // Obtiene las categorías desde la API cuando renderice la pág
   useEffect(() => {
-    if (data.length > 0 && data2.id ) {
+    if (data.length > 0 && data2.id) {
       formik.setFieldValue("manufacturedProduct.price", data2);
       setCategories(data);
       // Obtener la imagen cuando se obtengan las categorías
@@ -46,6 +46,8 @@ const M_ProductEdit: React.FC<M_ProductEditProps> = ({
       fetchImage();
     }
   }, [data, data2]);
+
+
 
   return (
     <>
@@ -141,7 +143,9 @@ const M_ProductEdit: React.FC<M_ProductEditProps> = ({
               type="time" // Utiliza el tipo "time" para campos de tiempo
               step={1}
               value={formik.values.manufacturedProduct.cookingTime || ""}
-              onChange={formik.handleChange}
+              onChange={(e) => {
+                formik.handleChange(e);
+              }}
               isInvalid={Boolean(
                 formik.errors.manufacturedProduct?.cookingTime &&
                 formik.touched.manufacturedProduct?.cookingTime

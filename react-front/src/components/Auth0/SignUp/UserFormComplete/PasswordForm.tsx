@@ -23,8 +23,8 @@ const PasswordForm: React.FC<PasswordFormProps> = ({ handleNewPass, userSub, set
     const changeUserPassword = usePatchUserPassword();
 
     const handleSave = async (newPass: RequestBodyType) => {
-        await changeUserPassword(userSub, newPass.password)
         setShowModal(false)
+        await changeUserPassword(userSub, newPass.password)
     }
     // Formik Password
     const formikPassword = useFormik({

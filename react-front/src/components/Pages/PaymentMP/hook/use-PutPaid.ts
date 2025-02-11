@@ -17,7 +17,8 @@ export const usePutPaid = () => {
                 id: 0,
                 preferenceId: preferenceId,
                 paymentID: payment_id,
-                status: status
+                status: status,
+                orderId: 0
             }
             );
 

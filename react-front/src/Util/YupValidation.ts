@@ -113,9 +113,13 @@ export const validationSchemaProduct = (modalType: ModalType) => {
                         .required("La categoría es requerido"),
                     description: Yup.string().required("La Descripción es requerida"),
                     price: Yup.object().shape({
-                        sellPrice: Yup.number().required("El Precio de Venta es requerido").min(0, "No puede Ingresar Valor Negativo"),
                         costPrice: Yup.number().required("El Precio de Costo es requerido").min(0, "No puede Ingresar Valor Negativo"),
+                        sellPrice: Yup.number().required("El Precio de Venta es requerido").min(
+                            Yup.ref("costPrice"),
+                            "El Precio de Venta no puede ser menor al Precio de Costo"
+                        ),
                     }),
+
                 }),
                 stock: Yup.object().shape({
                     minStock: Yup.number()
@@ -165,8 +169,11 @@ export const validationSchemaProduct = (modalType: ModalType) => {
                         .required("La categoría es requerido"),
                     description: Yup.string().required("La Descripción es requerida"),
                     price: Yup.object().shape({
-                        sellPrice: Yup.number().required("El Precio de Venta es requerido").min(0, "No puede Ingresar Valor Negativo"),
                         costPrice: Yup.number().required("El Precio de Costo es requerido").min(0, "No puede Ingresar Valor Negativo"),
+                        sellPrice: Yup.number().required("El Precio de Venta es requerido").min(
+                            Yup.ref("costPrice"),
+                            "El Precio de Venta no puede ser menor al Precio de Costo"
+                        ),
                     }),
                 }),
                 file: Yup.mixed().when("product.id", (id: unknown, schema) => {
@@ -336,7 +343,7 @@ export const validationSchemaOrder = (isDelivery: boolean) => {
     return Yup.object().shape({
         deliveryMethod: Yup.string()
             .required("El método de entrega es requerido"),
-        phone: isDelivery ? Yup.string().required('El teléfono es requerido'): Yup.string(),
+        phone: isDelivery ? Yup.string().required('El teléfono es requerido') : Yup.string(),
         address: isDelivery ? Yup.string().required('La dirección es requerida') : Yup.string(),
         apartment: isDelivery ? Yup.string().required('El apartamento es requerido') : Yup.string(),
         paymentType: Yup.string()

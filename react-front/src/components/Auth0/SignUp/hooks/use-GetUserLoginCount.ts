@@ -1,12 +1,14 @@
 import { useAuth0 } from "@auth0/auth0-react";
+import { useSpinner } from "../../../../context/SpinnerContext";
 
 export const useGetUserLoginCount = () => {
     const { getAccessTokenSilently } = useAuth0();
+    const { showSpinner, hideSpinner } = useSpinner();
     const userLoginCount = async (userAuth0Id: string) => {
+        showSpinner();
         try {
             const token = await getAccessTokenSilently();
             const encodedUserId = encodeURIComponent(userAuth0Id).replaceAll('|', '%7C');
-
             const response = await fetch(`/api/users/logins-count/${encodedUserId}`, {
                 method: "GET",
                 headers: {
@@ -23,6 +25,8 @@ export const useGetUserLoginCount = () => {
         } catch (error) {
             console.error("Error Login Count from user:", error);
 
+        } finally {
+            hideSpinner();
         }
 
     }

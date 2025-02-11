@@ -2,43 +2,49 @@ import { useState } from "react";
 import { ListGroup } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import "./Menu.css";
+import { usePermission } from "../../context/PermissionContext";
+import { UserRole } from "../Enum/UserRole";
 
 function Menu() {
   const [selectedItem, setSelectedItem] = useState("");
-
+  const { permission } = usePermission();
   const handleItemClick = (item: string) => {
     setSelectedItem(item);
   };
 
   return (
     <ListGroup className="row-menu">
-      <Link to="/private/categoria">
-        <ListGroup.Item
-          action
-          active={selectedItem === "category"}
-          onClick={() => handleItemClick("category")}
-        >
-          Category
-        </ListGroup.Item>
-      </Link>
-      <Link to="/private/user">
-        <ListGroup.Item
-          action
-          active={selectedItem === "user"}
-          onClick={() => handleItemClick("user")}
-        >
-          User
-        </ListGroup.Item>
-      </Link>
-      <Link to="/private/products">
-        <ListGroup.Item
-          action
-          active={selectedItem === "products"}
-          onClick={() => handleItemClick("products")}
-        >
-          Products
-        </ListGroup.Item>
-      </Link>
+      {permission === UserRole.admin && (
+        <>
+          <Link to="/private/categoria">
+            <ListGroup.Item
+              action
+              active={selectedItem === "category"}
+              onClick={() => handleItemClick("category")}
+            >
+              Category
+            </ListGroup.Item>
+          </Link>
+          <Link to="/private/user">
+            <ListGroup.Item
+              action
+              active={selectedItem === "user"}
+              onClick={() => handleItemClick("user")}
+            >
+              User
+            </ListGroup.Item>
+          </Link>
+          <Link to="/private/products">
+            <ListGroup.Item
+              action
+              active={selectedItem === "products"}
+              onClick={() => handleItemClick("products")}
+            >
+              Products
+            </ListGroup.Item>
+          </Link>
+        </>
+      )}
       <Link to="/private/ingredients">
         <ListGroup.Item
           action

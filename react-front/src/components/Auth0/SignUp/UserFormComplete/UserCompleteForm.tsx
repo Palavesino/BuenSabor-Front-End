@@ -20,8 +20,8 @@ interface UserCompleteFormProps {
 const UserCompleteForm: React.FC<UserCompleteFormProps> = ({ handleNewUser, setRefetch, userComplete, setShowModal, modalType }) => {
     const userCompletePost = usePostUserComplete();
     const handleSave = async (customer: User) => {
-        await userCompletePost(customer, "😎 Usuario Editado Exitosamente!");
         setShowModal(false)
+        await userCompletePost(customer, "😎 Usuario Editado Exitosamente!");
         if (setRefetch) {
             setRefetch(true);
         }
