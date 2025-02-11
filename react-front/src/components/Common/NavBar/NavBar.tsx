@@ -41,7 +41,7 @@ const NavBar = () => {
             navbarScroll
           >
             <Link to="/" className="item">
-              Home
+              {permission === UserRole.cajero ? "Cajero" : (permission === UserRole.delivery ? "Delivery" : (permission === UserRole.cocinero ? "Cocina" : "Home"))}
             </Link>
 
             {/* <Link to="/productos" className="item">
@@ -62,7 +62,7 @@ const NavBar = () => {
                   <Link to="/cocinero" className="item">Cocinero</Link>
                 )} */}
                 {permission === UserRole.admin && (
-                  <Link to="/estadistica" className="item">Estadística</Link>
+                  <Link to="/private/estadistica" className="item">Estadística</Link>
                 )}
               </>
             )}
@@ -97,11 +97,15 @@ const NavBar = () => {
                     <p>{user?.name}</p>
                   </NavDropdown.Item>
                   {(permission === UserRole.admin || permission === UserRole.cocinero) && (
-                    <NavDropdown.Item href="/private/categoria" className="text-truncate">
+                    <NavDropdown.Item
+                      href={permission === UserRole.admin ? "/private/categoria" : "/private/ingredients"}
+                      className="text-truncate"
+                    >
                       <p>{permission}</p>
                     </NavDropdown.Item>
                   )}
-                  {(permission === UserRole.user ||permission === UserRole.admin) && (
+
+                  {(permission === UserRole.user || permission === UserRole.admin) && (
                     <NavDropdown.Item href="/private/user/orders" className="text-truncate">
                       <p>Historial</p>
                     </NavDropdown.Item>
@@ -115,10 +119,11 @@ const NavBar = () => {
             ) : (
               <LoginButton />
             )}
-
-            <Link to="/carrito" className="shopping-cart-icon item">
-              <BsCart3 />
-            </Link>
+            {(permission === UserRole.espectador || permission === UserRole.user || permission === UserRole.admin) && (
+              <Link to="/carrito" className="shopping-cart-icon item">
+                <BsCart3 />
+              </Link>
+            )}
           </Nav>
         </Navbar.Collapse>
       </Container>

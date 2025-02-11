@@ -1,6 +1,7 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { toast } from "react-toastify";
 import { User } from "../../../../Interfaces/User";
+import { useSpinner } from "../../../../context/SpinnerContext";
 
 /*
 Este hook proporciona una función (postUserComplete) que realiza una solicitud POST a una API
@@ -9,8 +10,10 @@ para crear un nuevo usuario utilizando el token de acceso obtenido de Auth0.
 export const usePostUserComplete = () => {
     // Obtiene las funciones necesarias de Auth0 React SDK
     const { getAccessTokenSilently } = useAuth0();
+    const { showSpinner, hideSpinner } = useSpinner();
     // Función que realiza una petición POST para crear un nuevo usuario
     const postUserComplete = async (obj: User, title?: string) => {
+        showSpinner();
         try {
             // Obtiene el token de acceso de forma silenciosa utilizando Auth0
             const token = await getAccessTokenSilently();
@@ -43,6 +46,8 @@ export const usePostUserComplete = () => {
             toast.error(`Ah ocurrido un error` + error, {
                 position: "top-center",
             });
+        } finally {
+            hideSpinner();
         }
     };
     return postUserComplete;

@@ -1,8 +1,11 @@
 import { useAuth0 } from "@auth0/auth0-react";
+import { useSpinner } from "../../../../context/SpinnerContext";
 
 export const useGetAuth0User = () => {
     const { getAccessTokenSilently } = useAuth0();
+    const { showSpinner, hideSpinner } = useSpinner(); 
     const getAuth0User = async (userAuth0Id: string) => {
+        showSpinner();
         try {
             const token = await getAccessTokenSilently();
             const encodedUserId = encodeURIComponent(userAuth0Id).replaceAll('|', '%7C');
@@ -23,7 +26,9 @@ export const useGetAuth0User = () => {
         } catch (error) {
             console.error("Error Get User from Auth0:", error);
 
-        }
+        }finally {
+            hideSpinner(); 
+          }
 
     }
     return getAuth0User;

@@ -10,6 +10,7 @@ import WalletMP from "./WalletMP";
 import { validationSchemaOrder } from "../../Util/YupValidation";
 import { PaymentStatus } from "../Enum/Paid";
 import { OrderStatus } from "../Enum/OrderStatus";
+import { useSendEmail } from "../Bill/hook/use-SendEmail";
 
 
 
@@ -22,12 +23,13 @@ interface OrderFormProps {
 const OrderForm: React.FC<OrderFormProps> = ({ show, setShowModal }) => {
     const { cart, clearCart } = useCart();
     const { userComplete } = usePermission();
+    const sendEmail = useSendEmail();
     const [idPreference, setIdPreference] = useState<string | null>(null);
     const [isDelivery, setIsDelivery] = useState(false);
     const orderPost = useOrderSave(); // Hook personalizado para realizar una petición POST genérica a la API
     const subtotal = cart.reduce((acc, item) => acc + item.subtotal, 0);
     const discount = !isDelivery ? parseFloat((subtotal * 0.1).toFixed(2)) : 0;
- 
+
     const totalCookingTime = cart.reduce((acc, item) => {
         if (item.itemManufacturedProduct && item.itemManufacturedProduct.cookingTime) {
             // Descomponer el tiempo en horas, minutos y segundos
@@ -95,6 +97,7 @@ const OrderForm: React.FC<OrderFormProps> = ({ show, setShowModal }) => {
         validateOnBlur: true,
         // onSubmit: (values: typeof requestBody) => console.log(JSON.stringify(values)),
         onSubmit: (values: typeof requestBody) => handleSaveUpdate(values),
+
     });
     return (
         <>
