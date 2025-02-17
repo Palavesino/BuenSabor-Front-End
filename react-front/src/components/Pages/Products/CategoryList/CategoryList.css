@@ -14,10 +14,9 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  max-width: 100%; /* Ajusta este valor según tus necesidades */
+  max-width: 100%;
   display: block;
 }
-
 .cui-list-group-item.active {
   background-color: black;
   color: #f6bd5a;

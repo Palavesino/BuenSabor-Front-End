@@ -18,7 +18,7 @@ const Cocinero: React.FC = () => {
   const [isTimeUp, setIsTimeUp] = useState<{ [key: number]: boolean }>({});
   const [isCountdownStarted, setIsCountdownStarted] = useState<{ [key: number]: boolean }>({});
   const update = updateOrderState();
-  
+
   useEffect(() => {
     const fetchOrders = async () => {
       const data = await getItem();
@@ -29,7 +29,7 @@ const Cocinero: React.FC = () => {
     fetchOrders();
   }, []);
 
-  // Recuperar el estado del contador y si la cuenta regresiva fue iniciada desde localStorage
+  // Recuperar estado del contador desde localStorage
   useEffect(() => {
     const savedCountdown = localStorage.getItem('countdown');
     const savedIsCountdownStarted = localStorage.getItem('isCountdownStarted');
@@ -48,26 +48,47 @@ const Cocinero: React.FC = () => {
     setShowModal(false);
   };
 
-  const handleStartCountdown = (orderId: number, estimatedTime: string) => {
-    const [hours, minutes, seconds] = estimatedTime.split(':').map((str) => parseInt(str));
-    const estimatedTimeInMs = new Date().getTime() + (hours * 3600 + minutes * 60 + seconds) * 1000;
+  const getCookingTime = (orderDetails: OrderDetail[]) => {
+    let maxCookingTime = 0;
+
+    orderDetails.forEach((detail) => {
+      if (detail.itemManufacturedProduct && detail.itemManufacturedProduct.cookingTime) {
+        const cookingTime = detail.itemManufacturedProduct.cookingTime;
+        const quantity = detail.quantity;
+        const [hours, minutes, seconds] = cookingTime.split(':').map((str) => parseInt(str));
+        const totalSeconds = hours * 3600 + minutes * 60 + seconds;
+
+        // Multiplicar por la cantidad y sumar al total
+        maxCookingTime += totalSeconds * quantity;
+      }
+    });
+
+
+    return maxCookingTime;
+  };
+
+  const handleStartCountdown = (orderId: number, orderDetails: OrderDetail[]) => {
+    const cookingTimeInSeconds = getCookingTime(orderDetails);
+    if (cookingTimeInSeconds === 0) return; // No iniciar si no hay tiempo válido
+
+    const cookingTimeInMs = new Date().getTime() + cookingTimeInSeconds * 1000;
 
     setCountdown((prev) => {
-      const newCountdown = { ...prev, [orderId]: estimatedTimeInMs };
-      localStorage.setItem('countdown', JSON.stringify(newCountdown));  // Guardamos en localStorage
+      const newCountdown = { ...prev, [orderId]: cookingTimeInMs };
+      localStorage.setItem('countdown', JSON.stringify(newCountdown));
       return newCountdown;
     });
 
     setIsCountdownStarted((prev) => {
       const newIsCountdownStarted = { ...prev, [orderId]: true };
-      localStorage.setItem('isCountdownStarted', JSON.stringify(newIsCountdownStarted));  // Guardamos en localStorage
+      localStorage.setItem('isCountdownStarted', JSON.stringify(newIsCountdownStarted));
       return newIsCountdownStarted;
     });
   };
 
   const handleChangeOrderState = async (orderId: number) => {
     try {
-      const updatedOrder = await update(OrderStatus.READY, orderId); // Cambiamos el estado a READY
+      const updatedOrder = await update(OrderStatus.READY, orderId);
       setOrders((prevOrders) =>
         prevOrders.map((order) =>
           order.id === orderId ? { ...order, state: updatedOrder.state } : order
@@ -89,19 +110,17 @@ const Cocinero: React.FC = () => {
     return `${hours}:${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   };
 
-  // Funciones para sumar o restar tiempo
   const adjustTime = (orderId: number, amount: number) => {
     setCountdown((prev) => {
       const newCountdown = { ...prev };
       if (newCountdown[orderId]) {
-        newCountdown[orderId] += amount * 1000; // amount está en segundos, convertimos a milisegundos
-        localStorage.setItem('countdown', JSON.stringify(newCountdown)); // Guardamos en localStorage
+        newCountdown[orderId] += amount * 1000;
+        localStorage.setItem('countdown', JSON.stringify(newCountdown));
       }
       return newCountdown;
     });
   };
 
-  // Actualizar si el tiempo se agotó
   useEffect(() => {
     const interval = setInterval(() => {
       setCountdown((prev) => {
@@ -111,15 +130,15 @@ const Cocinero: React.FC = () => {
           if (timeLeft <= 0 && !isTimeUp[Number(orderId)]) {
             setIsTimeUp((prev) => ({
               ...prev,
-              [Number(orderId)]: true, // Marcar el pedido como "tiempo agotado"
+              [Number(orderId)]: true,
             }));
           }
         });
-        return newCountdown; // Actualizar el estado para re-renderizar
+        return newCountdown;
       });
     }, 1000);
 
-    return () => clearInterval(interval); // Limpiar el intervalo al desmontar el componente
+    return () => clearInterval(interval);
   }, [countdown, isTimeUp]);
 
   return (
@@ -139,22 +158,17 @@ const Cocinero: React.FC = () => {
                     <div className="card-text">
                       <strong>Cliente</strong> {order.userName} {order.userLastName}
                       <br />
-                      <strong>Tiempo estimado </strong> {order.estimatedTime}
-                      <br />
-                      <strong>Fecha del pedido</strong> {new Date(order.dateTime).toLocaleString()}
+                      <strong>Fecha del pedido</strong>{order.dateTime && (
+                        new Date(order.dateTime).toLocaleString()
+                      )}
                       <br />
                     </div>
 
                     <div className="button-container">
-                        {//order.orderDetails.length > 0 && (
-                          <div>
-                            <button className="buttonProductosC" onClick={() => handleShowModal(order.orderDetails)}>
-                              Ver Productos
-                            </button>
-                          </div>
-                        //)
-                        }
-                      
+                      <button className="buttonProductosC" onClick={() => handleShowModal(order.orderDetails)}>
+                        Ver Productos
+                      </button>
+
                       <div className="mt-3">
                         {isCountdownStarted[order.id] && timeLeft > 0 ? (
                           <div>
@@ -173,14 +187,11 @@ const Cocinero: React.FC = () => {
                           </div>
                         ) : (
                           <button className="buttonCocinar"
-                            //variant={isTimeUp[order.id] ? 'danger' : 'secondary'}
                             onClick={() => {
                               if (isTimeUp[order.id]) {
-                                // Cambiar el estado
                                 handleChangeOrderState(order.id);
                               } else {
-                                // Iniciar la cuenta regresiva
-                                handleStartCountdown(order.id, order.estimatedTime);
+                                handleStartCountdown(order.id, order.orderDetails);
                               }
                             }}
                           >

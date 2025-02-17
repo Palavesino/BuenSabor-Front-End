@@ -91,7 +91,7 @@ const ProductDetailsCard: React.FC<ProductDetailsCardProps> = ({ product, image,
         <CCol md={5}>
           {
             image ? (<CCardImage orientation="top" src={`${rut}${image.name}`} />)
-              : <CCardImage orientation="top" src="https://www.clarin.com/img/2022/11/25/tR-l3EmRl_2000x1500__1.jpg" />
+              : <CCardImage orientation="top" src="https://upload.wikimedia.org/wikipedia/commons/a/a3/Image-not-found.png?20210521171500" />
           } </CCol>
 
         <CCol md={7}>
