@@ -30,7 +30,7 @@ const CartTable = () => {
     //         data4 = response.descuento
     //     }
     //   }, [data]);
-    console.log(descuento)
+    console.log(userComplete)
     useEffect(() => {
         const fetchUserData = async () => {
           try {
