@@ -10,7 +10,6 @@ import WalletMP from "./WalletMP";
 import { validationSchemaOrder } from "../../Util/YupValidation";
 import { PaymentStatus } from "../Enum/Paid";
 import { OrderStatus } from "../Enum/OrderStatus";
-import { useSendEmail } from "../Bill/hook/use-SendEmail";
 import { useValidate } from "../Pages/ProductDetails/hook/use-Validate";
 import { useValidateStock } from "./hook/use-ValidateStock";
 
@@ -30,8 +29,12 @@ const OrderForm: React.FC<OrderFormProps> = ({ show, setShowModal }) => {
     const [isDelivery, setIsDelivery] = useState(false);
     const orderPost = useOrderSave(); // Hook personalizado para realizar una petición POST genérica a la API
     const subtotal = cart.reduce((acc, item) => acc + item.subtotal, 0);
-    const discount = !isDelivery ? parseFloat((subtotal * 0.1).toFixed(2)) : 0;
+    const discount = (userComplete && userComplete.descuento != null && userComplete.descuento > 0)
+        ? ((userComplete.descuento / 100) * subtotal)
+        : (!isDelivery ? parseFloat((subtotal * 0.1).toFixed(2)) : 0);
+    //const discount = !isDelivery ? parseFloat((subtotal * 0.1).toFixed(2)) : 0;
 
+    //console.log(userComplete);
     const totalCookingTime = cart.reduce((acc, item) => {
         if (item.itemManufacturedProduct && item.itemManufacturedProduct.cookingTime) {
             // Descomponer el tiempo en horas, minutos y segundos
@@ -291,7 +294,13 @@ const OrderForm: React.FC<OrderFormProps> = ({ show, setShowModal }) => {
                                         <Col><p>{`Subtotal: $${subtotal}`}</p></Col>
                                     </Row>
                                     <Row>
-                                        <Col><p>{`Descuento: $${discount}`}</p></Col>
+                                        <Col>
+                                            <p>
+                                                {(formik.values.deliveryMethod === 'local' || (userComplete && userComplete.descuento > 0))
+                                                    ? `Descuento: $${discount}`
+                                                    : 'Descuento: 0'}
+                                            </p>
+                                        </Col>
                                     </Row>
                                     <Row>
                                         <Col><p>{`Total: $${subtotal - discount}`}</p></Col>

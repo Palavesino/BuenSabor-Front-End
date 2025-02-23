@@ -95,7 +95,7 @@ const Cocinero: React.FC = () => {
         )
       );
     } catch (err) {
-      console.log('Error al editar el pedido');
+      console.error('Error al editar el pedido');
     }
   };
 

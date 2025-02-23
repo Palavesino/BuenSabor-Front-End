@@ -12,20 +12,19 @@ export const useValidateStock = () => {
         try {
             const token = await getAccessTokenSilently();
             const response = await fetch(`/api/stock/verifActualStockAndQuantity`, {
-                method: "GET",
+                method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`,
                 },
                 body: JSON.stringify(obj),
             });
-
             if (!response.ok) {
                 throw new Error(`Error al Guardar Orden: ${response.status}`);
             }
             return await response.json();
         } catch (error) {
-            toast.error(`Ha ocurrido un error: ${error}`, {
+            toast.error(`Vague: ${error}`, {
                 position: "top-center",
             });
             return null;

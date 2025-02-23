@@ -4,62 +4,34 @@ import Counter from "./Counter";
 import { RxCross2 } from "react-icons/rx";
 import { useCart } from "../../../context/CartContext";
 import { BsCartXFill, BsCartCheckFill } from "react-icons/bs";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import OrderForm from "../../Order/OrderForm";
 import { usePermission } from "../../../context/PermissionContext";
 import { UserRole } from "../../Enum/UserRole";
-import { useGenericGet } from "../../../Services/useGenericGet";
-import { useAuth0, User } from "@auth0/auth0-react";
-import { useGenericGetXID } from "../../../Services/useGenericGetXID";
-import { userfff } from "./userid";
+import { useValidateStock } from "../../Order/hook/use-ValidateStock";
 
 const CartTable = () => {
-    const { userComplete, permission } = usePermission();
-    const data2 = userfff()
-    const data4 = 0;
-    const [descuento, setDescuento] = useState(0);
+    const { permission } = usePermission();
     const { cart, removeFromCart, clearCart } = useCart();
+    const validateStock = useValidateStock();
     const total = cart.reduce((acc, item) => acc + item.subtotal, 0);
     const [showModal, setShowModal] = useState(false);
-    let data: any;
 
-    
-    //   useEffect(() => {
-    //     if (userComplete) {
-    //         const response =  data2(userComplete.id)
-    //         data4 = response.descuento
-    //     }
-    //   }, [data]);
-    console.log(userComplete)
-    useEffect(() => {
-        const fetchUserData = async () => {
-          try {
-            if (userComplete) {
-                const response = await fetch(`/api/users/${userComplete.id}`);
-                
-                if (!response.ok) {
-                  throw new Error('Network response was not ok');
-                }
-        
-                const data = await response.json();
-                setDescuento(data.descuento);
-            }
-          } catch (error) {
-            console.error(error)
-          } 
-        };
-    
-        fetchUserData();
-      }, [userComplete]);
     const handleClick = async () => {
-        if (permission !== UserRole.espectador) {
-            setShowModal(true);
-
-        } else {
-            alert("Necesitas Estar Logeada Para Poder comprar");
+        if (permission === UserRole.espectador) {
+            alert("Necesitas estar logeado para poder comprar");
+            return;
         }
+
+        const hasStock = await validateStock(cart);
+        if (!hasStock) {
+            alert("Falta stock de algún producto en tu carrito");
+            return;
+        }
+
+        setShowModal(true);
     };
-    
+
 
 
 
