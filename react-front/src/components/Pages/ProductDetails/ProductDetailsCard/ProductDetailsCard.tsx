@@ -52,6 +52,7 @@ const ProductDetailsCard: React.FC<ProductDetailsCardProps> = ({ product, image,
   if (!product) {
     return <div>No hay información del producto disponible.</div>;
   }
+  product.routImage = image ? rut + image?.name : 'https://upload.wikimedia.org/wikipedia/commons/a/a3/Image-not-found.png?20210521171500';
   // Obtener productos almacenados en localStorage
   // const storedProductsString = localStorage.getItem('productos');
   // const storedProducts: ManufacturedProduct[] = storedProductsString ? JSON.parse(storedProductsString) : [];

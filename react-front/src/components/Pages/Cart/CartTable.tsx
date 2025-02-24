@@ -16,19 +16,16 @@ const CartTable = () => {
     const validateStock = useValidateStock();
     const total = cart.reduce((acc, item) => acc + item.subtotal, 0);
     const [showModal, setShowModal] = useState(false);
-
     const handleClick = async () => {
         if (permission === UserRole.espectador) {
             alert("Necesitas estar logeado para poder comprar");
             return;
         }
-
         const hasStock = await validateStock(cart);
         if (!hasStock) {
             alert("Falta stock de algún producto en tu carrito");
             return;
         }
-
         setShowModal(true);
     };
 
@@ -42,7 +39,12 @@ const CartTable = () => {
                     {cart.map((product, index) => (
                         <tr key={index}>
                             <th className="image-header">
-                                {/* <Image className="image-table" src="https://www.clarin.com/img/2022/11/25/tR-l3EmRl_2000x1500__1.jpg" thumbnail /> */}
+                                {
+                                    (product.itemManufacturedProduct && product.itemManufacturedProduct.routImage) ? (<Image className="image-table" src={product.itemManufacturedProduct.routImage} thumbnail />)
+                                        : (product.itemProduct && product.itemProduct.routImage ? (<Image className="image-table" src={product.itemProduct.routImage} thumbnail />)
+                                            : <Image className="image-table" src="https://upload.wikimedia.org/wikipedia/commons/a/a3/Image-not-found.png?20210521171500" thumbnail />
+                                        )
+                                }
                             </th>
                             <th className="name">
                                 {product.itemProduct ? product.itemProduct.denomination : product.itemManufacturedProduct?.denomination}
