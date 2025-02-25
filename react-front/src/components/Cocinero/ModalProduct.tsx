@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Modal } from 'react-bootstrap';
 import { OrderDetail } from '../../Interfaces/OrderDetail';  
 import { useGetRecipe } from './Hook/hookRecipe'; // Hook para obtener la receta
-import { Recipe } from '../../Interfaces/ManufacturedProduct'; // Asegúrate de tener la interfaz adecuada para Recipe
 import "./Style/Cocinero.css"
+import { Recipe } from '../../Interfaces/Recipe';
 interface BootstrapModalProps {
     orderDetails: OrderDetail[];
     show: boolean;
@@ -92,8 +92,8 @@ const BootstrapModal: React.FC<BootstrapModalProps> = ({ orderDetails, show, han
                     </ul>
                     <h5>Ingredientes</h5>
                     <ul>
-                        {selectedRecipe?.ingredients?.map((ingredient, index) => (
-                            <p key={index}>-{ingredient.denomination}</p>
+                        {selectedRecipe?.ingredientsQuantity?.map((ingredient, index) => (
+                            <p key={index}>-{ingredient.ingredient.denomination}</p>
                         ))}
                     </ul>
                 </Modal.Body>
