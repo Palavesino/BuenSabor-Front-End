@@ -10,7 +10,8 @@ import WalletMP from "./WalletMP";
 import { validationSchemaOrder } from "../../Util/YupValidation";
 import { PaymentStatus } from "../Enum/Paid";
 import { OrderStatus } from "../Enum/OrderStatus";
-import { useSendEmail } from "../Bill/hook/use-SendEmail";
+import { useValidate } from "../Pages/ProductDetails/hook/use-Validate";
+import { useValidateStock } from "./hook/use-ValidateStock";
 
 
 
@@ -23,13 +24,17 @@ interface OrderFormProps {
 const OrderForm: React.FC<OrderFormProps> = ({ show, setShowModal }) => {
     const { cart, clearCart } = useCart();
     const { userComplete } = usePermission();
-    const sendEmail = useSendEmail();
+    const validateStock = useValidateStock();
     const [idPreference, setIdPreference] = useState<string | null>(null);
     const [isDelivery, setIsDelivery] = useState(false);
     const orderPost = useOrderSave(); // Hook personalizado para realizar una petición POST genérica a la API
     const subtotal = cart.reduce((acc, item) => acc + item.subtotal, 0);
-    const discount = !isDelivery ? parseFloat((subtotal * 0.1).toFixed(2)) : 0;
+    const discount = (userComplete && userComplete.descuento != null && userComplete.descuento > 0)
+        ? ((userComplete.descuento / 100) * subtotal)
+        : (!isDelivery ? parseFloat((subtotal * 0.1).toFixed(2)) : 0);
+    //const discount = !isDelivery ? parseFloat((subtotal * 0.1).toFixed(2)) : 0;
 
+    //console.log(userComplete);
     const totalCookingTime = cart.reduce((acc, item) => {
         if (item.itemManufacturedProduct && item.itemManufacturedProduct.cookingTime) {
             // Descomponer el tiempo en horas, minutos y segundos
@@ -49,33 +54,14 @@ const OrderForm: React.FC<OrderFormProps> = ({ show, setShowModal }) => {
     // Crear una cadena con el formato HH:MM:SS
     const totalTimeString = `${totalHours.toString().padStart(2, '0')}:${totalMinutes.toString().padStart(2, '0')}:${totalSeconds.toString().padStart(2, '0')}`;
 
-    const handleSaveUpdate = async (o: typeof requestBody) => {
+    const handleSaveUpdate = async (o: Order) => {
         if (o.paymentType !== "mp") {
             setShowModal(false)
         }
         clearCart();
-        const order: Order = {
-            id: 0,
-            address: o.address,
-            apartment: userComplete?.apartment || "",
-            discount: discount,
-            estimatedTime: totalTimeString,
-            paid: o.paymentType !== 'mp' ? PaymentStatus.APPROVED : PaymentStatus.IN_PROCESS,
-            state: OrderStatus.PENDING,
-            isCanceled: false,
-            phone: requestBody.phone as string,
-            total: subtotal - discount,
-            userId: userComplete?.id || 0,
-            userName: userComplete?.name || "",
-            userLastName: userComplete?.lastName || "",
-            deliveryMethod: o.deliveryMethod,
-            orderDetails: cart,
-            paymentType: o.paymentType,
-            dateTime: null,
-        }
-        const response = await orderPost(order);
+        const response = await orderPost(o);
         if (response) {
-            if (order.paymentType === "mp") {
+            if (o.paymentType === "mp") {
                 setIdPreference(response.preferenceId);
             }
         }
@@ -96,7 +82,30 @@ const OrderForm: React.FC<OrderFormProps> = ({ show, setShowModal }) => {
         validateOnChange: true,
         validateOnBlur: true,
         // onSubmit: (values: typeof requestBody) => console.log(JSON.stringify(values)),
-        onSubmit: (values: typeof requestBody) => handleSaveUpdate(values),
+        //onSubmit: (values: typeof requestBody) => handleSaveUpdate(values),
+        onSubmit: async (values: typeof requestBody) => {
+            const order: Order = {
+                id: 0,
+                address: values.address,
+                apartment: userComplete?.apartment || "",
+                discount: discount,
+                estimatedTime: totalTimeString,
+                paid: values.paymentType !== 'mp' ? PaymentStatus.APPROVED : PaymentStatus.IN_PROCESS,
+                state: OrderStatus.PENDING,
+                isCanceled: false,
+                phone: requestBody.phone as string,
+                total: subtotal - discount,
+                userId: userComplete?.id || 0,
+                userName: userComplete?.name || "",
+                userLastName: userComplete?.lastName || "",
+                deliveryMethod: values.deliveryMethod,
+                orderDetails: cart,
+                paymentType: values.paymentType,
+                dateTime: null,
+            }
+            handleSaveUpdate(order);
+
+        },
 
     });
     return (
@@ -285,7 +294,13 @@ const OrderForm: React.FC<OrderFormProps> = ({ show, setShowModal }) => {
                                         <Col><p>{`Subtotal: $${subtotal}`}</p></Col>
                                     </Row>
                                     <Row>
-                                        <Col><p>{`Descuento: $${discount}`}</p></Col>
+                                        <Col>
+                                            <p>
+                                                {(formik.values.deliveryMethod === 'local' || (userComplete && userComplete.descuento > 0))
+                                                    ? `Descuento: $${discount}`
+                                                    : 'Descuento: 0'}
+                                            </p>
+                                        </Col>
                                     </Row>
                                     <Row>
                                         <Col><p>{`Total: $${subtotal - discount}`}</p></Col>

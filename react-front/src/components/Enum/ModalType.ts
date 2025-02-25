@@ -8,6 +8,7 @@ export enum ModalType {
   SingUp,
   ChangePass,
   ChangeImage,
-  Cancel,
-  View
+  CANCELED,
+  View,
+  Cancel
 }

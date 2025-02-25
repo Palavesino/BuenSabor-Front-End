@@ -11,6 +11,7 @@ export interface ManufacturedProduct {
   cookingTime: string;
   price: Price
   quantity?: number;
+  routImage?: string | null;
 }
 export interface MproductXRecipe {
   manufacturedProduct: ManufacturedProduct;

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Category } from "../../../../Interfaces/Category";
+import { useSpinner } from "../../../../context/SpinnerContext";
 
 // Definición del componente GetTypeCategories
 const GetTypeCategories = (type: string, category: Category) => {
@@ -8,7 +9,7 @@ const GetTypeCategories = (type: string, category: Category) => {
   const [data, setData] = useState([]);
   // Obtención de la función getAccessTokenSilently de useAuth0
   const { getAccessTokenSilently } = useAuth0();
-
+  const { showSpinner, hideSpinner } = useSpinner();
   // Función para construir la URL de la solicitud al servidor
   const getUrl = () => {
     let aux = "";
@@ -23,6 +24,7 @@ const GetTypeCategories = (type: string, category: Category) => {
   // Efecto para realizar la solicitud al servidor cuando cambia el tipo
   useEffect(() => {
     const fetchData = async () => {
+      showSpinner
       try {
         let url = getUrl();
         // Verificar que el tipo no esté vacío
@@ -48,6 +50,8 @@ const GetTypeCategories = (type: string, category: Category) => {
         }
       } catch (e) {
         console.error(`Error fetching data:`, e);
+      } finally {
+        hideSpinner();
       }
     };
 

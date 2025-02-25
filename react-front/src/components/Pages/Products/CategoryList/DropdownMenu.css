@@ -1,0 +1,33 @@
+
+  
+  .dropdown-item {
+    margin-bottom: 10px;
+  }
+  
+  .category-label {
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .category-label:hover {
+    text-decoration: underline;
+  }
+  
+  .submenu {
+    margin-left: 20px;
+    margin-top: 5px;
+  }
+  
+  .submenu-item {
+    margin-bottom: 5px;
+  }
+  
+  .subcategory-label {
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  .subcategory-label:hover {
+    text-decoration: underline;
+  }

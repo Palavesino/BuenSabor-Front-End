@@ -18,6 +18,7 @@ import { Category } from "../../../../Interfaces/Category";
 interface CategoryListProps {
   categories: Category[];
   selectedCategory: number | null;
+  className?: string;
   onCategoryClick: (categoryId: number, isProduct: boolean) => void;
 }
 

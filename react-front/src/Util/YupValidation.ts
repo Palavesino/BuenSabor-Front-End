@@ -101,7 +101,6 @@ export const validationSchemaIngredient = (modalType: ModalType) => {
 
 };
 export const validationSchemaProduct = (modalType: ModalType) => {
-    console.log(modalType)
     switch (modalType) {
         case 1:
             return Yup.object().shape({

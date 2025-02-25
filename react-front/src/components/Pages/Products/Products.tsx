@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 
 // Importaciones de componenetes, funciones y modelos
-import CategoryList from "./CategoryList/CategoryList";
 
 // Importaciones de estilos
 import "./Products.css";
@@ -11,6 +10,7 @@ import { Category } from "../../../Interfaces/Category";
 import { ItemList } from "../../../Interfaces/ItemList";
 import { useGetItems } from "./hook/use-GetItems";
 import { useGenericPublicGet } from "../../../Services/useGenericPublicGet";
+import DropdownMenu from "./CategoryList/DropdownMenu";
 
 /*
  * Componente de productos
@@ -24,7 +24,7 @@ const Products = () => {
   // Estado para almacenar los productos
   const [categories, setCategorys] = useState<Category[]>([]);
   // Estado para almacenar las manufactured-products
-  const [items, setItems] = useState<ItemList>({ productDTOList: [], manufacturedProductDTOList: [] });
+  const [items, setItems] = useState<ItemList[]>([]);
   const getItems = useGetItems();
   const data = useGenericPublicGet<Category>(
     "/api/categories/public/filter/catalogue",
@@ -45,14 +45,11 @@ const Products = () => {
     }
   }, [data]);
 
-  const filteredProducts = selectedCategory ? (
-    isProduct
-      ? (items.productDTOList || []).filter((item) => item.productCategoryID === selectedCategory)
-      : (items.manufacturedProductDTOList || []).filter((item) => item.manufacturedProductCategoryID === selectedCategory)
-  ) : (
-    isProduct ? items.productDTOList || [] : items.manufacturedProductDTOList || []
-  );
-
+  const filteredProducts = selectedCategory
+    ? isProduct
+      ? items.filter((item) => item.categoryId === selectedCategory)
+      : items.filter((item) => item.categoryId === selectedCategory)
+    : items;
 
   const handleCategoryClick = (categoryId: number, isProduct: boolean) => {
     setIsProduct(isProduct);
@@ -61,11 +58,12 @@ const Products = () => {
   return (
     <div className="products-page">
       <div className="categories-container">
-        <CategoryList
+        <DropdownMenu categories={categories} onCategoryClick={handleCategoryClick}/>
+        {/* <CategoryList
           categories={categories}
           selectedCategory={selectedCategory}
           onCategoryClick={handleCategoryClick}
-        />
+        /> */}
       </div>
       <div className="products-container">
         {filteredProducts && filteredProducts.map((product) => (

@@ -10,6 +10,7 @@ export interface User {
   phone: string;
   address: string;
   apartment: string;
+  descuento: number;
 }
 
 export interface Role {

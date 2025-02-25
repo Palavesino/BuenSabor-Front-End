@@ -9,6 +9,7 @@ export interface Product {
   productCategoryID: number;
   price: Price;
   quantity?: number;
+  routImage?: string | null;
 }
 
 export interface ProductXStock {
