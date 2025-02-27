@@ -10,5 +10,6 @@ export enum ModalType {
   ChangeImage,
   CANCELED,
   View,
-  Cancel
+  Cancel,
+  Stock
 }

@@ -28,7 +28,7 @@ export const useOrderSave = () => {
             }
             return await response.json();
         } catch (error) {
-            toast.error(`Ha ocurrido un error: ${error}`, {
+            toast.error(`No hay Stock para Comprar`, {
                 position: "top-center",
             });
             return null;

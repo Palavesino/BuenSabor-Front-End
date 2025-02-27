@@ -16,6 +16,7 @@ export interface Action {
   view?: boolean; // Permitir la acción de visualización (opcional)
   cancel?: boolean; // Permitir la acción de visualización (opcional)
   offSearch?: boolean; // Bloquear la a visualización del search (opcional
+  title?: string; 
 }
 
 export interface TableProps<T> {

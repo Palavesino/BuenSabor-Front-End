@@ -8,6 +8,7 @@ import Menu from "../Menu";
 import { Row, Col } from "react-bootstrap";
 import { Ingredient } from "../../../Interfaces/Ingredient";
 import IngredientForm from "./IngredientForm";
+import { Category } from "../../../Interfaces/Category";
 
 /*
 el componente IngredientTable se encarga de mostrar una tabla de ingredientes, 
@@ -43,10 +44,16 @@ const IngredientTable = () => {
     "Ingredients",
     refetch
   );
+  const [categories, setCategories] = useState<Category[]|null>([]); // Almacena las categorías obtenidas de la API
+  const data2 = modalType !== ModalType.ChangeStatus ? useGenericGet<Category>(
+    "/api/categories/filter/ingredient",
+    "Product Categories"
+  ) : null;
 
   useEffect(() => {
     // Actualizar los ingredientes cuando se obtiene nueva data
     setIngredients(data);
+    setCategories(data2);
     setRefetch(false);
   }, [data]);
 
@@ -117,8 +124,8 @@ const IngredientTable = () => {
                 ),
               },
               {
-                field: "ingredientCategoryID",
-                title: "CategoryID",
+                field: "categoryDenomination",
+                title: "categoryDenomination",
                 width: 1,
               },
             ]}

@@ -93,7 +93,7 @@ function GenericTable<T>({
         <Col sm={6}>
           {actions.create && (
             <Button onClick={onAdd} className="button-New">
-              Nuevo
+              {actions.title ? actions.title: 'Nuevo'}
             </Button>
           )}{" "}
           {/* Botón para agregar un nuevo elemento */}

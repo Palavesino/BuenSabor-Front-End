@@ -10,8 +10,6 @@ import WalletMP from "./WalletMP";
 import { validationSchemaOrder } from "../../Util/YupValidation";
 import { PaymentStatus } from "../Enum/Paid";
 import { OrderStatus } from "../Enum/OrderStatus";
-import { useValidate } from "../Pages/ProductDetails/hook/use-Validate";
-import { useValidateStock } from "./hook/use-ValidateStock";
 
 
 
@@ -24,7 +22,6 @@ interface OrderFormProps {
 const OrderForm: React.FC<OrderFormProps> = ({ show, setShowModal }) => {
     const { cart, clearCart } = useCart();
     const { userComplete } = usePermission();
-    const validateStock = useValidateStock();
     const [idPreference, setIdPreference] = useState<string | null>(null);
     const [isDelivery, setIsDelivery] = useState(false);
     const orderPost = useOrderSave(); // Hook personalizado para realizar una petición POST genérica a la API

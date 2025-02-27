@@ -41,6 +41,17 @@ export const validationSchemaCategory = () => {
         categoryFatherDenomination: Yup.string().nullable(),
     });
 };
+export const validationStockGeneral = () => {
+    return Yup.object().shape({
+        stocknumber: Yup.number()
+            .integer()
+            .required("El Stock Number es requerido"),
+        CategoryID: Yup.number()
+            .integer(),
+        aumento: Yup.string().required("El Tipo de funcion es requerida"),
+
+    });
+};
 export const validationStock = () => {
     return Yup.object().shape({
         minStock: Yup.number()
