@@ -6,6 +6,7 @@ export interface Ingredient {
   unit: string;
   availability: boolean;
   ingredientCategoryID: number;
+  categoryDenomination?: string;
 }
 
 export interface IngredientXStock {

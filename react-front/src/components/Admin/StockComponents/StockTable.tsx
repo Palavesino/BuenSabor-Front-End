@@ -7,6 +7,7 @@ import Menu from "../Menu";
 import { Row, Col } from "react-bootstrap";
 import { Stock } from "../../../Interfaces/Stock";
 import StockForm from "./StockForm";
+import Aumento from "./Aumento";
 
 /*
 El componente StockTable se encarga de mostrar una tabla de stock, 
@@ -65,6 +66,10 @@ const StockTable = () => {
   const handleEdit = (r: Stock) => {
     handleClick(r, "Editar Stock", ModalType.Edit);
   };
+  const handlestock = () => {
+    setModalType(ModalType.Stock);
+    setShowModal(true);
+  };
 
   // Renderizado del componente
   return (
@@ -86,7 +91,11 @@ const StockTable = () => {
             actions={{
               width: 0.7,
               update: true,
+              create: true,
+              title:'General'
+
             }}
+            onAdd={handlestock}
             onUpdate={handleEdit}
           />
         </Col>
@@ -94,6 +103,14 @@ const StockTable = () => {
           <StockForm
             stock={item}
             title={title}
+            show={showModal}
+            onHide={() => setShowModal(false)}
+            setRefetch={setRefetch}
+            modalType={modalType}
+          />
+        )}
+        {showModal && (
+          <Aumento
             show={showModal}
             onHide={() => setShowModal(false)}
             setRefetch={setRefetch}

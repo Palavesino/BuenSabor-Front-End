@@ -50,7 +50,7 @@ const StockForm: React.FC<StockFormModalProps> = ({
     // Renderizado del componente
     return (
         <>
-            {modalType !== ModalType.ChangeStatus && (
+            {modalType === ModalType.Edit && (
                 <Modal
                     show={show}
                     onHide={onHide}

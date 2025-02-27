@@ -128,8 +128,8 @@ const ProductTable = () => {
                 ),
               },
               {
-                field: "productCategoryID",
-                title: "CategoryID",
+                field: "categoryDenomination",
+                title: "categoryDenomination",
                 width: 1,
               },
             ]}
